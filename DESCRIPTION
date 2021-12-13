@@ -1,11 +1,12 @@
 Package: exhaustiveRasch
 Type: Package
-Title: What the Package Does (Title Case)
-Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Title: Exhaustive testing of Rasch-models for a list of item-patterns 
+Version: 0.0.1
+Author: Christian Grebe <christian.grebe@fh-bielefeld.de>
+Maintainer: Christian Grebe <christian.grebe@fh-bielefeld.de>
+Description: Exhaustive testing of Rasch-models (Dichotomous, Partial Credit, Rating-Scale) for a list of item-patterns. The patterns to test can be either all possible patterns or items/patterns can be defined by several rules (forced inclusion of specific items, exclusion of sub-patterns, minimum/maximum items of a sub-pattern).    Tests for model-and item-fit include ordering of the thresholds, itemfit-indices, likelihood ratio test, Martin Löf test, waldtest, principal component analysis with tetra-/polychoric correlations and rempirical representation of all raw scores.   The tests, their order and their parameters can be defined.    Item- and person-parameters are estimated as conditional likelihood estimation using functions of the eRM-package. 
+License: GPL-3
 Encoding: UTF-8
 LazyData: true
+Imports: eRm, psych, openxlsx, parallel, stats, utils
+RoxygenNote: 7.1.2

@@ -1,6 +1,18 @@
 exhaustive_tests <- function(dset, modelType="RM", patterns=NULL, scale_length=4:length(patterns),
                              tests=c("all_rawscores", "test_mloef", "test_itemfit"),
                              lower=0.5, upper=1.5, p.val=F){
+  #' Runs exhaustive tests
+  #' @param dset a data.frame containing the data
+  #' @param modelType: a character value defining the rasch model to fit. Possible values: RM, PCM, RSM
+  #' @param patterns: a list of patterns to be tested from check_combo_rules. If NULL, all possible combinations of the items (columns) in dset will be tested
+  #' @param scale_length a numeric vector defining the length of the patterns to test
+  #' @param tests a vector of characters defining the tests to perform. Possible values: all_rawscores, test_itemfit, test_LR, test_mloef, test_pca, test_waldtest, threshold_order. Tests will be performed in the given order.
+  #' @param lower a numeric value for the lower bond for fit indices (MSQ)
+  #' @param upper: a numeric value for the upper bond for fit indices (MSQ)
+  #' @param p.val a boolean value indicating whether to exclude patterns with at least one item with significant p-value (p<0.05) in itemfit
+  #' @return a list containing 4 lists: the process log, the patterns that passed the test circuit, the corresponding RM/PCM/RSM models and their information criteria (AIC, BIC, cAIC)
+  #' @export
+
   # Schleife ?ber Kombinationen mit L?nge j
   passed_models <- list()
   passed_patterns <- list()
@@ -48,7 +60,7 @@ exhaustive_tests <- function(dset, modelType="RM", patterns=NULL, scale_length=4
   if (length(process)>0){colnames(process) <- c("Scale-Length", "Combinations", tests)}
   if (length(passed_models)>0){
     information_criteria <- lapply(1:length(passed_models),
-                                   function(x) IC(person.parameter(passed_models[[x]]))$ICtable[3,3:5])
+                                   function(x) eRm::IC(eRm::person.parameter(passed_models[[x]]))$ICtable[3,3:5])
   }
   return(list("process"=process, "passed_patterns"=passed_patterns, "passed_models"=passed_models,
               "IC"=as.data.frame(do.call(rbind, information_criteria))))

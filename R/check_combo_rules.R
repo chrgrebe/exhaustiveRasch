@@ -1,7 +1,7 @@
 check_combo_rules <- function(full, forced_items=NULL, rules=NULL){
 
   passed_forced=F; passed_max_rules=F; passed_min_rules=F; passed_forbidden_rules=F
-  max_rules <- rules[which((sapply(rules_object,'[[',1)=="max"))]
+  max_rules <- rules[which((sapply(rules,'[[',1)=="max"))]
   min_rules <- rules[which((sapply(rules,'[[',1)=="min"))]
   forbidden_rules <- rules[which((sapply(rules,'[[',1)=="forbidden"))]
   if (length(forced_items)>0){
