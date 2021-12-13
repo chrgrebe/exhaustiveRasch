@@ -1,4 +1,10 @@
 check_combo_rules <- function(full, forced_items=NULL, rules=NULL){
+  #' selects item patterns based on defined rules for item combinations
+  #' @param full a list of numeric vectors containing the full set of patterns to be analysed
+  #' @param forced_items a numeric vector of items that are forced to occur in every selected pattern
+  #' @rules a list of type combination_rules defining rules for pattern selection
+  #' @return a list of numeric vectors containing the selected item patterns that match the defined rules of forced_items and/or rules.
+  #' @export
 
   passed_forced=F; passed_max_rules=F; passed_min_rules=F; passed_forbidden_rules=F
   max_rules <- rules[which((sapply(rules,'[[',1)=="max"))]
