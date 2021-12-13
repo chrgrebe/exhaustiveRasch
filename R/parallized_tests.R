@@ -5,7 +5,7 @@ parallized_tests <- function(dset, modelType="RM", combos, testfunction,...){
   if (length(combos)==0 | is.character(combos)){
     warning(paste("No patterns left to perform ", testfunction, ". Aborted.", sep=""))
   } else{
-    cl <- parallel::makePSOCKcluster(detectCores())
+    cl <- parallel::makePSOCKcluster(parallel::detectCores())
     parallel::setDefaultCluster(cl)
     parallel::clusterExport(cl, testfunction)
     parallel::clusterEvalQ(cl, library(eRm))

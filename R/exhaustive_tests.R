@@ -3,12 +3,12 @@ exhaustive_tests <- function(dset, modelType="RM", patterns=NULL, scale_length=4
                              lower=0.5, upper=1.5, p.val=F){
   #' Runs exhaustive tests
   #' @param dset a data.frame containing the data
-  #' @param modelType: a character value defining the rasch model to fit. Possible values: RM, PCM, RSM
-  #' @param patterns: a list of patterns to be tested from check_combo_rules. If NULL, all possible combinations of the items (columns) in dset will be tested
+  #' @param modelType a character value defining the rasch model to fit. Possible values: RM, PCM, RSM
+  #' @param patterns a list of patterns to be tested from check_combo_rules. If NULL, all possible combinations of the items (columns) in dset will be tested
   #' @param scale_length a numeric vector defining the length of the patterns to test
   #' @param tests a vector of characters defining the tests to perform. Possible values: all_rawscores, test_itemfit, test_LR, test_mloef, test_pca, test_waldtest, threshold_order. Tests will be performed in the given order.
   #' @param lower a numeric value for the lower bond for fit indices (MSQ)
-  #' @param upper: a numeric value for the upper bond for fit indices (MSQ)
+  #' @param upper a numeric value for the upper bond for fit indices (MSQ)
   #' @param p.val a boolean value indicating whether to exclude patterns with at least one item with significant p-value (p<0.05) in itemfit
   #' @return a list containing 4 lists: the process log, the patterns that passed the test circuit, the corresponding RM/PCM/RSM models and their information criteria (AIC, BIC, cAIC)
   #' @export
@@ -24,7 +24,7 @@ exhaustive_tests <- function(dset, modelType="RM", patterns=NULL, scale_length=4
     information_criteria <- list()
     print(paste("Scale-Length", j))
     # Liste alle Itemkombinationen
-    if (is.null(patterns)){c <- combn(length(dset), j, simplify = FALSE)} else{c <- patterns}
+    if (is.null(patterns)){c <- utils::combn(length(dset), j, simplify = FALSE)} else{c <- patterns}
     patterns_process <- length(c)
     print(paste("initial Patterns:", patterns_process))
     current_patterns <- c
@@ -34,7 +34,7 @@ exhaustive_tests <- function(dset, modelType="RM", patterns=NULL, scale_length=4
       current_return <- parallized_tests(dset=dset, combos=current_patterns,
                                          testfunction=tests[l], upper=upper,
                                          lower=lower, p.val=p.val)
-      if (length(current_return)>0){
+      if (length(current_return)>0 & !is.character(current_return)){
         if (tests[l] %in% c("all_rawscores", "test_pca")){
           current_patterns <- current_return
         } else{
@@ -52,13 +52,15 @@ exhaustive_tests <- function(dset, modelType="RM", patterns=NULL, scale_length=4
 
     # ?brig gebliebene Kombinationen und Modelle den Listen hinzuf?gen
     print(paste("Fit:", length(current_patterns)))
-    if (is.character(current_models)==F){passed_models <- append(passed_models, current_models)}
-    if (is.character(current_patterns)==F){passed_patterns <- append(passed_patterns, current_patterns)}
+    if (length(current_patterns)>0){
+      passed_patterns <- append(passed_patterns, current_patterns)
+      passed_models <- append(passed_models, current_models)
+    }
     newrow <- c(j, patterns_process)
     process <- rbind(process, newrow)
   }
   if (length(process)>0){colnames(process) <- c("Scale-Length", "Combinations", tests)}
-  if (length(passed_models)>0){
+  if (length(passed_patterns)>0){
     information_criteria <- lapply(1:length(passed_models),
                                    function(x) eRm::IC(eRm::person.parameter(passed_models[[x]]))$ICtable[3,3:5])
   }

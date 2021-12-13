@@ -2,7 +2,7 @@ check_combo_rules <- function(full, forced_items=NULL, rules=NULL){
   #' selects item patterns based on defined rules for item combinations
   #' @param full a list of numeric vectors containing the full set of patterns to be analysed
   #' @param forced_items a numeric vector of items that are forced to occur in every selected pattern
-  #' @rules a list of type combination_rules defining rules for pattern selection
+  #' @param rules a list of type combination_rules defining rules for pattern selection
   #' @return a list of numeric vectors containing the selected item patterns that match the defined rules of forced_items and/or rules.
   #' @export
 

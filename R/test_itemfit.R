@@ -2,10 +2,11 @@ test_itemfit <- function(werte=NULL, dset=NULL, lower=0.7, upper=1.3, model=NULL
   #' checks the itemfit indices of a rasch model using the itemfit() function of eRm.
   #' @param werte a numeric vector containing the index numbers of the items in dset that are used to fit the model
   #' @param dset a data.frame containing the data
-  #' @lower lower bound for acceptable item fit (MSQ fit indices are used).
-  #' @upper upper bound for acceptable item fit (MSQ fit indices are used).
+  #' @param lower lower bound for acceptable Infit (MSQ fit indices are used).
+  #' @param upper upper bound for acceptable Infit (MSQ fit indices are used).
   #' @param model a list of type RM, PCM or RSM (a previously fit model) matching the value of modelType. If model is provided, this model ist used. If NULL, a model is fit using dset and werte.
-  #' @param modelType: a character value defining the rasch model to fit. Possible values: RM, PCM, RSM
+  #' @param p.val a boolean value indicating whether to exclude patterns with at least one item with significant p-value (p<0.05)
+  #' @param modelType a character value defining the rasch model to fit. Possible values: RM, PCM, RSM
   #' @return if all fit indices meet the given criteria, a list containing two elements is returned: the pattern that was tested an a list of type RM, RCM or RSM (depending on modelType) with the fit model. If at least one item's fit indices do not meet the given criteria, NULL is returned.
   #' @export
   if (is.null(model)){

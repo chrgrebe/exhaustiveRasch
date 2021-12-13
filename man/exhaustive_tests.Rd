@@ -18,19 +18,19 @@ exhaustive_tests(
 \arguments{
 \item{dset}{a data.frame containing the data}
 
+\item{modelType}{a character value defining the rasch model to fit. Possible values: RM, PCM, RSM}
+
+\item{patterns}{a list of patterns to be tested from check_combo_rules. If NULL, all possible combinations of the items (columns) in dset will be tested}
+
 \item{scale_length}{a numeric vector defining the length of the patterns to test}
 
 \item{tests}{a vector of characters defining the tests to perform. Possible values: all_rawscores, test_itemfit, test_LR, test_mloef, test_pca, test_waldtest, threshold_order. Tests will be performed in the given order.}
 
 \item{lower}{a numeric value for the lower bond for fit indices (MSQ)}
 
+\item{upper}{a numeric value for the upper bond for fit indices (MSQ)}
+
 \item{p.val}{a boolean value indicating whether to exclude patterns with at least one item with significant p-value (p<0.05) in itemfit}
-
-\item{modelType:}{a character value defining the rasch model to fit. Possible values: RM, PCM, RSM}
-
-\item{patterns:}{a list of patterns to be tested from check_combo_rules. If NULL, all possible combinations of the items (columns) in dset will be tested}
-
-\item{upper:}{a numeric value for the upper bond for fit indices (MSQ)}
 }
 \value{
 a list containing 4 lists: the process log, the patterns that passed the test circuit, the corresponding RM/PCM/RSM models and their information criteria (AIC, BIC, cAIC)

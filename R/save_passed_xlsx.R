@@ -1,6 +1,6 @@
 save_passed_xlsx <- function(resultData, filename, itemNames=NULL){
   #' saves a Excel file with the results of exhaustive_tests()
-  #' @param result_data the list object with the result of exhaustive_tests()
+  #' @param resultData the list object with the result of exhaustive_tests()
   #' @param filename path and filename of the Excel file to be saved
   #' @param itemNames the item labels to be used in the Excel sheet, e.g. the columnNames of the data.set that was tested with exhaustive_tests()
   #' @return no value is returned. This function saves an Excel file containing 3 sheets: 1) The process information of exhaustive_tests(); 2) a tabulated sheet with all patterns that passed the test circuit of exhaustive_tests(); 3) the information criteria (AIC, BIC, cAIC) of the models that were fit using the respective item patterns.
