@@ -2,7 +2,7 @@
 % Please edit documentation in R/test_mloef.R
 \name{test_mloef}
 \alias{test_mloef}
-\title{runs Martin-Löf Test with median split using the MLoef() function of eRm.}
+\title{runs Martin-Loef Test with median split using the MLoef() function of eRm.}
 \usage{
 test_mloef(werte = NULL, dset = NULL, model = NULL, modelType = NULL)
 }
@@ -19,5 +19,5 @@ test_mloef(werte = NULL, dset = NULL, model = NULL, modelType = NULL)
 if the p-value of the test is not significant (above p=0.05), a list containing two elements is returned: the pattern that was tested an a list of type RM, RCM or RSM (depending on modelType) with the fit model. If the test is significant (p<0.05), NULL is returned.
 }
 \description{
-runs Martin-Löf Test with median split using the MLoef() function of eRm.
+runs Martin-Loef Test with median split using the MLoef() function of eRm.
 }

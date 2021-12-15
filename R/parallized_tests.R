@@ -5,7 +5,16 @@ parallized_tests <- function(dset, modelType="RM", combos, testfunction,...){
   if (length(combos)==0 | is.character(combos)){
     warning(paste("No patterns left to perform ", testfunction, ". Aborted.", sep=""))
   } else{
-    cl <- parallel::makePSOCKcluster(parallel::detectCores())
+      chk <- Sys.getenv("_R_CHECK_LIMIT_CORES_", "")
+      if (nzchar(chk) && chk == "TRUE") {
+      # use 2 cores in CRAN/Travis/AppVeyor
+      cl <- parallel::makePSOCKcluster(2L)
+    } else {
+      # use all cores in devtools::test()
+      cl <- parallel::makePSOCKcluster(parallel::detectCores())
+    }
+
+
     parallel::setDefaultCluster(cl)
     parallel::clusterExport(cl, testfunction)
     parallel::clusterEvalQ(cl, library(eRm))

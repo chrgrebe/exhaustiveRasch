@@ -1,5 +1,5 @@
 test_mloef <- function(werte=NULL, dset=NULL, model=NULL, modelType=NULL){
-  #' runs Martin-Löf Test with median split using the MLoef() function of eRm.
+  #' runs Martin-Loef Test with median split using the MLoef() function of eRm.
   #' @param werte a numeric vector containing the index numbers of the items in dset that are used to fit the model
   #' @param dset a data.frame containing the data
   #' @param model a list of type RM, PCM or RSM (a previously fit model) matching the value of modelType. If model is provided, this model ist used. If NULL, a model is fit using dset and werte.

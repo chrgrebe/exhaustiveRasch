@@ -1,7 +1,7 @@
 exhaustive_tests <- function(dset, modelType="RM", patterns=NULL, scale_length=4:length(patterns),
                              tests=c("all_rawscores", "test_mloef", "test_itemfit"),
                              lower=0.5, upper=1.5, p.val=F){
-  #' Runs exhaustive tests
+  #' (main function) Runs exhaustive tests
   #' @param dset a data.frame containing the data
   #' @param modelType a character value defining the rasch model to fit. Possible values: RM, PCM, RSM
   #' @param patterns a list of patterns to be tested from check_combo_rules. If NULL, all possible combinations of the items (columns) in dset will be tested
@@ -12,6 +12,15 @@ exhaustive_tests <- function(dset, modelType="RM", patterns=NULL, scale_length=4
   #' @param p.val a boolean value indicating whether to exclude patterns with at least one item with significant p-value (p<0.05) in itemfit
   #' @return a list containing 4 lists: the process log, the patterns that passed the test circuit, the corresponding RM/PCM/RSM models and their information criteria (AIC, BIC, cAIC)
   #' @export
+  #' @examples
+  #' data(ADL)
+  #' passed <- exhaustive_tests(ADL, modelType = "RM", scale_length = c(4:6))
+  #'
+  #' data(ADL)
+  #' passed <- exhaustive_tests(ADL, modelType = "RM", scale_length = c(4:6),
+  #'         tests=c("test_mloef", "test_itemfit", "test_LR", "test_waldtest"))
+
+
 
   # Schleife ?ber Kombinationen mit L?nge j
   passed_models <- list()

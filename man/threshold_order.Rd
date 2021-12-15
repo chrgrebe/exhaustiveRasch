@@ -2,7 +2,7 @@
 % Please edit documentation in R/threshold_order.R
 \name{threshold_order}
 \alias{threshold_order}
-\title{check for disordered threshoilds in rasch models}
+\title{checks for disordered threshoilds in rasch models}
 \usage{
 threshold_order(werte = NULL, dset = NULL, model = NULL, modelType = NULL)
 }
@@ -19,5 +19,5 @@ threshold_order(werte = NULL, dset = NULL, model = NULL, modelType = NULL)
 if there are no items with disordered thresholds in the model, a list containing two elements is returned: the pattern that was tested an a list of type RM, RCM or RSM (depending on modelType) with the fit model. If there is at least one item with disordered thresholds, NULL is returned.
 }
 \description{
-check for disordered threshoilds in rasch models
+checks for disordered threshoilds in rasch models
 }

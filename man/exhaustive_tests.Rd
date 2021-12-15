@@ -2,7 +2,7 @@
 % Please edit documentation in R/exhaustive_tests.R
 \name{exhaustive_tests}
 \alias{exhaustive_tests}
-\title{Runs exhaustive tests}
+\title{(main function) Runs exhaustive tests}
 \usage{
 exhaustive_tests(
   dset,
@@ -36,5 +36,13 @@ exhaustive_tests(
 a list containing 4 lists: the process log, the patterns that passed the test circuit, the corresponding RM/PCM/RSM models and their information criteria (AIC, BIC, cAIC)
 }
 \description{
-Runs exhaustive tests
+(main function) Runs exhaustive tests
+}
+\examples{
+data(ADL)
+passed <- exhaustive_tests(ADL, modelType = "RM", scale_length = c(4:6))
+
+data(ADL)
+passed <- exhaustive_tests(ADL, modelType = "RM", scale_length = c(4:6),
+        tests=c("test_mloef", "test_itemfit", "test_LR", "test_waldtest"))
 }

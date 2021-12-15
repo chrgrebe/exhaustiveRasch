@@ -1,5 +1,5 @@
 test_pca <- function(werte=NULL, dset=NULL){
-  arguments <- list(...)
+
   #' runs a principal component analysis (PCA) for binary data based on a tetrachoric correlation matrix
   #' @param werte a numeric vector containing the index numbers of the items in dset that are used to fit the model
   #' @param dset a data.frame containing the data

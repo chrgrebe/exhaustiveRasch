@@ -2,7 +2,7 @@
 % Please edit documentation in R/save_passed_xlsx.R
 \name{save_passed_xlsx}
 \alias{save_passed_xlsx}
-\title{saves a Excel file with the results of exhaustive_tests()}
+\title{saves an Excel file with the results of exhaustive_tests()}
 \usage{
 save_passed_xlsx(resultData, filename, itemNames = NULL)
 }
@@ -17,5 +17,5 @@ save_passed_xlsx(resultData, filename, itemNames = NULL)
 no value is returned. This function saves an Excel file containing 3 sheets: 1) The process information of exhaustive_tests(); 2) a tabulated sheet with all patterns that passed the test circuit of exhaustive_tests(); 3) the information criteria (AIC, BIC, cAIC) of the models that were fit using the respective item patterns.
 }
 \description{
-saves a Excel file with the results of exhaustive_tests()
+saves an Excel file with the results of exhaustive_tests()
 }
