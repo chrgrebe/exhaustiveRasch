@@ -14,15 +14,15 @@ exhaustive_tests <- function(dset, modelType="RM", patterns=NULL, scale_length=4
   #' @export
   #' @examples
   #' data(ADL)
-  #' passed <- exhaustive_tests(ADL, modelType = "RM", scale_length = c(4:6))
+  #' passed <- exhaustive_tests(ADL, modelType = "RM", scale_length = c(4:5))
   #'
   #' data(ADL)
-  #' passed <- exhaustive_tests(ADL, modelType = "RM", scale_length = c(4:6),
-  #'         tests=c("test_mloef", "test_itemfit", "test_LR", "test_waldtest"))
+  #' passed <- exhaustive_tests(ADL[c(1,4,6,7,10,14,15)], modelType = "RM", scale_length = c(4:6),
+  #'      tests=c("test_mloef", "test_itemfit", "test_LR"))
 
 
 
-  # Schleife ?ber Kombinationen mit L?nge j
+  # Schleife ueber Kombinationen mit Laenge j
   passed_models <- list()
   passed_patterns <- list()
   process <- data.frame()
