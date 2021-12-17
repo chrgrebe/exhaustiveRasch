@@ -10,9 +10,8 @@ exhaustive_tests(
   patterns = NULL,
   scale_length = 4:length(patterns),
   tests = c("all_rawscores", "test_mloef", "test_itemfit"),
-  lower = 0.5,
-  upper = 1.5,
-  p.val = F
+  itemfit_param = NULL,
+  ...
 )
 }
 \arguments{
@@ -20,17 +19,15 @@ exhaustive_tests(
 
 \item{modelType}{a character value defining the rasch model to fit. Possible values: RM, PCM, RSM}
 
-\item{patterns}{a list of patterns to be tested from check_combo_rules. If NULL, all possible combinations of the items (columns) in dset will be tested}
+\item{patterns}{a list of patterns to be tested, e.g. from \link{apply_pattern_rules} or from $passed_patterns of the value of a previous call to this function. If NULL, all possible combinations of the items (columns) in dset will be tested}
 
 \item{scale_length}{a numeric vector defining the length of the patterns to test}
 
 \item{tests}{a vector of characters defining the tests to perform. Possible values: all_rawscores, test_itemfit, test_LR, test_mloef, test_pca, test_waldtest, threshold_order. Tests will be performed in the given order.}
 
-\item{lower}{a numeric value for the lower bond for fit indices (MSQ)}
+\item{itemfit_param}{a list from \link{itemfit_control} with options for \link{test_itemfit}}
 
-\item{upper}{a numeric value for the upper bond for fit indices (MSQ)}
-
-\item{p.val}{a boolean value indicating whether to exclude patterns with at least one item with significant p-value (p<0.05) in itemfit}
+\item{...}{options for \link{itemfit_control} can be passed directly to this function.}
 }
 \value{
 a list containing 4 lists: the process log, the patterns that passed the test circuit, the corresponding RM/PCM/RSM models and their information criteria (AIC, BIC, cAIC)

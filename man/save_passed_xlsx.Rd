@@ -7,7 +7,7 @@
 save_passed_xlsx(resultData, filename, itemNames = NULL)
 }
 \arguments{
-\item{resultData}{the list object with the result of exhaustive_tests()}
+\item{resultData}{the list object with the result of \link{exhaustive_tests}}
 
 \item{filename}{path and filename of the Excel file to be saved}
 

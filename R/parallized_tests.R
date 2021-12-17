@@ -1,4 +1,4 @@
-parallized_tests <- function(dset, modelType="RM", combos, testfunction,...){
+parallized_tests <- function(dset, modelType="RM", combos, testfunction, itemfit_param, ...){
   arguments <- list(...)
   # abfangen, wenn keine Pattern oder eine Warnmeldung als character uebergeben wurden
 
@@ -23,10 +23,8 @@ parallized_tests <- function(dset, modelType="RM", combos, testfunction,...){
 
     if (testfunction=="test_itemfit"){
       param1 <- list(cl=cl, dset=dset, X=combos, fun= testfunction)
-      if (!is.null(arguments$lower)){param1$lower= arguments$lower}
-      if (!is.null(arguments$upper)){param1$upper= arguments$upper}
+      param1$control= itemfit_param
       #if (exists("modelle")){modelle=NULL}
-      if (!is.null(arguments$p.val)){param1$p.val= arguments$p.val}
       param1$modelType=modelType
       param1$dset=dset
       tim <- system.time(a <- do.call(parallel::parLapply, param1))

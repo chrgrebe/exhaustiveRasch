@@ -1,10 +1,10 @@
 apply_pattern_rules <- function(pattern_length=NULL, full=NULL, forced_items=NULL, rules=NULL){
 
   #' selects item patterns based on defined rules for item combinations
-  #' @param pattern_length a numeric vector with the alloewd lengths of the selected patterns (scale lengths)
+  #' @param pattern_length a numeric vector with the allowed lengths of the selected patterns (scale lengths)
   #' @param full a numeric vector containing the the source for the pattern combinations, typically the indices of the items in the referring dataset
   #' @param forced_items a numeric vector of items that are forced to occur in every selected pattern
-  #' @param rules a list of type combination_rules defining rules for pattern selection
+  #' @param rules a list with combination_rules defining rules for pattern selection
   #' @return a list of numeric vectors containing the selected item patterns that match the defined rules of forced_items and/or rules.
   #' @export
   #' @examples

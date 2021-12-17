@@ -12,13 +12,13 @@ apply_pattern_rules(
 )
 }
 \arguments{
-\item{pattern_length}{a numeric vector with the alloewd lengths of the selected patterns (scale lengths)}
+\item{pattern_length}{a numeric vector with the allowed lengths of the selected patterns (scale lengths)}
 
 \item{full}{a numeric vector containing the the source for the pattern combinations, typically the indices of the items in the referring dataset}
 
 \item{forced_items}{a numeric vector of items that are forced to occur in every selected pattern}
 
-\item{rules}{a list of type combination_rules defining rules for pattern selection}
+\item{rules}{a list with combination_rules defining rules for pattern selection}
 }
 \value{
 a list of numeric vectors containing the selected item patterns that match the defined rules of forced_items and/or rules.

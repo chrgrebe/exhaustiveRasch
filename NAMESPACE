@@ -3,6 +3,7 @@
 export(all_rawscores)
 export(apply_pattern_rules)
 export(exhaustive_tests)
+export(itemfit_control)
 export(save_passed_xlsx)
 export(test_LR)
 export(test_itemfit)

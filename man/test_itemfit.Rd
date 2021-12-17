@@ -7,11 +7,9 @@
 test_itemfit(
   werte = NULL,
   dset = NULL,
-  lower = 0.7,
-  upper = 1.3,
-  model = NULL,
-  p.val = TRUE,
-  modelType = NULL
+  control,
+  modelType = NULL,
+  model = NULL
 )
 }
 \arguments{
@@ -19,15 +17,11 @@ test_itemfit(
 
 \item{dset}{a data.frame containing the data}
 
-\item{lower}{lower bound for acceptable Infit (MSQ fit indices are used).}
-
-\item{upper}{upper bound for acceptable Infit (MSQ fit indices are used).}
-
-\item{model}{a list of type RM, PCM or RSM (a previously fit model) matching the value of modelType. If model is provided, this model ist used. If NULL, a model is fit using dset and werte.}
-
-\item{p.val}{a boolean value indicating whether to exclude patterns with at least one item with significant p-value (p<0.05)}
+\item{control}{list object with options from \link{itemfit_control}}
 
 \item{modelType}{a character value defining the rasch model to fit. Possible values: RM, PCM, RSM}
+
+\item{model}{a list of type RM, PCM or RSM (a previously fit model) matching the value of modelType. If model is provided, this model ist used. If NULL, a model is fit using dset and werte.}
 }
 \value{
 if all fit indices meet the given criteria, a list containing two elements is returned: the pattern that was tested an a list of type RM, RCM or RSM (depending on modelType) with the fit model. If at least one item's fit indices do not meet the given criteria, NULL is returned.
