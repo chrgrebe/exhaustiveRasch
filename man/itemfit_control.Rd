@@ -7,7 +7,7 @@
 itemfit_control(
   zstd = F,
   msq = T,
-  outfits = T,
+  outfits = F,
   p.val = F,
   lowerMSQ = 0.7,
   upperMSQ = 1.3,

@@ -1,8 +1,8 @@
 #' Activities of Daily Living - dichotomous example data
 #'
-#' ADL date from N=591  nursing home residents from Germany
+#' ADL date from N=591 nursing home residents from Germany
 #'
-#' @format Activities of Daily Living (1 = yes, 0 = no):
+#' @format Activities of Daily Living (V06-V39: 1= yes; 0= no):
 #' \itemize{
 #'   \item V06: Transfer from bed independently.
 #'   \item V07: Stand up from a chair/wheelchair independently.
@@ -18,8 +18,47 @@
 #'   \item V27: take a meal independently
 #'   \item V28: drink independently from a prepared cup
 #'   \item V36: use the toilet independently
-#'   \item V39: intimate hygiene independently}
-#' @source XXX
-#' @references XXX
+#'   \item V39: intimate hygiene independently
+#'   \item age: age (1= <65; 2= 65-74; 3= 75-84; 4= 85-94; 5= >=95)
+#'   \item sex: age (1= female; 2= male)}
+#' @source Data from Grebe (2013)
+#' @references Grebe C (2013). Pflegeaufwand und Personalbemessung in der stationären Langzeitpflege: Entwicklung eines empirischen Fallgruppensystems auf der Basis von Bewohnercharakteristika. 3-Länder-Konferenz Pflege & Pflegewissenschaft, Konstanz.
 
 "ADL"
+
+
+#' InterprofessionalCollaboration - polytomous example data
+#'
+#' data for certainty of action
+#' measured with the Health Professionals Competence Scales (HePCoS-G). Dimension: interprofessional collaboration.
+#' sample: N=716 nurses, midwifes, occupational therapists, physiotherapists and speech therapists.
+#'
+#' @format V01-V19: "How confident do you feel in the follwing situation?" (0= not confident; 1= hardly confident; 2= rather confident; 3=very confident)
+#' \itemize{
+#'   \item V01: I communicate with other professions as part of my job.
+#'   \item V02: I use information about a client from other professions.
+#'   \item V03: I work with other professions when I transfer a client to their responsibility.
+#'   \item V04: I work with other professions when I take over a client into my responsibility.
+#'   \item V05: I involve specialists from other professions in the care of a client.
+#'   \item V06: I coordinate goals of a client with the goals of other professions.
+#'   \item V07: I coordinate health-promoting interventions for a client with other professions.
+#'   \item V08: I inform other professions about the current status of a client.
+#'   \item V09: I contribute aspects of a client's care to interprofessional case conferences.
+#'   \item V10: I contribute aspects of a client's care to interprofessional case conferences and justify them on the basis of current research findings.
+#'   \item V11: I contribute ethical aspects to interprofessional case conferences
+#'   \item V12: I coordinate processes within an interprofessional team.
+#'   \item V13: I coordinate communication processes during a conflict in an interprofessional team.
+#'   \item V14: I lead an interprofessional team.
+#'   \item V15: I participate in the development of interprofessional care concepts.
+#'   \item V16: I participate in the development of an interdisciplinary evidence-based guideline.
+#'   \item V17: I contribute my profession's perspective to discussions with members of other professions.
+#'   \item V18: I contribute ethical aspects of care to a discussion with members of other professions.
+#'   \item V19: I discuss the use of a new technology with members of other professions.
+#'   \item profession: profession (1= physiotherapist; 2= occupational therapist; 3= speech therapist; 4= nurse; 5= midwife)
+#'   \item age: age (1= <20; 2= 20-24; 3= 25-29; 4= 30-34; 5= 35-39; 6= 40-44; 7= 45-49; 8= 50-54; 9= 55-59; 10= >=60)
+#'   \item sex: sex (1= male; 2= female)
+#'   \item job_experience: job experience in years (including education)}
+#' @source Data from the construction sample of the Health Professionals Competence Scales (HePCoS)
+#' @references Grebe C, Schürmann M, Latteck, ÄD (2021). Die HePCoS-Skalen zur Kompetenzerfassung in den Gesundheitsfachberufen. Berichte aus Forschung und Lehre (48). Bielefeld, Fachhochschule Bielefeld. DOI: http://dx.doi.org/10.13140/RG.2.2.13480.08967/1
+
+"InterprofessionalCollaboration"

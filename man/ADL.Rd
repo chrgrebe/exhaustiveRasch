@@ -5,7 +5,7 @@
 \alias{ADL}
 \title{Activities of Daily Living - dichotomous example data}
 \format{
-Activities of Daily Living (1 = yes, 0 = no):
+Activities of Daily Living (V06-V39: 1= yes; 0= no):
 \itemize{
   \item V06: Transfer from bed independently.
   \item V07: Stand up from a chair/wheelchair independently.
@@ -22,17 +22,19 @@ Activities of Daily Living (1 = yes, 0 = no):
   \item V28: drink independently from a prepared cup
   \item V36: use the toilet independently
   \item V39: intimate hygiene independently}
+  \item age: age (1= <65; 2= 65-74; 3= 75-84; 4= 85-94; 5= >=95)
+  \item sex: age (1= female; 2= male)
 }
 \source{
-XXX
+Data from Grebe (2013)
 }
 \usage{
 ADL
 }
 \description{
-ADL date from N=591  nursing home residents from Germany
+ADL date from N=591 nursing home residents from Germany
 }
 \references{
-XXX
+Grebe C (2013). Pflegeaufwand und Personalbemessung in der stationären Langzeitpflege: Entwicklung eines empirischen Fallgruppensystems auf der Basis von Bewohnercharakteristika. 3-Länder-Konferenz Pflege & Pflegewissenschaft, Konstanz.
 }
 \keyword{datasets}

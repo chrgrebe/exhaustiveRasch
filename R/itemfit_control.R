@@ -1,4 +1,4 @@
-itemfit_control <- function(zstd=F, msq=T, outfits=T, p.val=F, lowerMSQ=0.7, upperMSQ=1.3, lowerZ=-2, upperZ=2){
+itemfit_control <- function(zstd=F, msq=T, outfits=F, p.val=F, lowerMSQ=0.7, upperMSQ=1.3, lowerZ=-2, upperZ=2){
   #' options for test_itemfit()
   #' @param zstd a boolean value whether to check the z-standardised fit indices
   #' @param msq aboolean value whether to check the mean-squared fit indices
@@ -11,6 +11,6 @@ itemfit_control <- function(zstd=F, msq=T, outfits=T, p.val=F, lowerMSQ=0.7, upp
   #' @return a list containing the options
   #' @export
 
-  return(list("zstd"= zstd, "msq"= msq, "p.val"= p.val, "lowerMSQ"= lowerMSQ,
+  return(list("zstd"= zstd, "msq"= msq, "outfits"= outfits, "p.val"= p.val, "lowerMSQ"= lowerMSQ,
               "upperMSQ"= upperMSQ, "lowerZ"= lowerZ, "upperZ"= upperZ))
 }

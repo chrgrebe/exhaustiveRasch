@@ -18,16 +18,26 @@ test_itemfit<- function(werte=NULL, dset=NULL, control, modelType=NULL, model=NU
     if (exists("p.par")){
       ifit <- eRm::itemfit(p.par)
       check=T
-      if (control$p.val==TRUE){
-        if ((min(ifit$i.infitMSQ)>=control$lowerMSQ) & (max(ifit$i.infitMSQ)<=control$upperMSQ) & (min(ifit$i.outfitMSQ)>=control$lowerMSQ) & (max(ifit$i.outfitMSQ)<=control$upperMSQ) & (min(stats::pchisq(ifit$i.fit, df=ifit$i.df, lower.tail=FALSE))>0.05)){
-          return(list(werte, model))
+      if (control$p.val==TRUE & min(stats::pchisq(ifit$i.fit, df=ifit$i.df, lower.tail=FALSE))<0.05){
+        check <- F # check for p.value
+      }
+      if (control$msq==T & (min(ifit$i.infitMSQ)<control$lowerMSQ | max(ifit$i.infitMSQ)>control$upperMSQ)){
+        check <- F # check for MSQ infit
+      }
+      if (control$zstd==T & (min(ifit$i.infitZ)<control$lowerZ | max(ifit$i.infitZ)>control$upperZ)){
+        check <- F # check for z-standardised infit
+      }
+      if (control$outfits==T){
+        if (control$msq==T & (min(ifit$i.outfitMSQ)<control$lowerMSQ | max(ifit$i.outfitMSQ)>control$upperMSQ)){
+          check <- F # check for MSQ outfit
         }
-      } else{
-        if ((min(ifit$i.infitMSQ)>=control$lowerMSQ) & (max(ifit$i.infitMSQ)<=control$upperMSQ) & (min(ifit$i.outfitMSQ)>=control$lowerMSQ) & (max(ifit$i.outfitMSQ)<=control$upperMSQ)){
-          return(list(werte, model))
+        if (control$zstd==T & (min(ifit$i.outfitZ)<control$lowerZ | max(ifit$i.outfitZ)>control$upperZ)){
+          check <- F # check for z-standardised outfit
         }
       }
+      if (check==T){return(list(werte, model))}
     }
   }
 
 }
+
