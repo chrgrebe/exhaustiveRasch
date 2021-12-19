@@ -21,9 +21,9 @@ Activities of Daily Living (V06-V39: 1= yes; 0= no):
   \item V27: take a meal independently
   \item V28: drink independently from a prepared cup
   \item V36: use the toilet independently
-  \item V39: intimate hygiene independently}
+  \item V39: intimate hygiene independently
   \item age: age (1= <65; 2= 65-74; 3= 75-84; 4= 85-94; 5= >=95)
-  \item sex: age (1= female; 2= male)
+  \item sex: age (1= female; 2= male)}
 }
 \source{
 Data from Grebe (2013)

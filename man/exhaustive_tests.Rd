@@ -11,6 +11,8 @@ exhaustive_tests(
   scale_length = 4:length(patterns),
   tests = c("all_rawscores", "test_mloef", "test_itemfit"),
   itemfit_param = NULL,
+  splitcr_mloef = NULL,
+  splitcr_LR = NULL,
   ...
 )
 }
@@ -26,6 +28,10 @@ exhaustive_tests(
 \item{tests}{a vector of characters defining the tests to perform. Possible values: all_rawscores, test_itemfit, test_LR, test_mloef, test_pca, test_waldtest, threshold_order. Tests will be performed in the given order.}
 
 \item{itemfit_param}{a list from \link{itemfit_control} with options for \link{test_itemfit}}
+
+\item{splitcr_mloef}{as defined by eRm::mloef: Split criterion to define the item groups. "median" and "mean" split items in two groups based on their items' raw scores. splitcr can also be a vector of length k (where k denotes the number of items) that takes two or more distinct values to define groups used for the Martin-L?f Test.}
+
+\item{splitcr_LR}{as defined by eRm::LRtest. Split criterion for subject raw score splitting. "all.r" corresponds to a full raw score split, "median" uses the median as split criterion, "mean" performs a mean split. Optionally splitcr can also be a vector which assigns each person to a certain subgroup (e.g., following an external criterion). This vector can be numeric, character or a factor.}
 
 \item{...}{options for \link{itemfit_control} can be passed directly to this function.}
 }

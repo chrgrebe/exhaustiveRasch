@@ -2,9 +2,15 @@
 % Please edit documentation in R/test_mloef.R
 \name{test_mloef}
 \alias{test_mloef}
-\title{runs Martin-Loef Test with median split using the MLoef() function of eRm.}
+\title{runs Martin-Loef Test using the MLoef() function of eRm.}
 \usage{
-test_mloef(werte = NULL, dset = NULL, model = NULL, modelType = NULL)
+test_mloef(
+  werte = NULL,
+  dset = NULL,
+  model = NULL,
+  modelType = NULL,
+  splitcr = "median"
+)
 }
 \arguments{
 \item{werte}{a numeric vector containing the index numbers of the items in dset that are used to fit the model}
@@ -14,10 +20,12 @@ test_mloef(werte = NULL, dset = NULL, model = NULL, modelType = NULL)
 \item{model}{a list of type RM, PCM or RSM (a previously fit model) matching the value of modelType. If model is provided, this model ist used. If NULL, a model is fit using dset and werte.}
 
 \item{modelType}{a character value defining the rasch model to fit. Possible values: RM, PCM, RSM}
+
+\item{splitcr}{as defined by eRm::mloef: Split criterion to define the item groups. "median" and "mean" split items in two groups based on their items' raw scores. splitcr can also be a vector of length k (where k denotes the number of items) that takes two or more distinct values to define groups used for the Martin-L?f Test.}
 }
 \value{
 if the p-value of the test is not significant (above p=0.05), a list containing two elements is returned: the pattern that was tested an a list of type RM, RCM or RSM (depending on modelType) with the fit model. If the test is significant (p<0.05), NULL is returned.
 }
 \description{
-runs Martin-Loef Test with median split using the MLoef() function of eRm.
+runs Martin-Loef Test using the MLoef() function of eRm.
 }
