@@ -7,6 +7,7 @@
 test_itemfit(
   werte = NULL,
   dset = NULL,
+  na.rm = T,
   control,
   modelType = NULL,
   model = NULL
@@ -16,6 +17,8 @@ test_itemfit(
 \item{werte}{a numeric vector containing the index numbers of the items in dset that are used to fit the model}
 
 \item{dset}{a data.frame containing the data}
+
+\item{na.rm}{a boolean value. If TRUE, all cases with any NA are removed (na.omit). If FALSE, only cases with full NA responses are removed}
 
 \item{control}{list object with options from \link{itemfit_control}}
 

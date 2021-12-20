@@ -7,6 +7,7 @@
 test_mloef(
   werte = NULL,
   dset = NULL,
+  na.rm = T,
   model = NULL,
   modelType = NULL,
   splitcr = "median"
@@ -16,6 +17,8 @@ test_mloef(
 \item{werte}{a numeric vector containing the index numbers of the items in dset that are used to fit the model}
 
 \item{dset}{a data.frame containing the data}
+
+\item{na.rm}{a boolean value. If TRUE, all cases with any NA are removed (na.omit). If FALSE, only cases with full NA responses are removed}
 
 \item{model}{a list of type RM, PCM or RSM (a previously fit model) matching the value of modelType. If model is provided, this model ist used. If NULL, a model is fit using dset and werte.}
 

@@ -4,12 +4,14 @@
 \alias{test_pca}
 \title{runs a principal component analysis (PCA) for binary data based on a tetrachoric correlation matrix}
 \usage{
-test_pca(werte = NULL, dset = NULL)
+test_pca(werte = NULL, dset = NULL, na.rm = T)
 }
 \arguments{
 \item{werte}{a numeric vector containing the index numbers of the items in dset that are used to fit the model}
 
 \item{dset}{a data.frame containing the data}
+
+\item{na.rm}{a boolean value. If TRUE, all cases with any NA are removed (na.omit). If FALSE, only cases with full NA responses are removed}
 }
 \value{
 if all items load on one

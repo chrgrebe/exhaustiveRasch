@@ -9,6 +9,7 @@ exhaustive_tests(
   modelType = "RM",
   patterns = NULL,
   scale_length = 4:length(patterns),
+  na.rm = T,
   tests = c("all_rawscores", "test_mloef", "test_itemfit"),
   itemfit_param = NULL,
   splitcr_mloef = NULL,
@@ -24,6 +25,8 @@ exhaustive_tests(
 \item{patterns}{a list of patterns to be tested, e.g. from \link{apply_pattern_rules} or from $passed_patterns of the value of a previous call to this function. If NULL, all possible combinations of the items (columns) in dset will be tested}
 
 \item{scale_length}{a numeric vector defining the length of the patterns to test}
+
+\item{na.rm}{a boolean value. If TRUE, all cases with any NA are removed (na.omit). If FALSE, only cases with full NA responses are removed. NOTE: \link{test_mloef} currently does not allow for missing values (because erm::MLoef doesn't). If  \link{test_mloef} is under the tests to perform, na.rm will automatically be set TRUE for ALL tests.}
 
 \item{tests}{a vector of characters defining the tests to perform. Possible values: all_rawscores, test_itemfit, test_LR, test_mloef, test_pca, test_waldtest, threshold_order. Tests will be performed in the given order.}
 

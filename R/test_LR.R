@@ -1,7 +1,8 @@
-test_LR <- function(werte=NULL, dset=NULL, model=NULL, modelType=NULL, splitcr="median"){
+test_LR <- function(werte=NULL, dset=NULL, na.rm=T, model=NULL, modelType=NULL, splitcr="median"){
   #' runs Anderson's likelihood ration test using the LRtest() function of eRm.
   #' @param werte a numeric vector containing the index numbers of the items in dset that are used to fit the model
   #' @param dset a data.frame containing the data
+  #' @param na.rm a boolean value. If TRUE, all cases with any NA are removed (na.omit). If FALSE, only cases with full NA responses are removed
   #' @param model a list of type RM, PCM or RSM (a previously fit model) matching the value of modelType. If model is provided, this model ist used. If NULL, a model is fit using dset and werte.
   #' @param modelType a character value defining the rasch model to fit. Possible values: RM, PCM, RSM
   #' @param splitcr as defined by eRm::LRtest. Split criterion for subject raw score splitting. "all.r" corresponds to a full raw score split, "median" uses the median as split criterion, "mean" performs a mean split. Optionally splitcr can also be a vector which assigns each person to a certain subgroup (e.g., following an external criterion). This vector can be numeric, character or a factor.
@@ -9,6 +10,7 @@ test_LR <- function(werte=NULL, dset=NULL, model=NULL, modelType=NULL, splitcr="
   #' @export
   if (is.null(model)){
     ds_test <- dset[, werte]
+    if (na.rm==T){ds_test<- stats::na.omit(ds_test)} else{ds_test <- ds_test <- ds_test[rowSums(is.na(ds_test)) < ncol(ds_test)-1, ]}
     try(suppressWarnings({model <- get(modelType)(ds_test, se=TRUE)}))
   }
 
@@ -19,4 +21,3 @@ test_LR <- function(werte=NULL, dset=NULL, model=NULL, modelType=NULL, splitcr="
     }
   }
 }
-

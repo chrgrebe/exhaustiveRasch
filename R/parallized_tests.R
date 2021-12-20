@@ -1,4 +1,4 @@
-parallized_tests <- function(dset, modelType="RM", combos, testfunction, itemfit_param, splitcr=NULL, ...){
+parallized_tests <- function(dset, modelType, combos, na.rm, testfunction, itemfit_param, splitcr=NULL, ...){
   arguments <- list(...)
   # abfangen, wenn keine Pattern oder eine Warnmeldung als character ?bergeben wurden
 
@@ -24,12 +24,13 @@ parallized_tests <- function(dset, modelType="RM", combos, testfunction, itemfit
       #if (exists("modelle")){modelle=NULL}
       param1$modelType=modelType
       param1$dset=dset
+      param1$na.rm=na.rm
       tim <- system.time(a <- do.call(parallel::parLapply, param1))
     } else{
       if (!is.null(splitcr) & (testfunction=="test_mloef" | testfunction=="test_LR")){
-        tim <- system.time(a <- parallel::parLapply(cl=cl, X=combos, fun=testfunction, dset=dset, modelType=modelType, splitcr=splitcr))
+        tim <- system.time(a <- parallel::parLapply(cl=cl, X=combos, fun=testfunction, dset=dset, na.rm=na.rm, modelType=modelType, splitcr=splitcr))
       } else{
-        tim <- system.time(a <- parallel::parLapply(cl=cl, X=combos, fun=testfunction, dset=dset, modelType=modelType))
+        tim <- system.time(a <- parallel::parLapply(cl=cl, X=combos, fun=testfunction, dset=dset, na.rm=na.rm, modelType=modelType))
       }
     }
 
