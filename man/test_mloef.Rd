@@ -10,7 +10,9 @@ test_mloef(
   na.rm = T,
   model = NULL,
   modelType = NULL,
-  splitcr = "median"
+  splitcr = "median",
+  alpha = 0.1,
+  bonf = F
 )
 }
 \arguments{
@@ -25,6 +27,10 @@ test_mloef(
 \item{modelType}{a character value defining the rasch model to fit. Possible values: RM, PCM, RSM}
 
 \item{splitcr}{as defined by eRm::mloef: Split criterion to define the item groups. "median" and "mean" split items in two groups based on their items' raw scores. splitcr can also be a vector of length k (where k denotes the number of items) that takes two or more distinct values to define groups used for the Martin-L?f Test.}
+
+\item{alpha}{a numeric value for the alpha level. Will be ignored if use.pval is FALSE}
+
+\item{bonf}{a boolean value wheter to use a Bonferroni correction. Will be ignored if use.pval is FALSE}
 }
 \value{
 if the p-value of the test is not significant (above p=0.05), a list containing two elements is returned: the pattern that was tested an a list of type RM, RCM or RSM (depending on modelType) with the fit model. If the test is significant (p<0.05), NULL is returned.

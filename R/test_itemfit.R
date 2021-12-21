@@ -1,4 +1,4 @@
-test_itemfit<- function(werte=NULL, dset=NULL, na.rm=T, control, modelType=NULL, model=NULL){
+test_itemfit<- function(werte=NULL, dset=NULL, na.rm=T, control, modelType=NULL, model=NULL, alpha=0.1, bonf=F){
   #' checks the itemfit indices of a rasch model using the itemfit() function of eRm.
   #' @param werte a numeric vector containing the index numbers of the items in dset that are used to fit the model
   #' @param dset a data.frame containing the data
@@ -6,8 +6,14 @@ test_itemfit<- function(werte=NULL, dset=NULL, na.rm=T, control, modelType=NULL,
   #' @param control list object with options from \link{itemfit_control}
   #' @param model a list of type RM, PCM or RSM (a previously fit model) matching the value of modelType. If model is provided, this model ist used. If NULL, a model is fit using dset and werte.
   #' @param modelType a character value defining the rasch model to fit. Possible values: RM, PCM, RSM
+  #' @param alpha a numeric value for the alpha level. Will be ignored if use.pval is FALSE
+  #' @param bonf a boolean value wheter to use a Bonferroni correction. Will be ignored if use.pval is FALSE
   #' @return if all fit indices meet the given criteria, a list containing two elements is returned: the pattern that was tested an a list of type RM, RCM or RSM (depending on modelType) with the fit model. If at least one item's fit indices do not meet the given criteria, NULL is returned.
   #' @export
+
+  if (bonf==T){local_alpha <- alpha/length(werte)} else{local_alpha <- alpha}
+
+
   if (is.null(model)){
     ds_test <- dset[werte]
     if (na.rm==T){ds_test<- stats::na.omit(ds_test)} else{ds_test <- ds_test <- ds_test[rowSums(is.na(ds_test)) < ncol(ds_test)-1, ]}
@@ -20,7 +26,7 @@ test_itemfit<- function(werte=NULL, dset=NULL, na.rm=T, control, modelType=NULL,
     if (exists("p.par")){
       ifit <- eRm::itemfit(p.par)
       check=T
-      if (control$p.val==TRUE & min(stats::pchisq(ifit$i.fit, df=ifit$i.df, lower.tail=FALSE))<0.05){
+      if (control$use.pval==TRUE & min(stats::pchisq(ifit$i.fit, df=ifit$i.df, lower.tail=FALSE))<local_alpha){
         check <- F # check for p.value
       }
       if (control$msq==T & (min(ifit$i.infitMSQ)<control$lowerMSQ | max(ifit$i.infitMSQ)>control$upperMSQ)){

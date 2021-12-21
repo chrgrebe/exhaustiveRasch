@@ -14,6 +14,8 @@ exhaustive_tests(
   itemfit_param = NULL,
   splitcr_mloef = NULL,
   splitcr_LR = NULL,
+  alpha = 0.1,
+  bonf = F,
   ...
 )
 }
@@ -35,6 +37,10 @@ exhaustive_tests(
 \item{splitcr_mloef}{as defined by eRm::mloef: Split criterion to define the item groups. "median" and "mean" split items in two groups based on their items' raw scores. splitcr can also be a vector of length k (where k denotes the number of items) that takes two or more distinct values to define groups used for the Martin-L?f Test.}
 
 \item{splitcr_LR}{as defined by eRm::LRtest. Split criterion for subject raw score splitting. "all.r" corresponds to a full raw score split, "median" uses the median as split criterion, "mean" performs a mean split. Optionally splitcr can also be a vector which assigns each person to a certain subgroup (e.g., following an external criterion). This vector can be numeric, character or a factor.}
+
+\item{alpha}{a numeric value for the alpha level. Will be ignored for \link{test_itemfit} if use.pval in \link{itemfit_control} is FALSE}
+
+\item{bonf}{a boolean value wheter to use a Bonferroni correction. Will be ignored if use.pval is FALSE}
 
 \item{...}{options for \link{itemfit_control} can be passed directly to this function.}
 }

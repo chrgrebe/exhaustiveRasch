@@ -10,7 +10,9 @@ test_LR(
   na.rm = T,
   model = NULL,
   modelType = NULL,
-  splitcr = "median"
+  splitcr = "median",
+  alpha = 0.1,
+  bonf = F
 )
 }
 \arguments{
@@ -25,6 +27,10 @@ test_LR(
 \item{modelType}{a character value defining the rasch model to fit. Possible values: RM, PCM, RSM}
 
 \item{splitcr}{as defined by eRm::LRtest. Split criterion for subject raw score splitting. "all.r" corresponds to a full raw score split, "median" uses the median as split criterion, "mean" performs a mean split. Optionally splitcr can also be a vector which assigns each person to a certain subgroup (e.g., following an external criterion). This vector can be numeric, character or a factor.}
+
+\item{alpha}{a numeric value for the alpha level. Will be ignored if use.pval is FALSE}
+
+\item{bonf}{a boolean value wheter to use a Bonferroni correction. Will be ignored if use.pval is FALSE}
 }
 \value{
 if the p-value of the test is not significant (above p=0.05), a list containing two elements is returned: the pattern that was tested an a list of type RM, RCM or RSM (depending on modelType) with the fit model. If the test is significant (p<0.05), NULL is returned.

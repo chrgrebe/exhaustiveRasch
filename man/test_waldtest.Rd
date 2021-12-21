@@ -9,7 +9,9 @@ test_waldtest(
   dset = NULL,
   na.rm = T,
   model = NULL,
-  modelType = NULL
+  modelType = NULL,
+  alpha = 0.1,
+  bonf = F
 )
 }
 \arguments{
@@ -22,6 +24,10 @@ test_waldtest(
 \item{model}{a list of type RM, PCM or RSM (a previously fit model) matching the value of modelType. If model is provided, this model ist used. If NULL, a model is fit using dset and werte.}
 
 \item{modelType}{a character value defining the rasch model to fit. Possible values: RM, PCM, RSM}
+
+\item{alpha}{a numeric value for the alpha level. Will be ignored if use.pval is FALSE}
+
+\item{bonf}{a boolean value wheter to use a Bonferroni correction. Will be ignored if use.pval is FALSE}
 }
 \value{
 if none of the p-values is significant (above p=0.05), a list containing two elements is returned: the pattern that was tested an a list of type RM, RCM or RSM (depending on modelType) with the fit model. If there is at least one item with a significant p-value, NULL is returned.

@@ -7,8 +7,8 @@
 itemfit_control(
   zstd = F,
   msq = T,
-  outfits = F,
-  p.val = F,
+  outfits = T,
+  use.pval = T,
   lowerMSQ = 0.7,
   upperMSQ = 1.3,
   lowerZ = -2,
@@ -22,7 +22,7 @@ itemfit_control(
 
 \item{outfits}{a boolean value whether to check outfit indices (in FALSE, only infits are checked)}
 
-\item{p.val}{a boolean value whether to exclude patterns with at least one item with significant p-value (p<0.05)}
+\item{use.pval}{a boolean value whether to exclude patterns with at least one item with significant p-value}
 
 \item{lowerMSQ}{a numeric vaue for the lower bound for acceptable Infit (mean-squared fit indices)}
 
