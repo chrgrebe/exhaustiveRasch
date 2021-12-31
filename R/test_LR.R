@@ -8,7 +8,7 @@ test_LR <- function(werte=NULL, dset=NULL, na.rm=T, model=NULL, modelType=NULL, 
   #' @param splitcr as defined by eRm::LRtest. Split criterion for subject raw score splitting. "all.r" corresponds to a full raw score split, "median" uses the median as split criterion, "mean" performs a mean split. Optionally splitcr can also be a vector which assigns each person to a certain subgroup (e.g., following an external criterion). This vector can be numeric, character or a factor.
   #' @param alpha a numeric value for the alpha level. Will be ignored if use.pval is FALSE
   #' @param bonf a boolean value wheter to use a Bonferroni correction. Will be ignored if use.pval is FALSE
-  #' @return if the p-value of the test is not significant (above p=0.05), a list containing two elements is returned: the pattern that was tested an a list of type RM, RCM or RSM (depending on modelType) with the fit model. If the test is significant (p<0.05), NULL is returned.
+  #' @return if the p-value of the test is not significant (above p=0.05) AND if no items were excluded in the test due to missing patterns (length of betalist == number of items), a list containing two elements is returned: the pattern that was tested an a list of type RM, RCM or RSM (depending on modelType) with the fit model. If the test is significant (p<0.05), NULL is returned.
   #' @export
 
   if (bonf==T){local_alpha <- alpha/length(werte)} else{local_alpha <- alpha}
@@ -21,7 +21,7 @@ test_LR <- function(werte=NULL, dset=NULL, na.rm=T, model=NULL, modelType=NULL, 
 
   try(suppressWarnings({lr <- eRm::LRtest(model, splitcr=splitcr)}))
   if (exists("lr")==T){
-    if (lr$pvalue >=local_alpha & length(lr$betalist$low)==length(ds_test)){
+    if (lr$pvalue >=local_alpha & length(lr$betalist[[1]])==length(ds_test)){
       return(list(werte, model))
     }
   }
