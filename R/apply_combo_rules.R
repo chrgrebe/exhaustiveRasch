@@ -1,11 +1,11 @@
-apply_pattern_rules <- function(pattern_length=NULL, full=NULL, forced_items=NULL, rules=NULL){
+apply_combo_rules <- function(full, combo_length=3:length(full), forced_items=NULL, rules=NULL){
 
-  #' selects item patterns based on defined rules for item combinations
-  #' @param pattern_length a numeric vector with the allowed lengths of the selected patterns (scale lengths)
-  #' @param full a numeric vector containing the the source for the pattern combinations, typically the indices of the items in the referring dataset
-  #' @param forced_items a numeric vector of items that are forced to occur in every selected pattern
-  #' @param rules a list with combination_rules defining rules for pattern selection
-  #' @return a list of numeric vectors containing the selected item patterns that match the defined rules of forced_items and/or rules.
+  #' selects item combinations based on defined rules
+  #' @param full a numeric vector containing the the source for the combinations, typically the indices of the items in the referring dataset
+  #' @param combo_length a numeric vector with the allowed lengths of the selected combinations (scale lengths)
+  #' @param forced_items a numeric vector of items that are forced to occur in every selected combination
+  #' @param rules a list defining rules for combination selection
+  #' @return a list of numeric vectors containing the selected item combinations that match the defined rules of forced_items and/or rules.
   #' @export
   #' @examples
   #' data(ADL)
@@ -15,7 +15,7 @@ apply_pattern_rules <- function(pattern_length=NULL, full=NULL, forced_items=NUL
   #' rules_object[[1]] <- list("min", 1, 14:15)
   #' rules_object[[1]] <- list("max", 3, 1:6)
   #' rules_object[[7]] <- list("forbidden", c(8,9))
-  #' final_patterns <- apply_pattern_rules(pattern_length = 5:7,
+  #' final_combos <- apply_combo_rules(combo_length = 5:7,
   #'   full=1:length(ADL), forced_items = forced, rules= rules_object)
 
 
@@ -29,11 +29,11 @@ apply_pattern_rules <- function(pattern_length=NULL, full=NULL, forced_items=NUL
       if (length(intersect(forced_items,full))==length(forced_items)){passed_forced=T}
     } else{passed_forced <-T} # falls keine Regel: passed=T
     if (length(max_rules)>0){
-      if (sum(sapply(1: length(max_rules), function(x) if (length(intersect(max_rules[[x]][[3]],full))<rules[[x]][[2]]+1){
+      if (sum(sapply(1: length(max_rules), function(x) if (length(intersect(max_rules[[x]][[3]],full))<max_rules[[x]][[2]]+1){
         1}else{0}))==length(max_rules)){passed_max_rules <- T}
     } else{passed_max_rules <- T}
     if (length(min_rules)>0){ # falls keine Regel: passed=T
-      if (sum(sapply(1: length(min_rules), function(x) if (length(intersect(min_rules[[x]][[3]],full))>rules[[x]][[2]]-1){
+      if (sum(sapply(1: length(min_rules), function(x) if (length(intersect(min_rules[[x]][[3]],full))>min_rules[[x]][[2]]-1){
         1}else{0}))==length(min_rules)){passed_min_rules <- T}
     } else{passed_min_rules <- T} # falls keine Regel: passed=T
     if (length(forbidden_rules)>0){
@@ -46,9 +46,9 @@ apply_pattern_rules <- function(pattern_length=NULL, full=NULL, forced_items=NUL
     }
   }
 
-  pattern_list <- unlist(lapply(pattern_length, function(x) utils::combn(length(full), x, simplify = F)), recursive=F)
-  unlist(pattern_list, recursive = F)
-  final_list <- lapply(1:length(pattern_list), function(x) check_combo_rules(full=pattern_list[[x]], rules=rules, forced_items = forced_items))
+  combo_list <- unlist(lapply(combo_length, function(x) utils::combn(length(full), x, simplify = F)), recursive=F)
+  #unlist(combo_list, recursive = F)
+  final_list <- lapply(1:length(combo_list), function(x) check_combo_rules(full=combo_list[[x]], rules=rules, forced_items = forced_items))
   final_list <- final_list[which(!sapply(final_list, is.null))]
   return(final_list)
 }

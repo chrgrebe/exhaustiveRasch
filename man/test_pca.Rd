@@ -4,10 +4,10 @@
 \alias{test_pca}
 \title{runs a principal component analysis (PCA) for binary data based on a tetrachoric correlation matrix}
 \usage{
-test_pca(werte = NULL, dset = NULL, na.rm = T)
+test_pca(items = NULL, dset = NULL, na.rm = T)
 }
 \arguments{
-\item{werte}{a numeric vector containing the index numbers of the items in dset that are used to fit the model}
+\item{items}{a numeric vector containing the index numbers of the items in dset that are used to fit the model}
 
 \item{dset}{a data.frame containing the data}
 

@@ -1,4 +1,4 @@
-parallized_tests <- function(dset, modelType, combos, na.rm, testfunction, itemfit_param, splitcr=NULL, alpha, bonf, ...){
+parallized_tests <- function(dset, modelType, combos, models, na.rm, testfunction, itemfit_param, splitcr=NULL, alpha, bonf, DIFvars, ignoreCores, ...){
   arguments <- list(...)
   # abfangen, wenn keine Pattern oder eine Warnmeldung als character ?bergeben wurden
 
@@ -11,25 +11,32 @@ parallized_tests <- function(dset, modelType, combos, na.rm, testfunction, itemf
       cl <- parallel::makePSOCKcluster(2L)
     } else {
       # use all cores in devtools::test()
-      cl <- parallel::makePSOCKcluster(parallel::detectCores())
+      cl <- parallel::makePSOCKcluster(parallel::detectCores()- ignoreCores)
     }
     parallel::setDefaultCluster(cl)
     parallel::clusterExport(cl, testfunction)
     parallel::clusterEvalQ(cl, library(eRm))
     parallel::clusterEvalQ(cl, library(psych))
+    parallel::clusterEvalQ(cl, library(psychotree))
 
+    #if (is.null(models)){
     param1 <- list(cl=cl, X=combos, dset=dset, modelType=modelType, na.rm=na.rm, fun= testfunction)
+    #} else{
+    #  param1 <- list(cl=cl, X=models, dset=dset, modelType=modelType, na.rm=na.rm, fun= testfunction)
+    #}
     if (testfunction=="test_itemfit"){
       param1$control= itemfit_param
     }
-    if (!is.null(splitcr) & (testfunction=="test_mloef" | testfunction=="test_LR")){
+    if (!is.null(splitcr) & (testfunction=="test_mloef" | testfunction=="test_LR" | testfunction=="test_waldtest")){
       param1$splitcr=splitcr
     }
     if (testfunction %in% c("test_mloef", "test_LR", "test_waldtest")){
       param1$alpha=alpha
       param1$bonf=bonf
     }
-
+    if (testfunction=="test_DIFtree"){
+      param1$DIFvars= DIFvars
+    }
     tim <- system.time(a <- do.call(parallel::parLapply, param1))
 
     parallel::stopCluster(cl)
@@ -39,3 +46,4 @@ parallized_tests <- function(dset, modelType, combos, na.rm, testfunction, itemf
     return(a)
   }
 }
+

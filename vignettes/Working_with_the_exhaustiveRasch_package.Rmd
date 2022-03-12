@@ -1,0 +1,158 @@
+---
+title: "Working_with_the_exhaustiveRasch_package"
+author: "Christian Grebe"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Working_with_the_exhaustiveRasch_package}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## 1. Introduction
+
+***\< to be done \>***
+
+## 2. Package overview
+
+### 2.1 Pre-define item combinations: *apply_combo_rules()*
+
+You can use the apply_combo_rules function to define rules for item combinations to be recongnized or permitted in the candidate models. The function needs the full parameter, a vector of numeric values for the item indices of the full item set to be processed. For example, if the function should be applies to a full set of 10 items, the full parameter must be set to 1:10.
+
+You can define the length of the scales by setting the *combo_length* parameter. This parameter can be a single numeric value or a vector of numeric values. with *combo_length=6* only combinations of 6 items are selected. with *combo_length=4:6* only combinations with at least 4 and not more than 6 items are selected. with *combo_length c(4,7,8)* only combinations with 4,7 and 8 items are selected. If not specified, all scale length between 3 and the maximum number of items in full will be used.
+
+There are four types of rules that can be defined:
+
+-   maximum rule: a maximum of x out of y items
+
+-   minimum rule: at least of x out of y items
+
+-   forbidden rule: item combinations that are not permitted
+
+-   forced: items will be present on any of the selected item combinations.
+
+The way to define maximum, minimum and forbidden rules is to use a list of lists (one list for each rule). For ***minimum and maximum rules*** each list has to contain three values:
+
+-   a character string ("min" or "max") that defines the type of the rule
+
+-   a numeric value that defines the minimum/ maximum value (e.g. 2 for at least/ at most 2 items)
+
+-   a numeric vector with the indices of items to apply the rule to list("min", 1, 1:6) defines a rule for selecting at least one of the items 1-6.
+
+*list("max", 3, 1:6)* defines a rule for selecting at most three of the items 1-6.
+
+A list for a ***forbidden rule*** contains only two values:
+
+the character string "forbidden" that defines the type of the rule
+
+a numeric vector with the indices of items to apply the rule to
+
+list("forbidden", c(8,10)) defines a rule that prevents selecting both of the items 8 and 10 for a candidate model. You have to combine the lists with the minimum, maximum and forbidden rules to one list of lists that contains all the rules to be applied, for example:
+
+```{r Define combination rules}
+rules_object <- list()
+
+rules_object[[1]] <- list("min", 1, 1:6)
+
+rules_object[[2]] <- list("max", 3, 1:6)
+
+rules_object[[4]] <- list("forbidden", c(8,10)) 
+```
+
+These three rules lead to a selection of candidate models with at least one but at most three of the first six items, while In none of the selected item combinations items 8 and 10 will both be present.
+
+The ***forced rule*** is not defined in that lists of lists. To force items to be selected for any candidate model, use can use the forced_items parameter of the function. Provide the item indices(s) as a numeric value or a vector of numeric values. forced_items = c(4,7) will ensure that items 4 and 7 will be present in any of the candidate models.
+
+### 2.2 Test model fit: The exhaustive_tests function
+
+Provide the data to analyze as a data.frame using the *dset* parameter.
+
+At first, you have to decide which item combinations for candidate models you want to test. You can choose from three approaches:
+
+-   **Approach A) Test all item combinations with given scale lengths.** Use this approach if you don't have any theoretical considerations in mind that should be addressed by defining rules using the apply_combo_rules function. All item combinations will be tested that meet the number of items provided in the scale_length parameter. The scale_length parameter expects a numeric vector, e.g. c(4:8) for any item combinations with at least 4 and at most 8 items (see the examples for the combo_length parameter of the apply_combo_rules function above). If you do not set the scale_length parameter and do not provide pre-selected item combinations using the combos parameter (approaches B and C).
+
+-   **Approach B) Use pre-defined item combinations from the result of a previous call of the apply_combo_rules function** (see above). Use the results object from this call as the combos parameter.
+
+-   **Approach C) Use results of a previous call of the exhaustive_tests function.** You can use the item combinations that passed a previous call for further tests. This is useful, if the previous call led to a greater number of candidate models that you want to reduce further. For example, you could use tests in the second run that you did not use in the first run. Or you could use stricter criteria in the second run (e.g. use other values for the upper and lower bound of itemfit indices, define a stricter level of significance, additionally set criteria for the z-standardized itemfit indices if you only used MSQ-based indices in the first run or use another split criterion for Anderson's LR Test or other external variables for the DIF-Tree analysis). Use the item combinations from the \$passed_combos list of the results objects of the first run for this approach.
+
+Second, **specify the type of rasch models to fit** using the *modelType* parameter. For binary data use "RM" to fit dichotomous rasch models. For polytomous data you can choose between "PCM" for partial credit models or "RSM" for rating-scale rasch models.
+
+Third, **select the tests for model and item fit** you want to use. The tests have to be specified in the tests parameter as a vector of characters (strings). The tests will be conducted in the order you use in the vector. The following tests are available:
+
+#### test_itemfit
+
+This tests checks the itemfit indices using the itemfit() function of the eRm package. You can define the criteria to use for candidate models to be considered as showing acceptable item fit using the *itemfit_control* function. This function sets standard values that can be overridden.
+
+-   evaluate only infits (set *outfits* parameter FALSE) or infits and outfits (set *outfits* parameter TRUE)
+
+-   evaluate only MSQ fits (set *msq* parameter TRUE and *zstd* parameter FALSE) or only z-standardized fits(set *zstd* parameter TRUE and *msq* parameter FALSE) or both of them (set both parameters TRUE).
+
+-   evaluate p-values of the chi-squared tests additionally to the fit indices above (set *use.pval* parameter TRUE. The level of significance is not to be set in the *itemfit_control* function but globally in using the *alpha* parameter of the *exhaustive_tests* function). You can also add a Bonferroni adjustment for the p-values (this also has to be set globaly for all tests in the *exhaustive tests*\_function by setting the *bonf* parameter TRUE).
+
+You either can override any of the standard value set by *itemfit_control* with a call to that function (e.g. using *control= itemfit_control(outfits=F, zstd=T)* will evaluate infits only -- MSQ infits as well as z-standardized infits -- and will use all other parameters with their standard value). Or you can pass *itemfit_control* parameters directly to the *exhaustive_tests function* (e.g. use outfits=F as a parameter in a call to *exhaustive_tests*).
+
+#### test_mloef
+
+This test performs Martin-Löf tests using the *MLoef* function of *eRm*. The default split criterion is a split by median. If you want to use another split criterion, you can set this using the *splitcr_mloef* parameter. Use "mean" for a split by mean. You also can set a custom split criterion using a numerical vector with two distinct value to define two groups of items (e.g. the even and the odd items). This length of the vector has to match the length of the scale. Therefore, this approach is only feasible if all candidate models have the same number of items (*scale_length* parameter). Candidate models pass this test if the null hypothesis is not rejected. The level of significance can be set globally for all tests by using the *alpha* parameter.
+
+#### test_LR
+
+This test performs Anderson's likelihood ratio tests using the *LRtest* function of *eRm*. Just like the *test_mloef* function a median split is the default split criterion and a custom split criterion can be used by providing a numerical vector with the parameter *splitcr_LR* to define the groups. This vector has to match the number of persons in the dset data.frame. Unlike in the *test_mloef function*, you can define more than two groups as custom split criterion , e.g. you can use "all.R" als a value for *splitcr_LR* to define groups based on the empirical rawscores. You also can use "mean" as a value for s*plitcr_LR* to split by mean. See the documentation of the *LRtest* function in *eRm* for more details. Candidate models pass this test if the null hypothesis is not rejected. The level of significance can be set globally for all tests by using the *alpha* parameter.
+
+#### threshold_order
+
+This tests checks if the item threshold locations (beta parameters) of each item are ordered. This is only relevant for polytomous data (*modelType* "PCM" or "RSM") and therefore is meaningless for binary data (*modelType* "RM").
+
+#### test_waldtest
+
+This test performs Wald tests using the *Waldtest* function of *eRm*. The default split criterion is split by median. You can define other split criteria by using the *splitcr_wald* parameter, use "mean" to split the individuals by the mean of their raw scores. You can also define a custom split criterion by providing a numeric vector that assigns evry person to one of two groups. This vector has to match the number of persons in the dset data.frame. See the documentation of the *Waldtest* function in *eRm* for more details. Candidate models pass this test if the null hypothesis is not rejected. The level of significance can be set globally for all tests by using the *alpha* parameter.
+
+#### test_DIFtree
+
+This test checks for differential item function using the *raschtree* function of the *psychotree* package (the *rstree* or *pctree* function respectively, depending on *modelType*). You can use several external variables at once that can be binary, as well as categorical or continuous. Provide the external variables as a data.frame using the *DIFvars* parameter. The function builds decision trees. Nodes in the tree indicate differential item functioning for the split point that defines the actual tree node. See the documentation on the function rstree, pctree and rstree in pschotree for more details. Candidate models pass this test if the number of tree nodes is 1.
+
+***\< to be continued (all_rawscores, test_pca na.rm, alpha correction \>***
+
+### 2.3 Save results
+
+***\< to be done \>***
+
+## 3. Example: Activities of daily living (binary data)
+
+Activities of daily living (ADL) is a concept used in geriatrics, gerontology, nursing and other health-care related professions that refers to clients' routine self-care activities. ADL measures are widely used as measures of functioning in different healthcare settings. ADLs are key components in healthcare payment systems in most countries. The concept was first developed by Katz. This ADL measure used six activities: bathing, dressing, toileting, transferring, bladder and bowel continence and eating. \[tbc\] In the ADL data that comes with the package there are 15 ADL items. The first six items address aspects of mobility (transferring, standing, walking and bed mobility). The next three items address personal hygiene (including taking a shower). There are two items for dressing, two items for eating/drinking and one item for toileting. We can subsume the last item (intimate hygiene) to toileting or to personal hygiene respectively. Let us assume that we want to construct an ADL index that preferably consists of at least one item for mobility, personal hygiene/dressing, eating/drinking and toileting. At least we do not want to overrepresented items that address the same activity. So we are only interested in scales that use at least one but not more than two items for each activity. We consider scale with at least four items and with a maximum of eight items. Additionally we do not want to have both of the first two items in the scale as both of them address transferring, and we want to avoid to have both "washing" items in the scale. We can set up these combination rules as follows:
+
+```{r Define ombination rules (ADL example)}
+library(exhaustiveRasch)
+rules_object <- list() 
+rules_object[[1]] <- list("max", 2, 1:6)
+rules_object[[2]] <- list("min", 1, 1:6)
+rules_object[[3]] <- list("max", 2, 7:11)
+rules_object[[4]] <- list("min", 1, 7:9)
+rules_object[[4]] <- list("min", 1, 10:11)
+rules_object[[5]] <- list("min", 1, 12:13)
+rules_object[[6]] <- list("min", 1, 14:15)
+rules_object[[7]] <- list("forbidden", c(1,2))
+rules_object[[8]] <- list("forbidden", c(8,9))
+```
+
+The *apply_combo_rules* function provides all item combinations that match our pre-defined rules. We use our rules_object als the *rules* parameter and define the permitted scale lengths in the *combo_length* parameter:
+
+```{r Apply combination rules (ADL example)}
+final_combos <- apply_combo_rules(combo_length = 4:8, full=1:length(ADL), rules= rules_object)
+```
+
+Without applying any rules, there are 22.243 combination of 15 items with scales lengths between four and eight. Our applied rules reduce the permitted item combination to 1.620 based on theoretical presumptions. These item combinations can now be used in a rasch analysis. The threshold_order function is not necessary in this example, because the date is binary. We want to have all possible rawscores to be empirically represented. We also want to use the Martin-Löf-Test, Anderson's likelihood-ratio test with the median rawscore as split criterion, and a Waldtest. For itemfit we are fine with MSQ-in- and outfits between 0.5 and 1.5. We do not mind neither the z-standardised fit indices nor the p-values of the chi-squared tests for item fit. For the likelihood-ratio test, the Martin Löf test and the Waldtest we use a significance level of p=0.1, as we are interested in confirming the null-hypothesis and want to reduce type-1 errors. For these assumptions we can use the standard parameters, but we have to overrun the standard values for MSQ itemfit. We could do that by overrunning the respective parameters of the *itemfit_control* function, but we also can pass these parameters directly to *exhaustive_tests*, the main function of the the package. In the tests parameter we have to specify all test functions we want to use. These tests will then be executed in the order specify. There is no need for the parameters dset and scale_length, as we have already pre-defined the item combinations to use. We pass our rules_object to the function instead, using the combos parameter. So our call to the exhaustive tests function is:
+
+```{r Run tests (ADL example)}
+passed_ADL <- exhaustive_tests(dset=ADL, combos=final_combos, modelType = "RM",
+                               upperMSQ=1.5, lowerMSQ=0.5, use.pval=F, bonf=F,
+                               na.rm=T, tests=c("all_rawscores",  "test_mloef",
+                                                "test_itemfit", "test_LR",
+                                                "test_waldtest"))
+```

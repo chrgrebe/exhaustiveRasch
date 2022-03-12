@@ -7,15 +7,18 @@
 exhaustive_tests(
   dset,
   modelType = "RM",
-  patterns = NULL,
-  scale_length = 4:length(patterns),
+  combos = NULL,
+  scale_length = 3:length(dset),
   na.rm = T,
   tests = c("all_rawscores", "test_mloef", "test_itemfit"),
   itemfit_param = NULL,
   splitcr_mloef = NULL,
   splitcr_LR = NULL,
+  splitcr_wald = NULL,
   alpha = 0.1,
   bonf = F,
+  DIFvars = NULL,
+  ignoreCores = 0,
   ...
 )
 }
@@ -24,28 +27,34 @@ exhaustive_tests(
 
 \item{modelType}{a character value defining the rasch model to fit. Possible values: RM, PCM, RSM}
 
-\item{patterns}{a list of patterns to be tested, e.g. from \link{apply_pattern_rules} or from $passed_patterns of the value of a previous call to this function. If NULL, all possible combinations of the items (columns) in dset will be tested}
+\item{combos}{a list of item combinations to be tested, e.g. from \link{apply_combo_rules} or from $passed_combos of the value of a previous call to this function. If NULL, all possible combinations of the items (columns) in dset will be tested}
 
-\item{scale_length}{a numeric vector defining the length of the patterns to test}
+\item{scale_length}{a numeric vector defining the length of the item combinations to test}
 
 \item{na.rm}{a boolean value. If TRUE, in the respective pattern all cases with any NA are removed (na.omit). If FALSE, only cases with full NA responses are removed. NOTE: \link{test_mloef} currently does not allow for missing values (because erm::MLoef doesn't). If  \link{test_mloef} is under the tests to perform, na.rm will automatically be set TRUE for ALL tests.}
 
-\item{tests}{a vector of characters defining the tests to perform. Possible values: all_rawscores, test_itemfit, test_LR, test_mloef, test_pca, test_waldtest, threshold_order. Tests will be performed in the given order.}
+\item{tests}{a vector of characters defining the tests to perform. Possible values: all_rawscores, test_itemfit, test_LR, test_mloef, test_pca, test_waldtest, threshold_order, test_DIFtree. Tests will be performed in the given order.}
 
 \item{itemfit_param}{a list from \link{itemfit_control} with options for \link{test_itemfit}}
 
-\item{splitcr_mloef}{as defined by eRm::mloef: Split criterion to define the item groups. "median" and "mean" split items in two groups based on their items' raw scores. splitcr can also be a vector of length k (where k denotes the number of items) that takes two or more distinct values to define groups used for the Martin-L?f Test.}
+\item{splitcr_mloef}{as defined by eRm::MLoef: Split criterion to define the item groups. "median" and "mean" split items in two groups based on their items' raw scores. splitcr can also be a vector of length k (where k denotes the number of items) that takes two or more distinct values to define groups used for the Martin-Löf Test.}
 
 \item{splitcr_LR}{as defined by eRm::LRtest. Split criterion for subject raw score splitting. "all.r" corresponds to a full raw score split, "median" uses the median as split criterion, "mean" performs a mean split. Optionally splitcr can also be a vector which assigns each person to a certain subgroup (e.g., following an external criterion). This vector can be numeric, character or a factor.}
+
+\item{splitcr_wald}{as defined by eRm::Waldtest: Split criterion for subject raw score splitting. median uses the median as split criterion, mean performs a mean-split. Optionally splitcr can also be a dichotomous vector which assigns each person to a certain subgroup (e.g., following an external criterion). This vector can be numeric, character or a factor.}
 
 \item{alpha}{a numeric value for the alpha level. Will be ignored for \link{test_itemfit} if use.pval in \link{itemfit_control} is FALSE}
 
 \item{bonf}{a boolean value wheter to use a Bonferroni correction. Will be ignored if use.pval is FALSE}
 
+\item{DIFvars}{a data.frame containing the variables and their data to use for differential item functioning analysis with \link{test_DIFtree}}
+
+\item{ignoreCores}{a numeric value for the number of cpu cores to hold out in parallelizing the test run.}
+
 \item{...}{options for \link{itemfit_control} can be passed directly to this function.}
 }
 \value{
-a list containing 4 lists: the process log, the patterns that passed the test circuit, the corresponding RM/PCM/RSM models and their information criteria (AIC, BIC, cAIC)
+a list containing 4 lists: the process log, the item combinations that passed the test circuit, the corresponding RM/PCM/RSM models and their information criteria (AIC, BIC, cAIC)
 }
 \description{
 (main function) Runs exhaustive tests

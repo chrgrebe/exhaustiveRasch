@@ -5,7 +5,7 @@
 \title{checks the itemfit indices of a rasch model using the itemfit() function of eRm.}
 \usage{
 test_itemfit(
-  werte = NULL,
+  items = NULL,
   dset = NULL,
   na.rm = T,
   control,
@@ -16,7 +16,7 @@ test_itemfit(
 )
 }
 \arguments{
-\item{werte}{a numeric vector containing the index numbers of the items in dset that are used to fit the model}
+\item{items}{a numeric vector containing the index numbers of the items in dset that are used to fit the model}
 
 \item{dset}{a data.frame containing the data}
 
@@ -26,7 +26,7 @@ test_itemfit(
 
 \item{modelType}{a character value defining the rasch model to fit. Possible values: RM, PCM, RSM}
 
-\item{model}{a list of type RM, PCM or RSM (a previously fit model) matching the value of modelType. If model is provided, this model ist used. If NULL, a model is fit using dset and werte.}
+\item{model}{a list of type RM, PCM or RSM (a previously fit model) matching the value of modelType. If model is provided, this model ist used. If NULL, a model is fit using dset and items.}
 
 \item{alpha}{a numeric value for the alpha level. Will be ignored if use.pval is FALSE}
 

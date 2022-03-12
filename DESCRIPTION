@@ -1,16 +1,16 @@
 Package: exhaustiveRasch
 Type: Package
 Title: Exhaustive search for Rasch-models
-Version: 0.0.7
+Version: 0.1.3
 Author: Christian Grebe <christian.grebe@fh-bielefeld.de>
 Maintainer: Christian Grebe <christian.grebe@fh-bielefeld.de>
 Description: Exhaustive search for possible Rasch-models (Dichotomous, Partial Credit, Rating-Scale) in a list of item-patterns. The item-patterns to test can be either all possible patterns or item-patterns can be defined by several rules (forced inclusion of specific items, exclusion of sub-patterns, minimum/maximum items of a sub-pattern). Tests for model-and item-fit include ordering of the thresholds, itemfit-indices, likelihood ratio test, Martin Löf test, waldtest, principal component analysis with tetra-/polychoric correlations and rempirical representation of all raw scores. The tests, their ordering and their parameters can be defined. Item- and person-parameters are estimated as conditional likelihood estimation using functions of the eRM-package.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-Imports: eRm, psych, openxlsx, parallel, stats, utils
+Imports: eRm, psychotree, psych, openxlsx, parallel, stats, utils
 Depends: R (>= 3.5.0)
 RoxygenNote: 7.1.2
-Suggests: 
-    testthat (>= 3.0.0)
+Suggests: knitr, rmarkdown, testthat (>= 3.0.0)
+VignetteBuilder: knitr
 Config/testthat/edition: 3
