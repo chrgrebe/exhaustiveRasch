@@ -1,6 +1,7 @@
 exhaustive_tests <- function(dset, modelType="RM", combos=NULL, scale_length=3:length(dset), na.rm=T,
                              tests=c("all_rawscores", "test_mloef", "test_itemfit"), itemfit_param=NULL,
-                             splitcr_mloef=NULL, splitcr_LR=NULL, splitcr_wald=NULL, alpha=0.1, bonf=F, DIFvars=NULL, ignoreCores=0, ...){
+                             splitcr_mloef=NULL, splitcr_LR=NULL, splitcr_wald=NULL, alpha=0.1, bonf=F,
+                             DIFvars=NULL, gap_prop=0, extremes=T, ignoreCores=0, ...){
   #' (main function) Runs exhaustive tests
   #' @param dset a data.frame containing the data
   #' @param modelType a character value defining the rasch model to fit. Possible values: RM, PCM, RSM
@@ -69,7 +70,8 @@ exhaustive_tests <- function(dset, modelType="RM", combos=NULL, scale_length=3:l
       if (tests[l]=="test_waldtest"){splitcr <- splitcr_wald}
       current_return <- parallized_tests(dset=dset, combos=current_combos, models=current_models, modelType=modelType,
                                          testfunction=tests[l], itemfit_param=itemfit_param, splitcr=splitcr,
-                                         na.rm=na.rm, alpha=alpha, bonf=bonf, DIFvars = DIFvars, ignoreCores=ignoreCores)
+                                         na.rm=na.rm, alpha=alpha, bonf=bonf, DIFvars=DIFvars, gap_prop=gap_prop,
+                                         extremes=extremes, ignoreCores=ignoreCores)
       if (length(current_return)>0 & !is.character(current_return)){
         if (tests[l] %in% c("all_rawscores", "test_pca")){
           current_combos <- current_return

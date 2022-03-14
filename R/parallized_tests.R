@@ -1,4 +1,5 @@
-parallized_tests <- function(dset, modelType, combos, models, na.rm, testfunction, itemfit_param, splitcr=NULL, alpha, bonf, DIFvars, ignoreCores, ...){
+parallized_tests <- function(dset, modelType, combos, models, na.rm, testfunction, itemfit_param, splitcr=NULL,
+                             alpha, bonf, DIFvars, gap_prop, extremes, ignoreCores, ...){
   arguments <- list(...)
   # abfangen, wenn keine Pattern oder eine Warnmeldung als character ?bergeben wurden
 
@@ -37,6 +38,10 @@ parallized_tests <- function(dset, modelType, combos, models, na.rm, testfunctio
     if (testfunction=="test_DIFtree"){
       param1$DIFvars= DIFvars
     }
+    if (testfunction=="test_personsItems"){
+      param1$gap_prop= gap_prop
+      param1$extremes= extremes
+    }
     tim <- system.time(a <- do.call(parallel::parLapply, param1))
 
     parallel::stopCluster(cl)
@@ -46,4 +51,3 @@ parallized_tests <- function(dset, modelType, combos, models, na.rm, testfunctio
     return(a)
   }
 }
-

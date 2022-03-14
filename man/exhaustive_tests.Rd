@@ -18,6 +18,8 @@ exhaustive_tests(
   alpha = 0.1,
   bonf = F,
   DIFvars = NULL,
+  gap_prop = 0,
+  extremes = T,
   ignoreCores = 0,
   ...
 )
