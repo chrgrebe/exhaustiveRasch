@@ -24,13 +24,13 @@ itemfit_control(
 
 \item{use.pval}{a boolean value whether to exclude patterns with at least one item with significant p-value}
 
-\item{lowerMSQ}{a numeric vaue for the lower bound for acceptable Infit (mean-squared fit indices)}
+\item{lowerMSQ}{a numeric value for the lower bound for acceptable Infit (mean-squared fit indices)}
 
-\item{upperMSQ}{a numeric vaue for the upper bound for acceptable Infit (mean-squared fit indices)}
+\item{upperMSQ}{a numeric value for the upper bound for acceptable Infit (mean-squared fit indices)}
 
-\item{lowerZ}{a numeric vaue for the lower bound for acceptable Infit (z-standardised fit indices)}
+\item{lowerZ}{a numeric value for the lower bound for acceptable Infit (z-standardised fit indices)}
 
-\item{upperZ}{a numeric vaue for the upper bound for acceptable Infit (z-standardised fit indices)}
+\item{upperZ}{a numeric value for the upper bound for acceptable Infit (z-standardised fit indices)}
 }
 \value{
 a list containing the options

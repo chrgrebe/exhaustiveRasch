@@ -12,6 +12,11 @@ test_waldtest <- function(items=NULL, dset=NULL, na.rm=T, model=NULL, modelType=
   #' @return if none of the p-values is significant (above p=0.05), a list containing two elements is returned: the pattern that was tested an a list of type RM, RCM or RSM (depending on modelType) with the fit model. If there is at least one item with a significant p-value, NULL is returned.
   #' @export
 
+  if (inherits(items, "list")){
+    model <- items[[2]]
+    items <- items[[1]]
+  }
+
   if (bonf==T){local_alpha <- alpha/length(items)} else{local_alpha <- alpha}
 
   if (is.null(model)){
@@ -19,15 +24,17 @@ test_waldtest <- function(items=NULL, dset=NULL, na.rm=T, model=NULL, modelType=
     if (na.rm==T){ds_test<- stats::na.omit(ds_test)} else{ds_test <- ds_test <- ds_test[rowSums(is.na(ds_test)) < ncol(ds_test)-1, ]}
     try(suppressWarnings({
       model <- get(modelType)(ds_test, se=TRUE)
-    }))
+    }), silent=T)
   } else{
     items <- which(colnames(dset) %in% colnames(model$X))
   }
 
-  try(suppressWarnings({wald <- eRm::Waldtest(model,splitcr=splitcr)}))
+  try(suppressWarnings({wald <- eRm::Waldtest(model,splitcr=splitcr)}), silent=T)
   if (exists("wald")==T){
-    if (min(wald$coef.table[,2]) >=local_alpha){
-      return(list(items, model))
+    if (min(wald$coef.table[,2])!="NaN"){
+      if (min(wald$coef.table[,2]) >=local_alpha){
+        return(list(items, model))
+      }
     }
   }
 }

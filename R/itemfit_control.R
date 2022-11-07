@@ -4,10 +4,10 @@ itemfit_control <- function(zstd=F, msq=T, outfits=T, use.pval=T, lowerMSQ=0.7, 
   #' @param msq aboolean value whether to check the mean-squared fit indices
   #' @param use.pval a boolean value whether to exclude patterns with at least one item with significant p-value
   #' @param outfits a boolean value whether to check outfit indices (in FALSE, only infits are checked)
-  #' @param lowerMSQ a numeric vaue for the lower bound for acceptable Infit (mean-squared fit indices)
-  #' @param upperMSQ a numeric vaue for the upper bound for acceptable Infit (mean-squared fit indices)
-  #' @param lowerZ a numeric vaue for the lower bound for acceptable Infit (z-standardised fit indices)
-  #' @param upperZ a numeric vaue for the upper bound for acceptable Infit (z-standardised fit indices)
+  #' @param lowerMSQ a numeric value for the lower bound for acceptable Infit (mean-squared fit indices)
+  #' @param upperMSQ a numeric value for the upper bound for acceptable Infit (mean-squared fit indices)
+  #' @param lowerZ a numeric value for the lower bound for acceptable Infit (z-standardised fit indices)
+  #' @param upperZ a numeric value for the upper bound for acceptable Infit (z-standardised fit indices)
   #' @return a list containing the options
   #' @export
 

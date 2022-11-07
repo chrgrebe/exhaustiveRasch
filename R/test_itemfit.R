@@ -11,6 +11,11 @@ test_itemfit<- function(items=NULL, dset=NULL, na.rm=T, control, modelType=NULL,
   #' @return if all fit indices meet the given criteria, a list containing two elements is returned: the pattern that was tested an a list of type RM, RCM or RSM (depending on modelType) with the fit model. If at least one item's fit indices do not meet the given criteria, NULL is returned.
   #' @export
 
+  if (inherits(items, "list")){
+    model <- items[[2]]
+    items <- items[[1]]
+  }
+
   if (bonf==T){local_alpha <- alpha/length(items)} else{local_alpha <- alpha}
 
   if (is.null(model)){
@@ -18,14 +23,14 @@ test_itemfit<- function(items=NULL, dset=NULL, na.rm=T, control, modelType=NULL,
     if (na.rm==T){ds_test<- stats::na.omit(ds_test)} else{ds_test <- ds_test <- ds_test[rowSums(is.na(ds_test)) < ncol(ds_test)-1, ]}
     try(suppressWarnings({
       model <- get(modelType)(ds_test, se=TRUE)
-    }))
+    }), silent=T)
   } else{
     items <- which(colnames(dset) %in% colnames(model$X))
   }
 
 
   if (exists("model")==T){
-    try(p.par <- eRm::person.parameter(model))
+    try(p.par <- eRm::person.parameter(model), silent=T)
     if (exists("p.par")){
       ifit <- eRm::itemfit(p.par)
       check=T
@@ -51,5 +56,3 @@ test_itemfit<- function(items=NULL, dset=NULL, na.rm=T, control, modelType=NULL,
   }
 
 }
-
-

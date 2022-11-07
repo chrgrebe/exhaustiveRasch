@@ -1,5 +1,5 @@
-threshold_order <- function(items=NULL, dset=NULL, na.rm=T, model=NULL, modelType=NULL){
-  #' checks for disordered threshoilds in rasch models
+no_test <- function(items=NULL, dset=NULL, na.rm=T, model=NULL, modelType=NULL){
+  #' no test will be conducted, but rasch models (RM, PCM, RSM - depending on modelType) will be fit
   #' @param items a numeric vector containing the index numbers of the items in dset that are used to fit the model
   #' @param dset a data.frame containing the data
   #' @param na.rm a boolean value. If TRUE, all cases with any NA are removed (na.omit). If FALSE, only cases with full NA responses are removed
@@ -13,24 +13,15 @@ threshold_order <- function(items=NULL, dset=NULL, na.rm=T, model=NULL, modelTyp
     items <- items[[1]]
   }
 
-  if (modelType %in% c("PCM", "RSM")){
-    if (is.null(model)){
-      ds_test <- dset[items]
-      if (na.rm==T){ds_test<- stats::na.omit(ds_test)} else{ds_test <- ds_test <- ds_test[rowSums(is.na(ds_test)) < ncol(ds_test)-1, ]}
-      try(suppressWarnings({
-        model <- get(modelType)(ds_test, se=TRUE)
-      }), silent=T)
-    } else{
-      items <- which(colnames(dset) %in% colnames(model$X))
-    }
-
-    no_items <- length(items)
-    no_thres <- length(model$betapar)/no_items
-
-    sorted <- T
-    for (i in 1:no_items){
-      if (is.unsorted(eRm::thresholds(model)$threshtable$'1'[i,2:no_thres+1]==T)){sorted <- F}
-    }
-    if (sorted==T){return(list(items, model))}
+  if (is.null(model)){
+    ds_test <- dset[items]
+    if (na.rm==T){ds_test<- stats::na.omit(ds_test)} else{ds_test <- ds_test <- ds_test[rowSums(is.na(ds_test)) < ncol(ds_test)-1, ]}
+    try(suppressWarnings({
+      model <- get(modelType)(ds_test, se=TRUE)
+    }), silent=T)
+  } else{
+    items <- which(colnames(dset) %in% colnames(model$X))
   }
+
+  return(list(items, model))
 }

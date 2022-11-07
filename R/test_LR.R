@@ -11,19 +11,25 @@ test_LR <- function(items=NULL, dset=NULL, na.rm=T, model=NULL, modelType=NULL, 
   #' @return if the p-value of the test is not significant (above p=0.05) AND if no items were excluded in the test due to missing patterns (length of betalist == number of items), a list containing two elements is returned: the pattern that was tested an a list of type RM, RCM or RSM (depending on modelType) with the fit model. If the test is significant (p<0.05), NULL is returned.
   #' @export
 
+  if (inherits(items, "list")){
+    model <- items[[2]]
+    items <- items[[1]]
+  }
+
+  ds_test <- dset[items]
+
   if (bonf==T){local_alpha <- alpha/length(items)} else{local_alpha <- alpha}
 
   if (is.null(model)){
-    ds_test <- dset[items]
     if (na.rm==T){ds_test<- stats::na.omit(ds_test)} else{ds_test <- ds_test <- ds_test[rowSums(is.na(ds_test)) < ncol(ds_test)-1, ]}
     try(suppressWarnings({
       model <- get(modelType)(ds_test, se=TRUE)
-    }))
+    }), silent=T)
   } else{
     items <- which(colnames(dset) %in% colnames(model$X))
   }
 
-  try(suppressWarnings({lr <- eRm::LRtest(model, splitcr=splitcr)}))
+  try(suppressWarnings({lr <- eRm::LRtest(model, splitcr=splitcr)}), silent=T)
   if (exists("lr")==T){
     if (lr$pvalue >=local_alpha & length(lr$betalist[[1]])==length(ds_test)){
       return(list(items, model))

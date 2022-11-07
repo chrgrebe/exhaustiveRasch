@@ -31,9 +31,9 @@ data(ADL)
 forced <- c(6,22)
 rules_object <- list() # rules-Object
 rules_object[[1]] <- list("min", 1, 8:9)
-rules_object[[1]] <- list("min", 1, 14:15)
-rules_object[[1]] <- list("max", 3, 1:6)
-rules_object[[7]] <- list("forbidden", c(8,9))
+rules_object[[2]] <- list("min", 1, 14:15)
+rules_object[[3]] <- list("max", 3, 1:6)
+rules_object[[4]] <- list("forbidden", c(8,9))
 final_combos <- apply_combo_rules(combo_length = 5:7,
-  full=1:length(ADL), forced_items = forced, rules= rules_object)
+full=1:length(ADL), forced_items = forced, rules= rules_object)
 }

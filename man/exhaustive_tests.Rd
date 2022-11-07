@@ -21,6 +21,7 @@ exhaustive_tests(
   gap_prop = 0,
   extremes = T,
   ignoreCores = 0,
+  silent = F,
   ...
 )
 }
@@ -29,7 +30,7 @@ exhaustive_tests(
 
 \item{modelType}{a character value defining the rasch model to fit. Possible values: RM, PCM, RSM}
 
-\item{combos}{a list of item combinations to be tested, e.g. from \link{apply_combo_rules} or from $passed_combos of the value of a previous call to this function. If NULL, all possible combinations of the items (columns) in dset will be tested}
+\item{combos}{either 1) a list of item combinations to be tested, e.g. from \link{apply_combo_rules} or the @passed_combos-slot of an object of class passed_ex_Ra from a previous call to this function. Or 2) an object of class passed_exRa. In this case, the previously fit models froms its @passed_Models slot will also be used and will be passed to the test functions. Thhis will speed up the analysis. If the parameter is NULL, all possible combinations of the items (columns) in dset will be tested}
 
 \item{scale_length}{a numeric vector defining the length of the item combinations to test}
 
@@ -51,12 +52,18 @@ exhaustive_tests(
 
 \item{DIFvars}{a data.frame containing the variables and their data to use for differential item functioning analysis with \link{test_DIFtree}}
 
+\item{gap_prop}{a numeric value between 0 and 1 that sets the criterion for the minimum proportion of neighboring person parameters with an item/threshold location in between. If set to 0, this criterion will not be checked (used in test_personsItems only)}
+
+\item{extremes}{a boolean value indicating if a check for the item/threshold locations left of the 2nd lowest and right of the 2nd highest person parameter (used in test_personsItems only).}
+
 \item{ignoreCores}{a numeric value for the number of cpu cores to hold out in parallelizing the test run.}
+
+\item{silent}{a boolean value. If set to TRUE, all output during the anlysis will be suppressed.}
 
 \item{...}{options for \link{itemfit_control} can be passed directly to this function.}
 }
 \value{
-a list containing 4 lists: the process log, the item combinations that passed the test circuit, the corresponding RM/PCM/RSM models and their information criteria (AIC, BIC, cAIC)
+an object on class passed_ExRa.
 }
 \description{
 (main function) Runs exhaustive tests
