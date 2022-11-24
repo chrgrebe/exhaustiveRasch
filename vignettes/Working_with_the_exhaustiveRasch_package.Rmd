@@ -133,30 +133,29 @@ In the ADL data that comes with the package there are 15 ADL items. The first si
 
 ```{r Define ombination rules (ADL example)}
 library(exhaustiveRasch)
-rules_object <- list() 
-rules_object[[1]] <- list("max", 2, 1:6)
-rules_object[[2]] <- list("min", 1, 1:6)
-rules_object[[3]] <- list("max", 2, 7:11)
-rules_object[[4]] <- list("min", 1, 7:9)
-rules_object[[4]] <- list("min", 1, 10:11)
-rules_object[[5]] <- list("min", 1, 12:13)
-rules_object[[6]] <- list("min", 1, 14:15)
-rules_object[[7]] <- list("forbidden", c(1,2))
-rules_object[[8]] <- list("forbidden", c(8,9))
+rules_object <- list()
+rules_object[[1]] <- list("max", 2, 1:6) #mobility
+rules_object[[2]] <- list("min", 1, 1:6) #mobility
+rules_object[[3]] <- list("max", 2, 7:11) # personal hygiene/dressing
+rules_object[[4]] <- list("min", 1, 12:13) # eating/drinking
+rules_object[[5]] <- list("min", 1, 14:15) # toileting
+rules_object[[6]] <- list("forbidden", c(1,2)) # transfer from bed/ stand up from chair
+
 ```
 
 The *apply_combo_rules* function provides all item combinations that match our pre-defined rules. We use our rules_object als the *rules* parameter and define the permitted scale lengths in the *combo_length* parameter:
 
 ```{r Apply combination rules (ADL example)}
-final_combos <- apply_combo_rules(combo_length = 4:8, full=1:length(ADL), rules= rules_object)
+final_combos <- apply_combo_rules(combo_length= 4:8, full=1:15,
+                                  rules= rules_object)
 ```
 
-Without applying any rules, there are 22.243 combination of 15 items with scales lengths between four and eight. Our applied rules reduce the permitted item combination to 1.620 based on theoretical presumptions. These item combinations can now be used in a rasch analysis. The threshold_order function is not necessary in this example, because the date is binary. We want to have all possible rawscores to be empirically represented. We also want to use the Martin-Löf-Test, Anderson's likelihood-ratio test with the median rawscore as split criterion, and a Waldtest. For itemfit we are fine with MSQ-in- and outfits between 0.5 and 1.5. We do not mind neither the z-standardised fit indices nor the p-values of the chi-squared tests for item fit. For the likelihood-ratio test, the Martin Löf test and the Waldtest we use a significance level of p=0.1, as we are interested in confirming the null-hypothesis and want to reduce type-1 errors. For these assumptions we can use the standard parameters, but we have to overrun the standard values for MSQ itemfit. We could do that by overrunning the respective parameters of the *itemfit_control* function, but we also can pass these parameters directly to *exhaustive_tests*, the main function of the the package. In the tests parameter we have to specify all test functions we want to use. These tests will then be executed in the order specify. There is no need for the parameters dset and scale_length, as we have already pre-defined the item combinations to use. We pass our rules_object to the function instead, using the combos parameter. So our call to the exhaustive tests function is:
+Without applying any rules, there are 22.243 combination of 15 items with scales lengths between four and eight. Our applied rules reduce the permitted item combination to 1.620 based on theoretical presumptions. These item combinations can now be used in a rasch analysis. The threshold_order function is not necessary in this example, because the date is binary. We want to have all possible rawscores to be empirically represented. We also want to use the Martin-Löf-Test and Anderson's likelihood-ratio test, both with the median rawscore as split criterion. For itemfit we are fine with MSQ-in- and outfits between 0.5 and 1.5. We do not mind neither the standardised fit indices nor the p-values of the chi-squared tests for item fit. For the likelihood-ratio test, the Martin Löf test and the Waldtest we use a significance level of p=0.1, as we are interested in confirming the null-hypothesis and want to reduce type-1 errors. For these assumptions we can use the standard parameters, but we have to overrun the standard values for MSQ itemfit. We could do that by overrunning the respective parameters of the *itemfit_control* function, but we also can pass these parameters directly to *exhaustive_tests*, the main function of the the package. In the tests parameter we have to specify all test functions we want to use. These tests will then be executed in the order specify. There is no need for the parameters dset and scale_length, as we have already pre-defined the item combinations to use. We pass our rules_object to the function instead, using the combos parameter. So our call to the exhaustive tests function is:
 
 ```{r Run tests (ADL example)}
-passed_ADL <- exhaustive_tests(dset=ADL, combos=final_combos, modelType = "RM",
-                               upperMSQ=1.5, lowerMSQ=0.5, use.pval=F, bonf=F,
-                               na.rm=T, tests=c("all_rawscores",  "test_mloef",
-                                                "test_itemfit", "test_LR",
-                                                "test_waldtest"))
+passed_ADL <- exhaustive_tests(dset=ADL, combos=final_combos, modelType= "RM",
+                               upperMSQ=1.5, lowerMSQ=0.5, use.pval=F, bonf=T,
+                               na.rm=T, tests=c("test_itemfit",
+                                                "test_mloef",
+                                                "test_LR"))
 ```

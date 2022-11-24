@@ -7,7 +7,7 @@
 test_mloef(
   items = NULL,
   dset = NULL,
-  na.rm = T,
+  na.rm = TRUE,
   model = NULL,
   modelType = NULL,
   splitcr = "median",
@@ -15,23 +15,37 @@ test_mloef(
 )
 }
 \arguments{
-\item{items}{a numeric vector containing the index numbers of the items in dset that are used to fit the model}
+\item{items}{a numeric vector containing the index numbers of the items in
+dset that are used to fit the model}
 
 \item{dset}{a data.frame containing the data}
 
-\item{na.rm}{a boolean value. If TRUE, all cases with any NA are removed (na.omit). If FALSE, only cases with full NA responses are removed}
+\item{na.rm}{a boolean value. If TRUE, all cases with any NA are removed
+(na.omit). If FALSE, only cases with full NA responses are removed}
 
-\item{model}{a list of type RM, PCM or RSM (a previously fit model) matching the value of modelType. If model is provided, this model ist used. If NULL, a model is fit using dset and items.}
+\item{model}{a list of type RM, PCM or RSM (a previously fit model)
+matching the value of modelType. If model is provided, this model is used.
+ If NULL, a model is fit using dset and items.}
 
-\item{modelType}{a character value defining the rasch model to fit. Possible values: RM, PCM, RSM}
+\item{modelType}{a character value defining the rasch model to fit.
+Possible values: RM, PCM, RSM}
 
-\item{splitcr}{as defined by eRm::MLoef: Split criterion to define the item groups. "median" and "mean" split items in two groups based on their items' raw scores. splitcr can also be a vector of length k (where k denotes the number of items) that takes two or more distinct values to define groups used for the Martin-Löf Test.}
+\item{splitcr}{as defined by eRm::MLoef: Split criterion to define the
+item groups. "median" and "mean" split items in two groups based on their
+ items' raw scores. splitcr can also be a vector of length k (where k
+ denotes the number of items) that takes two or more distinct values to
+  define groups used for the Martin-Löf Test.}
 
-\item{alpha}{a numeric value for the alpha level. Will be ignored if use.pval is FALSE}
+\item{alpha}{a numeric value for the alpha level. Will be ignored if
+use.pval is FALSE}
 }
 \value{
-if the p-value of the test is not significant (above p=0.05), a list containing two elements is returned: the pattern that was tested an a list of type RM, RCM or RSM (depending on modelType) with the fit model. If the test is significant (p<0.05), NULL is returned.
+if the p-value of the test is not significant (above p=0.05),
+ a list containing two elements is returned: the pattern that was tested
+  an a list of type RM, RCM or RSM (depending on modelType) with the fit
+   model. If the test is significant (p<0.05), NULL is returned.
 }
 \description{
 runs Martin-Loef Test using the MLoef() function of eRm.
 }
+\keyword{internal}

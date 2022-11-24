@@ -2,30 +2,40 @@
 % Please edit documentation in R/threshold_order.R
 \name{threshold_order}
 \alias{threshold_order}
-\title{checks for disordered threshoilds in rasch models}
+\title{checks for disordered thresholds in rasch models}
 \usage{
 threshold_order(
   items = NULL,
   dset = NULL,
-  na.rm = T,
+  na.rm = TRUE,
   model = NULL,
   modelType = NULL
 )
 }
 \arguments{
-\item{items}{a numeric vector containing the index numbers of the items in dset that are used to fit the model}
+\item{items}{a numeric vector containing the index numbers of the items in
+dset that are used to fit the model}
 
 \item{dset}{a data.frame containing the data}
 
-\item{na.rm}{a boolean value. If TRUE, all cases with any NA are removed (na.omit). If FALSE, only cases with full NA responses are removed}
+\item{na.rm}{a boolean value. If TRUE, all cases with any NA are removed
+(na.omit). If FALSE, only cases with full NA responses are removed}
 
-\item{model}{a list of type RM, PCM or RSM (a previously fit model) matching the value of modelType. If model is provided, this model ist used. If NULL, a model is fit using dset and items.}
+\item{model}{a list of type RM, PCM or RSM (a previously fit model)
+matching the value of modelType. If model is provided, this model is used.
+ If NULL, a model is fit using dset and items.}
 
-\item{modelType}{a character value defining the rasch model to fit. Possible values: RM, PCM, RSM}
+\item{modelType}{a character value defining the rasch model to fit.
+Possible values: RM, PCM, RSM}
 }
 \value{
-if there are no items with disordered thresholds in the model, a list containing two elements is returned: the pattern that was tested an a list of type RM, RCM or RSM (depending on modelType) with the fit model. If there is at least one item with disordered thresholds, NULL is returned.
+if there are no items with disordered thresholds in the model,
+ a list containing two elements is returned: the pattern that was tested an
+  a list of type RM, RCM or RSM (depending on modelType) with the fit
+   model. If there is at least one item with disordered thresholds,
+    NULL is returned.
 }
 \description{
-checks for disordered threshoilds in rasch models
+checks for disordered thresholds in rasch models
 }
+\keyword{internal}

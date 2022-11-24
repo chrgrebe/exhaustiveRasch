@@ -8,71 +8,116 @@ exhaustive_tests(
   dset,
   modelType = "RM",
   combos = NULL,
-  scale_length = 3:length(dset),
-  na.rm = T,
-  tests = c("all_rawscores", "test_mloef", "test_itemfit"),
+  scale_length = 4:length(dset),
+  na.rm = TRUE,
+  tests = c("test_itemfit"),
   itemfit_param = NULL,
   splitcr_mloef = NULL,
   splitcr_LR = NULL,
   splitcr_wald = NULL,
   alpha = 0.1,
-  bonf = F,
+  bonf = FALSE,
   DIFvars = NULL,
   gap_prop = 0,
-  extremes = T,
+  extremes = TRUE,
+  max_contrast = NULL,
   ignoreCores = 0,
-  silent = F,
+  silent = FALSE,
   ...
 )
 }
 \arguments{
 \item{dset}{a data.frame containing the data}
 
-\item{modelType}{a character value defining the rasch model to fit. Possible values: RM, PCM, RSM}
+\item{modelType}{a character value defining the rasch model to fit.
+Possible values: RM, PCM, RSM}
 
-\item{combos}{either 1) a list of item combinations to be tested, e.g. from \link{apply_combo_rules} or the @passed_combos-slot of an object of class passed_ex_Ra from a previous call to this function. Or 2) an object of class passed_exRa. In this case, the previously fit models froms its @passed_Models slot will also be used and will be passed to the test functions. Thhis will speed up the analysis. If the parameter is NULL, all possible combinations of the items (columns) in dset will be tested}
+\item{combos}{either 1) a list of item combinations to be tested,
+e.g. from \link{apply_combo_rules} or the passed_combos slot of an object
+ of \link{passed_exRa-class} from a previous call to this function. Or 2)
+  an object of \link{passed_exRa-class}. In this case, the previously fit
+   models froms its passed_Models slot will also be used and will be
+    passed to the test functions. This will speed up the analysis. If
+     the parameter is NULL, all possible combinations of the items
+      (columns) in dset will be tested}
 
-\item{scale_length}{a numeric vector defining the length of the item combinations to test}
+\item{scale_length}{a numeric vector defining the length of the item
+combinations to test}
 
-\item{na.rm}{a boolean value. If TRUE, in the respective pattern all cases with any NA are removed (na.omit). If FALSE, only cases with full NA responses are removed. NOTE: \link{test_mloef} currently does not allow for missing values (because erm::MLoef doesn't). If  \link{test_mloef} is under the tests to perform, na.rm will automatically be set TRUE for ALL tests.}
+\item{na.rm}{a boolean value. If TRUE, in the respective item combination
+all cases with any NA are removed (na.omit). If FALSE, only cases
+ with full NA responses are removed. NOTE: \link{test_mloef} currently
+ does not allow for missing values (because erm::MLoef doesn't). If
+    \link{test_mloef} is under the tests to perform, na.rm will
+     automatically be set TRUE for ALL tests.}
 
-\item{tests}{a vector of characters defining the tests to perform. Possible values: all_rawscores, test_itemfit, test_LR, test_mloef, test_pca, test_waldtest, threshold_order, test_DIFtree. Tests will be performed in the given order.}
+\item{tests}{a vector of characters defining the tests to perform.
+Possible values: all_rawscores, test_itemfit, test_LR, test_mloef,
+ test_waldtest, threshold_order, test_DIFtree, test_personsItems,
+  test_respca. Tests will be performed in the given order.}
 
-\item{itemfit_param}{a list from \link{itemfit_control} with options for \link{test_itemfit}}
+\item{itemfit_param}{a list from \link{itemfit_control} with options for
+\link{test_itemfit}}
 
-\item{splitcr_mloef}{as defined by eRm::MLoef: Split criterion to define the item groups. "median" and "mean" split items in two groups based on their items' raw scores. splitcr can also be a vector of length k (where k denotes the number of items) that takes two or more distinct values to define groups used for the Martin-Löf Test.}
+\item{splitcr_mloef}{as defined by eRm::MLoef: Split criterion to define
+the item groups. "median" and "mean" split items in two groups based on
+ their items' raw scores. splitcr can also be a vector of length k
+  (where k denotes the number of items) that takes two or more distinct
+   values to define groups used for the Martin-Löf Test.}
 
-\item{splitcr_LR}{as defined by eRm::LRtest. Split criterion for subject raw score splitting. "all.r" corresponds to a full raw score split, "median" uses the median as split criterion, "mean" performs a mean split. Optionally splitcr can also be a vector which assigns each person to a certain subgroup (e.g., following an external criterion). This vector can be numeric, character or a factor.}
+\item{splitcr_LR}{as defined by eRm::LRtest. Split criterion for subject
+raw score splitting. "all.r" corresponds to a full raw score split,
+ "median" uses the median as split criterion, "mean" performs a
+  mean split. Optionally splitcr can also be a vector which assigns each
+   person to a certain subgroup (e.g., following an external criterion).
+    This vector can be numeric, character or a factor.}
 
-\item{splitcr_wald}{as defined by eRm::Waldtest: Split criterion for subject raw score splitting. median uses the median as split criterion, mean performs a mean-split. Optionally splitcr can also be a dichotomous vector which assigns each person to a certain subgroup (e.g., following an external criterion). This vector can be numeric, character or a factor.}
+\item{splitcr_wald}{as defined by eRm::Waldtest: Split criterion for
+subject raw score splitting. median uses the median as split criterion,
+ mean performs a mean-split. Optionally splitcr can also be a dichotomous
+  vector which assigns each person to a certain subgroup (e.g., following
+   an external criterion). This vector can be numeric, character or
+    a factor.}
 
-\item{alpha}{a numeric value for the alpha level. Will be ignored for \link{test_itemfit} if use.pval in \link{itemfit_control} is FALSE}
+\item{alpha}{a numeric value for the alpha level. Will be ignored for
+\link{test_itemfit} if use.pval in \link{itemfit_control} is FALSE}
 
-\item{bonf}{a boolean value wheter to use a Bonferroni correction. Will be ignored if use.pval is FALSE}
+\item{bonf}{a boolean value wheter to use a Bonferroni correction.
+Will be ignored if use.pval is FALSE}
 
-\item{DIFvars}{a data.frame containing the variables and their data to use for differential item functioning analysis with \link{test_DIFtree}}
+\item{DIFvars}{a data.frame containing the variables and their data to use
+for differential item functioning analysis with \link{test_DIFtree}}
 
-\item{gap_prop}{a numeric value between 0 and 1 that sets the criterion for the minimum proportion of neighboring person parameters with an item/threshold location in between. If set to 0, this criterion will not be checked (used in test_personsItems only)}
+\item{gap_prop}{a numeric value between 0 and 1 that sets the criterion
+for the minimum proportion of neighboring person parameters with an
+ item/threshold location in between. If set to 0, this criterion will not
+  be checked (used in test_personsItems only)}
 
-\item{extremes}{a boolean value indicating if a check for the item/threshold locations left of the 2nd lowest and right of the 2nd highest person parameter (used in test_personsItems only).}
+\item{extremes}{a boolean value indicating if a check for the
+item/threshold locations left of the 2nd lowest and right of the
+ 2nd highest person parameter (used in test_personsItems only).}
 
-\item{ignoreCores}{a numeric value for the number of cpu cores to hold out in parallelizing the test run.}
+\item{max_contrast}{a numeric value defining the maximum loading of a
+factor in the principal components analysis of the standardised residuals.
+Only relevant, if test_respca is one of the tests.}
 
-\item{silent}{a boolean value. If set to TRUE, all output during the anlysis will be suppressed.}
+\item{ignoreCores}{a numeric value for the number of cpu cores to hold out
+in parallelizing the test run.}
 
-\item{...}{options for \link{itemfit_control} can be passed directly to this function.}
+\item{silent}{a boolean value. If set to TRUE, all output during the
+analysis will be suppressed.}
+
+\item{...}{options for \link{itemfit_control} can be passed directly to
+this function.}
 }
 \value{
-an object on class passed_ExRa.
+an object on \link{passed_exRa-class}.
 }
 \description{
 (main function) Runs exhaustive tests
 }
 \examples{
-data(ADL)
-passed <- exhaustive_tests(ADL, modelType = "RM", scale_length = c(4:5))
-
-data(ADL)
-passed <- exhaustive_tests(ADL[c(1,4,6,7,10,14,15)], modelType = "RM", scale_length = c(4:6),
-     tests=c("test_mloef", "test_itemfit", "test_LR"))
+  passed <- exhaustive_tests(ADL[c(1,4,6,7,10,14,15)],
+    modelType = "RM", scale_length = 4:5, upperMSQ=1.5, lowerMSQ=0.5,
+    tests=c("test_itemfit", "test_mloef", "test_respca"))
 }

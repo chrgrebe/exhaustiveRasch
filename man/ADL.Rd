@@ -35,6 +35,9 @@ ADL
 ADL date from N=591 nursing home residents from Germany
 }
 \references{
-Grebe C (2013). Pflegeaufwand und Personalbemessung in der stationären Langzeitpflege: Entwicklung eines empirischen Fallgruppensystems auf der Basis von Bewohnercharakteristika. 3-Länder-Konferenz Pflege & Pflegewissenschaft, Konstanz.
+Grebe C (2013). Pflegeaufwand und Personalbemessung in der
+ stationären Langzeitpflege: Entwicklung eines empirischen
+  Fallgruppensystems auf der Basis von Bewohnercharakteristika.
+   3-Länder-Konferenz Pflege & Pflegewissenschaft, Konstanz.
 }
 \keyword{datasets}

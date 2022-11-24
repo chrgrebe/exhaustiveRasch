@@ -2,39 +2,52 @@
 % Please edit documentation in R/test_itemfit.R
 \name{test_itemfit}
 \alias{test_itemfit}
-\title{checks the itemfit indices of a rasch model using the itemfit() function of eRm.}
+\title{checks the itemfit indices of a rasch model using the itemfit() function
+ of eRm.}
 \usage{
 test_itemfit(
   items = NULL,
   dset = NULL,
-  na.rm = T,
+  na.rm = TRUE,
   control,
   modelType = NULL,
   model = NULL,
   alpha = 0.1,
-  bonf = F
+  bonf = FALSE
 )
 }
 \arguments{
-\item{items}{a numeric vector containing the index numbers of the items in dset that are used to fit the model}
+\item{items}{a numeric vector containing the index numbers of the items
+in dset that are used to fit the model}
 
 \item{dset}{a data.frame containing the data}
 
-\item{na.rm}{a boolean value. If TRUE, all cases with any NA are removed (na.omit). If FALSE, only cases with full NA responses are removed}
+\item{na.rm}{a boolean value. If TRUE, all cases with any NA are removed
+(na.omit). If FALSE, only cases with full NA responses are removed}
 
 \item{control}{list object with options from \link{itemfit_control}}
 
-\item{modelType}{a character value defining the rasch model to fit. Possible values: RM, PCM, RSM}
+\item{modelType}{a character value defining the rasch model to fit.
+Possible values: RM, PCM, RSM}
 
-\item{model}{a list of type RM, PCM or RSM (a previously fit model) matching the value of modelType. If model is provided, this model ist used. If NULL, a model is fit using dset and items.}
+\item{model}{a list of type RM, PCM or RSM (a previously fit model)
+matching the value of modelType. If model is provided, this model is used.
+ If NULL, a model is fit using dset and items.}
 
-\item{alpha}{a numeric value for the alpha level. Will be ignored if use.pval is FALSE}
+\item{alpha}{a numeric value for the alpha level. Will be ignored if
+use.pval is FALSE}
 
-\item{bonf}{a boolean value wheter to use a Bonferroni correction. Will be ignored if use.pval is FALSE}
+\item{bonf}{a boolean value wheter to use a Bonferroni correction. Will
+be ignored if use.pval is FALSE}
 }
 \value{
-if all fit indices meet the given criteria, a list containing two elements is returned: the pattern that was tested an a list of type RM, RCM or RSM (depending on modelType) with the fit model. If at least one item's fit indices do not meet the given criteria, NULL is returned.
+if all fit indices meet the given criteria, a list containing
+ two elements is returned: the pattern that was tested an a list of type
+  RM, RCM or RSM (depending on modelType) with the fit model. If at least
+   one item's fit indices do not meet the given criteria, NULL is returned.
 }
 \description{
-checks the itemfit indices of a rasch model using the itemfit() function of eRm.
+checks the itemfit indices of a rasch model using the itemfit() function
+ of eRm.
 }
+\keyword{internal}

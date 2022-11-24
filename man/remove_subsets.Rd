@@ -4,15 +4,26 @@
 \alias{remove_subsets}
 \title{removes subsets or supersets of item combinations}
 \usage{
-remove_subsets(obj, keep_longest = T)
+remove_subsets(obj, keep_longest = TRUE)
 }
 \arguments{
-\item{obj}{either a list of vectors of item combinations (typically the passed_combos slot of an object of class passed_exRa or an object of class passed_exRa. If combos is an object of class passed_exRa, all process data (the process slot) and for any removed item combination also the fit models in the passed_models slot will be removed.}
+\item{obj}{either a list of vectors of item combinations (typically the
+passed_combos slot of an object of class passed_exRa or an object of
+ \link{passed_exRa-class}. If combos is an object of
+  \link{passed_exRa-class}, all process data (the process slot) and for
+   any removed item combination also the fit models in the passed_models
+    slot will be removed.}
 
-\item{keep_longest}{boolean; if TRUE, the respective superset is kept (and all subsets of these supersets are removed), if FALSE all subsets is kept (and supersets of these subsets are removed).}
+\item{keep_longest}{boolean; if TRUE, the respective superset is kept
+(and all subsets of these supersets are removed), if FALSE all subsets
+ is kept (and supersets of these subsets are removed).}
 }
 \value{
-depending of the class of obj, either a list of numeric vectors containing the remaining item combinations or an object of class passed_exRa with the remaining item combinations, fit models and information criteria, but without the process information.
+depending of the class of obj, either a list of numeric vectors
+ containing the remaining item combinations or an object of
+  \link{passed_exRa-class} with the remaining item combinations,
+   fit models and information criteria, but without the process
+    information.
 }
 \description{
 removes subsets or supersets of item combinations

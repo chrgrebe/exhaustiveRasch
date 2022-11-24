@@ -7,25 +7,34 @@
 all_rawscores(
   items = NULL,
   dset = NULL,
-  na.rm = T,
+  na.rm = TRUE,
   model = NULL,
   modelType = NULL
 )
 }
 \arguments{
-\item{items}{a numeric vector containing the index numbers of the items in dset that are used to fit the model}
+\item{items}{a numeric vector containing the index numbers of the items in
+dset that are used to fit the model}
 
 \item{dset}{a data.frame containing the data}
 
-\item{na.rm}{a boolean value. If TRUE, all cases with any NA are removed (na.omit). If FALSE, only cases with full NA responses are removed}
+\item{na.rm}{a boolean value. If TRUE, all cases with any NA are removed
+(na.omit). If FALSE, only cases with full NA responses are removed}
 
-\item{model}{a list of type RM, PCM or RSM (a previously fit model) matching the value of modelType. If model is provided, this model ist used. If NULL, a model is fit using dset and items.}
+\item{model}{a list of type RM, PCM or RSM (a previously fit model)
+matching the value of modelType. If model is provided, this model is used.
+ If NULL, a model is fit using dset and items.}
 
-\item{modelType}{a character value defining the rasch model to fit. Possible values: RM, PCM, RSM}
+\item{modelType}{a character value defining the rasch model to fit.
+Possible values: RM, PCM, RSM}
 }
 \value{
-if all possible raw scores occur in dset, a list containing two elements is returned: the pattern that was tested an a list of type RM, RCM or RSM (depending on modelType) with the fit model. If at least one raw score does not occur in dset, NULL is returned.
+if all possible raw scores occur in dset, a list containing two
+ elements is returned: the pattern that was tested an a list of type
+  RM, RCM or RSM (depending on modelType) with the fit model. If at least
+   one raw score does not occur in dset, NULL is returned.
 }
 \description{
 checks if all possible raw scores occur in the data.
 }
+\keyword{internal}

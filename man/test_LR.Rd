@@ -7,34 +7,52 @@
 test_LR(
   items = NULL,
   dset = NULL,
-  na.rm = T,
+  na.rm = TRUE,
   model = NULL,
   modelType = NULL,
   splitcr = "median",
   alpha = 0.1,
-  bonf = F
+  bonf = FALSE
 )
 }
 \arguments{
-\item{items}{a numeric vector containing the index numbers of the items in dset that are used to fit the model}
+\item{items}{a numeric vector containing the index numbers of the items
+in dset that are used to fit the model}
 
 \item{dset}{a data.frame containing the data}
 
-\item{na.rm}{a boolean value. If TRUE, all cases with any NA are removed (na.omit). If FALSE, only cases with full NA responses are removed}
+\item{na.rm}{a boolean value. If TRUE, all cases with any NA are removed
+(na.omit). If FALSE, only cases with full NA responses are removed}
 
-\item{model}{a list of type RM, PCM or RSM (a previously fit model) matching the value of modelType. If model is provided, this model ist used. If NULL, a model is fit using dset and items.}
+\item{model}{a list of type RM, PCM or RSM (a previously fit model)
+matching the value of modelType. If model is provided, this model is used.
+ If NULL, a model is fit using dset and items.}
 
-\item{modelType}{a character value defining the rasch model to fit. Possible values: RM, PCM, RSM}
+\item{modelType}{a character value defining the rasch model to fit.
+Possible values: RM, PCM, RSM}
 
-\item{splitcr}{as defined by eRm::LRtest. Split criterion for subject raw score splitting. "all.r" corresponds to a full raw score split, "median" uses the median as split criterion, "mean" performs a mean split. Optionally splitcr can also be a vector which assigns each person to a certain subgroup (e.g., following an external criterion). This vector can be numeric, character or a factor.}
+\item{splitcr}{as defined by eRm::LRtest. Split criterion for subject
+raw score splitting. "all.r" corresponds to a full raw score split,
+ "median" uses the median as split criterion, "mean" performs a
+  mean split. Optionally splitcr can also be a vector which assigns each
+   person to a certain subgroup (e.g., following an external criterion).
+    This vector can be numeric, character or a factor.}
 
-\item{alpha}{a numeric value for the alpha level. Will be ignored if use.pval is FALSE}
+\item{alpha}{a numeric value for the alpha level. Will be ignored if
+use.pval is FALSE}
 
-\item{bonf}{a boolean value wheter to use a Bonferroni correction. Will be ignored if use.pval is FALSE}
+\item{bonf}{a boolean value wheter to use a Bonferroni correction. Will be
+ignored if use.pval is FALSE}
 }
 \value{
-if the p-value of the test is not significant (above p=0.05) AND if no items were excluded in the test due to missing patterns (length of betalist == number of items), a list containing two elements is returned: the pattern that was tested an a list of type RM, RCM or RSM (depending on modelType) with the fit model. If the test is significant (p<0.05), NULL is returned.
+if the p-value of the test is not significant (above p=0.05) AND
+ if no items were excluded in the test due to missing patterns
+  (length of betalist == number of items), a list containing two elements
+   is returned: the pattern that was tested an a list of type RM, RCM or
+    RSM (depending on modelType) with the fit model. If the test is
+     significant, NULL is returned.
 }
 \description{
 runs Anderson's likelihood ration test using the LRtest() function of eRm.
 }
+\keyword{internal}

@@ -5,32 +5,38 @@
 \title{options for test_itemfit()}
 \usage{
 itemfit_control(
-  zstd = F,
-  msq = T,
-  outfits = T,
-  use.pval = T,
+  zstd = FALSE,
+  msq = TRUE,
+  outfits = TRUE,
+  use.pval = TRUE,
   lowerMSQ = 0.7,
   upperMSQ = 1.3,
-  lowerZ = -2,
-  upperZ = 2
+  lowerZ = -1.96,
+  upperZ = 1.96
 )
 }
 \arguments{
-\item{zstd}{a boolean value whether to check the z-standardised fit indices}
+\item{zstd}{a boolean value whether to check the standardised fit indices}
 
 \item{msq}{aboolean value whether to check the mean-squared fit indices}
 
-\item{outfits}{a boolean value whether to check outfit indices (in FALSE, only infits are checked)}
+\item{outfits}{a boolean value whether to check outfit indices
+(if FALSE, only infits are checked)}
 
-\item{use.pval}{a boolean value whether to exclude patterns with at least one item with significant p-value}
+\item{use.pval}{a boolean value whether to exclude combinations with at
+least one item with significant p-value}
 
-\item{lowerMSQ}{a numeric value for the lower bound for acceptable Infit (mean-squared fit indices)}
+\item{lowerMSQ}{a numeric value for the lower bound for acceptable Infit
+(mean-squared fit indices)}
 
-\item{upperMSQ}{a numeric value for the upper bound for acceptable Infit (mean-squared fit indices)}
+\item{upperMSQ}{a numeric value for the upper bound for acceptable Infit
+(mean-squared fit indices)}
 
-\item{lowerZ}{a numeric value for the lower bound for acceptable Infit (z-standardised fit indices)}
+\item{lowerZ}{a numeric value for the lower bound for acceptable Infit
+(standardised fit indices)}
 
-\item{upperZ}{a numeric value for the upper bound for acceptable Infit (z-standardised fit indices)}
+\item{upperZ}{a numeric value for the upper bound for acceptable Infit
+(standardised fit indices)}
 }
 \value{
 a list containing the options

@@ -6,22 +6,26 @@
 \usage{
 apply_combo_rules(
   full,
-  combo_length = 3:length(full),
+  combo_length = 4:length(full),
   forced_items = NULL,
   rules = NULL
 )
 }
 \arguments{
-\item{full}{a numeric vector containing the the source for the combinations, typically the indices of the items in the referring dataset}
+\item{full}{a numeric vector containing the the source for the
+combinations, typically the indices of the items in the referring dataset}
 
-\item{combo_length}{a numeric vector with the allowed lengths of the selected combinations (scale lengths)}
+\item{combo_length}{a numeric vector with the allowed lengths of the
+selected combinations (scale lengths)}
 
-\item{forced_items}{a numeric vector of items that are forced to occur in every selected combination}
+\item{forced_items}{a numeric vector of items that are forced to occur
+in every selected combination}
 
 \item{rules}{a list defining rules for combination selection}
 }
 \value{
-a list of numeric vectors containing the selected item combinations that match the defined rules of forced_items and/or rules.
+a list of numeric vectors containing the selected item combinations
+ that match the defined rules of forced_items and/or rules.
 }
 \description{
 selects item combinations based on defined rules

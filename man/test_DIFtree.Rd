@@ -2,36 +2,50 @@
 % Please edit documentation in R/test_DIFtree.R
 \name{test_DIFtree}
 \alias{test_DIFtree}
-\title{builds a raschtree using the raschtree or rstree function of the psychotree Package.}
+\title{builds a raschtree using the raschtree or rstree function of the
+ psychotree Package.}
 \usage{
 test_DIFtree(
   items = NULL,
   DIFvars = NULL,
   dset = NULL,
-  na.rm = T,
+  na.rm = TRUE,
   model = NULL,
   modelType = NULL,
   alpha = 0.1
 )
 }
 \arguments{
-\item{items}{a numeric vector containing the index numbers of the items in dset that are used to fit the model}
+\item{items}{a numeric vector containing the index numbers of the items in
+dset that are used to fit the model}
 
-\item{DIFvars}{a vector or a data.frame containing the external variable(s) to test for differential item functioning}
+\item{DIFvars}{a vector or a data.frame containing the external variable(s)
+to test for differential item functioning}
 
 \item{dset}{a data.frame containing the data}
 
-\item{na.rm}{a boolean value. If TRUE, all cases with any NA are removed (na.omit). If FALSE, only cases with full NA responses are removed}
+\item{na.rm}{a boolean value. If TRUE, all cases with any NA are removed
+(na.omit). If FALSE, only cases with full NA responses are removed}
 
-\item{model}{a list of type RM, PCM or RSM (a previously fit model) matching the value of modelType. If model is provided, this model ist used. If NULL, a model is fit using dset and items.}
+\item{model}{a list of type RM, PCM or RSM (a previously fit model)
+matching the value of modelType. If model is provided, this model is used.
+ If NULL, a model is fit using dset and items.}
 
-\item{modelType}{a character value defining the rasch model to fit. Possible values: RM, PCM, RSM}
+\item{modelType}{a character value defining the rasch model to fit.
+Possible values: RM, PCM, RSM}
 
-\item{alpha}{a numeric value for the alpha level. Will be ignored if use.pval is FALSE}
+\item{alpha}{a numeric value for the alpha level. Will be ignored if
+use.pval is FALSE}
 }
 \value{
-if none of the p-values is significant (above p=0.05), a list containing two elements is returned: the pattern that was tested an a list of type RM, RCM or RSM (depending on modelType) with the fit model. If there is at least one item with a significant p-value, NULL is returned.
+if none of the p-values is significant (above p=0.05), a list
+ containing two elements is returned: the pattern that was tested an a list
+  of type RM, RCM or RSM (depending on modelType) with the fit model.
+   If there is at least one item with a significant p-value,
+    NULL is returned.
 }
 \description{
-builds a raschtree using the raschtree or rstree function of the psychotree Package.
+builds a raschtree using the raschtree or rstree function of the
+ psychotree Package.
 }
+\keyword{internal}

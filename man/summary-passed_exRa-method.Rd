@@ -7,7 +7,7 @@
 \S4method{summary}{passed_exRa}(object)
 }
 \arguments{
-\item{object}{an object of class passed_exRa}
+\item{object}{an object of \link{passed_exRa-class}}
 }
 \description{
 summary function for class passed_exRa
