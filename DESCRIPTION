@@ -1,7 +1,7 @@
 Package: exhaustiveRasch
 Type: Package
 Title: Exhaustive search for Rasch models
-Version: 0.1.7
+Version: 0.1.8
 Author: Christian Grebe <christian.grebe@fh-bielefeld.de>, Mirko Schürmann <mirko.schuermann@upb.de>
 Maintainer: Christian Grebe <christian.grebe@fh-bielefeld.de>
 Description: Automation of the item selection Processes for rasch scales by means of exhaustive search for suitable Rasch models (dichotomous, partial credit, rating-scale) in a list of item-combinations. The item-combinations to test can be either all possible combinations or item-combinations can be defined by several rules (forced inclusion of specific items, exclusion of combinations, minimum/maximum items of a subset of items). Tests for model-and item-fit include ordering of the thresholds, itemfit-indices, likelihood ratio test, Martin Löf test, waldtest, person-item distribution and empirical representation of all raw scores. The tests, their ordering and their parameters can be defined. Item- and person-parameters are estimated as conditional likelihood estimation using functions of the package eRm and psychotree.

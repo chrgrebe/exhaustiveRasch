@@ -4,7 +4,7 @@
 \alias{remove_subsets}
 \title{removes subsets or supersets of item combinations}
 \usage{
-remove_subsets(obj, keep_longest = TRUE)
+remove_subsets(obj, keep_longest = FALSE)
 }
 \arguments{
 \item{obj}{either a list of vectors of item combinations (typically the

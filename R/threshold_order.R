@@ -45,7 +45,7 @@ threshold_order <- function(items=NULL,
     sorted <- TRUE
     for (i in 1:no_items){
       if (is.unsorted(eRm::thresholds(model)$threshtable$'1'[i,
-                                                             2:no_thres+1]==TRUE)){sorted <- FALSE}
+                                                             2:(no_thres+1)]==TRUE)){sorted <- FALSE}
     }
     if (sorted==TRUE){return(list(items, model))}
   }

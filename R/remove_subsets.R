@@ -1,5 +1,5 @@
 remove_subsets <- function(obj,
-                           keep_longest=TRUE){
+                           keep_longest=FALSE){
   #' removes subsets or supersets of item combinations
   #' @param obj either a list of vectors of item combinations (typically the
   #'  passed_combos slot of an object of class passed_exRa or an object of
