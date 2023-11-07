@@ -4,7 +4,8 @@ test_mloef <- function(items=NULL,
                        model=NULL,
                        modelType=NULL,
                        splitcr="median",
-                       alpha=0.1){
+                       alpha=0.1,
+                       estimation_param=NULL){
   #' runs Martin-Loef Test using the MLoef() function of eRm.
   #' @param items a numeric vector containing the index numbers of the items in
   #'  dset that are used to fit the model
@@ -23,6 +24,8 @@ test_mloef <- function(items=NULL,
   #'    define groups used for the Martin-Löf Test.
   #' @param alpha a numeric value for the alpha level. Will be ignored if
   #'  use.pval is FALSE
+  #' @param estimation_param options for parameter estimation using
+  #' \link{estimation_control}
   #' @return if the p-value of the test is not significant (above p=0.05),
   #'  a list containing two elements is returned: the pattern that was tested
   #'   an a list of type RM, RCM or RSM (depending on modelType) with the fit
@@ -39,15 +42,19 @@ test_mloef <- function(items=NULL,
     ds_test <- dset[items]
     if (na.rm==TRUE){ds_test<- stats::na.omit(ds_test)
     } else{ds_test <- ds_test[rowSums(is.na(ds_test)) < ncol(ds_test)-1, ]}
-    try(suppressWarnings({
-      model <- get(modelType)(ds_test, se=TRUE)
-    }), silent=TRUE)
+    #try(suppressWarnings({
+    #  model <- get(modelType)(ds_test, se=TRUE)
+    #}), silent=TRUE)
+    model <- fit_rasch(X=ds_test, modelType=modelType,
+                       estimation_param=estimation_param)
   } else{
     items <- which(colnames(dset) %in% colnames(model$X))
   }
 
   if (exists("model")==TRUE){
-    try(ml <- eRm::MLoef(model, splitcr=splitcr), silent=TRUE)
+    #try(ml <- eRm::MLoef(model, splitcr=splitcr), silent=TRUE)
+    try(ml <- Mloef(model, splitcr=splitcr, estimation_param=estimation_param),
+        silent=TRUE)
     if (exists("ml")==TRUE){
       if (ml$p.value >=alpha){
         return(list(items, model))

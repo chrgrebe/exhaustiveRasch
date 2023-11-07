@@ -6,12 +6,11 @@
 \usage{
 exhaustive_tests(
   dset,
-  modelType = "RM",
+  modelType = "PCM",
   combos = NULL,
   scale_length = 4:length(dset),
   na.rm = TRUE,
   tests = c("test_itemfit"),
-  itemfit_param = NULL,
   splitcr_mloef = NULL,
   splitcr_LR = NULL,
   splitcr_wald = NULL,
@@ -21,9 +20,13 @@ exhaustive_tests(
   gap_prop = 0,
   extremes = TRUE,
   max_contrast = NULL,
-  ignoreCores = 0,
+  PSI = 0.8,
+  ICs = FALSE,
+  ignoreCores = 1,
   silent = FALSE,
-  ...
+  ...,
+  itemfit_param = NULL,
+  estimation_param = NULL
 )
 }
 \arguments{
@@ -56,9 +59,6 @@ Possible values: all_rawscores, test_itemfit, test_LR, test_mloef,
  test_waldtest, threshold_order, test_DIFtree, test_personsItems,
   test_respca. Tests will be performed in the given order.}
 
-\item{itemfit_param}{a list from \link{itemfit_control} with options for
-\link{test_itemfit}}
-
 \item{splitcr_mloef}{as defined by eRm::MLoef: Split criterion to define
 the item groups. "median" and "mean" split items in two groups based on
  their items' raw scores. splitcr can also be a vector of length k
@@ -79,8 +79,8 @@ subject raw score splitting. median uses the median as split criterion,
    an external criterion). This vector can be numeric, character or
     a factor.}
 
-\item{alpha}{a numeric value for the alpha level. Will be ignored for
-\link{test_itemfit} if use.pval in \link{itemfit_control} is FALSE}
+\item{alpha}{a numeric value for the alpha level. Will be ignored
+for \link{test_itemfit} if use.pval in \link{itemfit_control} is FALSE}
 
 \item{bonf}{a boolean value wheter to use a Bonferroni correction.
 Will be ignored if use.pval is FALSE}
@@ -101,17 +101,30 @@ item/threshold locations left of the 2nd lowest and right of the
 factor in the principal components analysis of the standardised residuals.
 Only relevant, if test_respca is one of the tests.}
 
+\item{PSI}{a numeric value defining the minimum value for the person-
+separation-index (separation reliablility).}
+
+\item{ICs}{a boolean value defining whether to compute information criteria
+for the remaining models. You can add these later to the object of class
+ \link{passed_exRa-class} by using the \link{add_ICs} function.}
+
 \item{ignoreCores}{a numeric value for the number of cpu cores to hold out
 in parallelizing the test run.}
 
 \item{silent}{a boolean value. If set to TRUE, all output during the
 analysis will be suppressed.}
 
-\item{...}{options for \link{itemfit_control} can be passed directly to
-this function.}
+\item{...}{arguments for \link{itemfit_control}
+and \link{estimation_control}can be passed directly to this function.}
+
+\item{itemfit_param}{a list from \link{itemfit_control} with options
+for \link{test_itemfit}}
+
+\item{estimation_param}{options for parameter estimation using
+\link{estimation_control}}
 }
 \value{
-an object on \link{passed_exRa-class}.
+an object of \link{passed_exRa-class}.
 }
 \description{
 (main function) Runs exhaustive tests

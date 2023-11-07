@@ -13,13 +13,13 @@ itemfit_control <- function(zstd=FALSE,
   #'  least one item with significant p-value
   #' @param outfits a boolean value whether to check outfit indices
   #'  (if FALSE, only infits are checked)
-  #' @param lowerMSQ a numeric value for the lower bound for acceptable Infit
+  #' @param lowerMSQ a numeric value for the lower bound for acceptable fit
   #'  (mean-squared fit indices)
-  #' @param upperMSQ a numeric value for the upper bound for acceptable Infit
+  #' @param upperMSQ a numeric value for the upper bound for acceptable fit
   #'  (mean-squared fit indices)
-  #' @param lowerZ a numeric value for the lower bound for acceptable Infit
+  #' @param lowerZ a numeric value for the lower bound for acceptable fit
   #'  (standardised fit indices)
-  #' @param upperZ a numeric value for the upper bound for acceptable Infit
+  #' @param upperZ a numeric value for the upper bound for acceptable fit
   #'  (standardised fit indices)
   #' @return a list containing the options
   #' @export

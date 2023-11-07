@@ -11,7 +11,8 @@ test_mloef(
   model = NULL,
   modelType = NULL,
   splitcr = "median",
-  alpha = 0.1
+  alpha = 0.1,
+  estimation_param = NULL
 )
 }
 \arguments{
@@ -38,6 +39,9 @@ item groups. "median" and "mean" split items in two groups based on their
 
 \item{alpha}{a numeric value for the alpha level. Will be ignored if
 use.pval is FALSE}
+
+\item{estimation_param}{options for parameter estimation using
+\link{estimation_control}}
 }
 \value{
 if the p-value of the test is not significant (above p=0.05),

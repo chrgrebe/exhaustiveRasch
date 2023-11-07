@@ -5,7 +5,8 @@ test_LR <- function(items=NULL,
                     modelType=NULL,
                     splitcr="median",
                     alpha=0.1,
-                    bonf=FALSE){
+                    bonf=FALSE,
+                    estimation_param=NULL){
   #' runs Anderson's likelihood ration test using the LRtest() function of eRm.
   #' @param items a numeric vector containing the index numbers of the items
   #'  in dset that are used to fit the model
@@ -25,8 +26,10 @@ test_LR <- function(items=NULL,
   #'      This vector can be numeric, character or a factor.
   #' @param alpha a numeric value for the alpha level. Will be ignored if
   #'  use.pval is FALSE
-  #' @param bonf a boolean value wheter to use a Bonferroni correction. Will be
+  #' @param bonf a boolean value whether to use a Bonferroni correction. Will be
   #'  ignored if use.pval is FALSE
+  #' @param estimation_param options for parameter estimation using
+  #' \link{estimation_control}
   #' @return if the p-value of the test is not significant (above p=0.05) AND
   #'  if no items were excluded in the test due to missing patterns
   #'   (length of betalist == number of items), a list containing two elements
@@ -48,17 +51,24 @@ test_LR <- function(items=NULL,
   if (is.null(model)){
     if (na.rm==TRUE){ds_test<- stats::na.omit(ds_test)
     } else{ds_test <- ds_test[rowSums(is.na(ds_test)) < ncol(ds_test)-1, ]}
-    try(suppressWarnings({
-      model <- get(modelType)(ds_test, se=TRUE)
-    }), silent=TRUE)
+    #try(suppressWarnings({
+    #  model <- get(modelType)(ds_test, se=TRUE)
+    #}), silent=TRUE)
+    model <- fit_rasch(X=ds_test, modelType=modelType,
+                       estimation_param=estimation_param)
   } else{
     items <- which(colnames(dset) %in% colnames(model$X))
   }
 
-  try(suppressWarnings({lr <- eRm::LRtest(model, splitcr=splitcr)}),
-      silent=TRUE)
+  #    try(suppressWarnings({lr <- eRm::LRtest(
+  #      model, splitcr=splitcr)}),
+  #        silent=TRUE)
+
+  try(suppressWarnings({lr <- LRtest(
+    model, splitcr=splitcr, estimation_param= estimation_param)}),
+    silent=TRUE)
   if (exists("lr")==TRUE){
-    if (lr$pvalue >=local_alpha & length(lr$betalist[[1]])==length(ds_test)){
+    if (lr$pvalue >=local_alpha & length(lr$X[1,])==length(lr$X.list[[1]][1,])){
       return(list(items, model))
     }
   }

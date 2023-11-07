@@ -1,18 +1,18 @@
 Package: exhaustiveRasch
 Type: Package
-Title: Exhaustive search for Rasch models
-Version: 0.1.8
-Author: Christian Grebe <christian.grebe@fh-bielefeld.de>, Mirko Schürmann <mirko.schuermann@upb.de>
-Maintainer: Christian Grebe <christian.grebe@fh-bielefeld.de>
+Title: Item selection and exhaustive search for Rasch models
+Version: 0.2.1
+Author: Christian Grebe <christian.grebe@hsbi.de>, Mirko Schürmann <mirko.schuermann@upb.de>
+Maintainer: Christian Grebe <christian.grebe@hsbi.de>
 Description: Automation of the item selection Processes for rasch scales by means of exhaustive search for suitable Rasch models (dichotomous, partial credit, rating-scale) in a list of item-combinations. The item-combinations to test can be either all possible combinations or item-combinations can be defined by several rules (forced inclusion of specific items, exclusion of combinations, minimum/maximum items of a subset of items). Tests for model-and item-fit include ordering of the thresholds, itemfit-indices, likelihood ratio test, Martin Löf test, waldtest, person-item distribution and empirical representation of all raw scores. The tests, their ordering and their parameters can be defined. Item- and person-parameters are estimated as conditional likelihood estimation using functions of the package eRm and psychotree.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-Imports: eRm, psychotree, parallel, stats, utils, psych, tictoc, methods
+Imports: eRm, psychotree, parallel, stats, utils, psych, tictoc, methods, psychotools, arrangements
 Depends: R (>= 3.5.0)
 Suggests: knitr, rmarkdown, testthat (>= 3.0.0)
-VignetteBuilder: knitr
 Config/testthat/edition: 3
-RoxygenNote: 7.2.2
+VignetteBuilder: knitr
+RoxygenNote: 7.2.3
 URL: https://github.com/chrgrebe/exhaustiveRasch
 BugReports: https://github.com/chrgrebe/exhaustiveRasch/issues

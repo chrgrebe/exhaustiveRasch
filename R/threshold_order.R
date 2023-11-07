@@ -2,7 +2,8 @@ threshold_order <- function(items=NULL,
                             dset=NULL,
                             na.rm=TRUE,
                             model=NULL,
-                            modelType=NULL){
+                            modelType=NULL,
+                            estimation_param=NULL){
   #' checks for disordered thresholds in rasch models
   #' @param items a numeric vector containing the index numbers of the items in
   #'  dset that are used to fit the model
@@ -14,6 +15,8 @@ threshold_order <- function(items=NULL,
   #'   If NULL, a model is fit using dset and items.
   #' @param modelType a character value defining the rasch model to fit.
   #'  Possible values: RM, PCM, RSM
+  #' @param estimation_param options for parameter estimation using
+  #' \link{estimation_control}
   #' @return if there are no items with disordered thresholds in the model,
   #'  a list containing two elements is returned: the pattern that was tested an
   #'   a list of type RM, RCM or RSM (depending on modelType) with the fit

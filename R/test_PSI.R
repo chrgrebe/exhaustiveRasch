@@ -1,10 +1,10 @@
-test_respca <- function(items=NULL,
-                        dset=NULL,
-                        na.rm=TRUE,
-                        model=NULL,
-                        modelType=NULL,
-                        max_contrast=1.5,
-                        estimation_param=NULL){
+test_PSI <- function(items=NULL,
+                     dset=NULL,
+                     na.rm=TRUE,
+                     model=NULL,
+                     modelType=NULL,
+                     PSI=NULL,
+                     estimation_param=NULL){
   #' runs a principal component analysis (PCA) on the residuals of the
   #'  rasch model.
   #' @param items a numeric vector containing the index numbers of the items
@@ -14,8 +14,8 @@ test_respca <- function(items=NULL,
   #' @param dset a data.frame containing the data
   #' @param na.rm a boolean value. If TRUE, all cases with any NA are removed
   #'  (na.omit). If FALSE, only cases with full NA responses are removed
-  #' @param max_contrast a numeric value defining the maximum loading of a
-  #'  factor in the principal components analysis of the standardised residuals.
+  #' @param PSI a numeric value defining the minimum value for the person-
+  #' separation-index (separation reliablility).
   #' @param estimation_param options for parameter estimation using
   #' \link{estimation_control}
   #' @return if the maximum eigenvalue of the contrasts of the pca
@@ -47,9 +47,8 @@ test_respca <- function(items=NULL,
   if (exists("model")==TRUE){
     try(p.par <- eRm::person.parameter(model), silent=TRUE)
     if (exists("p.par")){
-      res <- eRm::itemfit(p.par)$st.res
-      pca <- psych::pca(res, nfactors = length(items), rotate = "none")
-      if (max(pca$values<max_contrast)){
+      res <- eRm::SepRel(p.par)$sep.rel
+      if (!res<PSI){
         return(list(items, model))
       }
     }

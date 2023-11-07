@@ -12,7 +12,8 @@ test_personsItems(
   model = NULL,
   modelType = NULL,
   gap_prop = 0,
-  extremes = TRUE
+  extremes = TRUE,
+  estimation_param = NULL
 )
 }
 \arguments{
@@ -38,7 +39,10 @@ for the minimum proportion of neighboring person parameters with an
 
 \item{extremes}{a boolean value indicating if a check for the
 item/threshold locations left of the 2nd lowest and right of the 2nd
- highest person parameter}
+ highest person parameter.}
+
+\item{estimation_param}{options for parameter estimation using
+\link{estimation_control}}
 }
 \value{
 if the criteria are met, a list containing two elements is

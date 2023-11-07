@@ -2,7 +2,8 @@ no_test <- function(items=NULL,
                     dset=NULL,
                     na.rm=TRUE,
                     model=NULL,
-                    modelType=NULL){
+                    modelType=NULL,
+                    estimation_param=NULL){
   #' no test will be conducted, but rasch models (RM, PCM, RSM - depending
   #'  on modelType) will be fit
   #' @param items a numeric vector containing the index numbers of the items in
@@ -15,6 +16,8 @@ no_test <- function(items=NULL,
   #'   used. If NULL, a model is fit using dset and items.
   #' @param modelType a character value defining the rasch model to fit.
   #'  Possible values: RM, PCM, RSM
+  #' @param estimation_param options for parameter estimation using
+  #' \link{estimation_control}
   #' @return if there are no items with disordered thresholds in the model, a
   #'  list containing two elements is returned: the pattern that was tested and
   #'   a list of type RM, RCM or RSM (depending on modelType) with the fit
@@ -32,9 +35,11 @@ no_test <- function(items=NULL,
     ds_test <- dset[items]
     if (na.rm==TRUE){ds_test<- stats::na.omit(ds_test)
     } else{ds_test <- ds_test[rowSums(is.na(ds_test)) < ncol(ds_test)-1, ]}
-    try(suppressWarnings({
-      model <- get(modelType)(ds_test, se=TRUE)
-    }), silent=TRUE)
+    #try(suppressWarnings({
+    #  model <- get(modelType)(ds_test, se=TRUE)
+    #}), silent=TRUE)
+    model <- fit_rasch(X=ds_test, modelType=modelType,
+                       estimation_param=estimation_param)
   } else{
     items <- which(colnames(dset) %in% colnames(model$X))
   }

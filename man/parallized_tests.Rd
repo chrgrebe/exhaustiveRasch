@@ -21,8 +21,10 @@ parallized_tests(
   DIFvars,
   gap_prop,
   max_contrast,
+  PSI,
   extremes,
   ignoreCores,
+  estimation_param,
   ...
 )
 }
@@ -88,6 +90,9 @@ item/threshold locations left of the 2nd lowest and right of the
 
 \item{ignoreCores}{a numeric value for the number of cpu cores to hold out
 in parallelizing the test run.}
+
+\item{estimation_param}{options for parameter estimation using
+\link{estimation_control}}
 
 \item{...}{options for \link{itemfit_control} can be passed directly
 to this function.}

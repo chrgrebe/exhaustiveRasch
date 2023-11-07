@@ -12,7 +12,8 @@ test_DIFtree(
   na.rm = TRUE,
   model = NULL,
   modelType = NULL,
-  alpha = 0.1
+  alpha = 0.1,
+  estimation_param = NULL
 )
 }
 \arguments{
@@ -36,6 +37,9 @@ Possible values: RM, PCM, RSM}
 
 \item{alpha}{a numeric value for the alpha level. Will be ignored if
 use.pval is FALSE}
+
+\item{estimation_param}{options for parameter estimation using
+\link{estimation_control}}
 }
 \value{
 if none of the p-values is significant (above p=0.05), a list

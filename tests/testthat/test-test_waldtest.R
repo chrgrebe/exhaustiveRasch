@@ -12,7 +12,9 @@ testthat::test_that("test_waldtest: inapprpriate response patterns",{
   testthat::expect_equal(length(exhaustiveRasch::test_waldtest(items=1:5,
                                     dset=ADL, na.rm=TRUE,
                                     modelType="RM",
-                                    bonf=TRUE)),
+                                    bonf=TRUE,
+                                    estimation_param=
+                                      estimation_control(est="eRm"))),
                expected=0)})
 
 
@@ -28,23 +30,31 @@ data(ADL)
 testthat::test_that("test_waldtest: lowest p-value=0.519",{
   testthat::expect_equal(length(
     exhaustiveRasch::test_waldtest(items=c(6,7,12,14,15), dset=ADL, na.rm=TRUE,
-                                    modelType="RM", bonf=FALSE)),
+                                    modelType="RM", bonf=FALSE,
+                                   estimation_param=
+                                     estimation_control(est="psychotools"))),
                expected=2)})
 
 data(ADL)
 testthat::test_that("test_waldtest: lowest p-value=0.519; na.rm=FALSE",{
   testthat::expect_equal(length(
     exhaustiveRasch::test_waldtest(items=c(6,7,12,14,15), dset=ADL, na.rm=FALSE,
-                                   modelType="RM", bonf=FALSE)),
+                                   modelType="RM", bonf=FALSE,
+                                   estimation_param=
+                                     estimation_control(est="psychotools"))),
     expected=2)})
 
 # list of 2 is returned (item combinations and fit rasch model)
 data(ADL)
 firstrun <- exhaustiveRasch::test_waldtest(
-  items=c(6,7,12,14,15), dset=ADL, na.rm=TRUE,  modelType="RM", bonf=FALSE)
+  items=c(6,7,12,14,15), dset=ADL, na.rm=TRUE,  modelType="RM", bonf=FALSE,
+  estimation_param=
+    estimation_control(est="psychotools"))
 testthat::test_that("test_waldtest: lowest p-value=0.519; pre-fit model
                     in the 'items' parameter",{
   testthat::expect_equal(length(
     exhaustiveRasch::test_waldtest(items=firstrun, dset=ADL, na.rm=TRUE,
-                                              modelType="RM", bonf=F)),
+                                              modelType="RM", bonf=F,
+                                   estimation_param=
+                                     estimation_control(est="psychotools"))),
                          expected=2)})

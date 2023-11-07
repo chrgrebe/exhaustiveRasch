@@ -4,7 +4,8 @@ test_DIFtree <- function(items=NULL,
                          na.rm=TRUE,
                          model=NULL,
                          modelType=NULL,
-                         alpha=0.1){
+                         alpha=0.1,
+                         estimation_param=NULL){
 
   #' builds a raschtree using the raschtree or rstree function of the
   #'  psychotree Package.
@@ -22,6 +23,8 @@ test_DIFtree <- function(items=NULL,
   #'  Possible values: RM, PCM, RSM
   #' @param alpha a numeric value for the alpha level. Will be ignored if
   #'  use.pval is FALSE
+  #' @param estimation_param options for parameter estimation using
+  #' \link{estimation_control}
   #' @return if none of the p-values is significant (above p=0.05), a list
   #'  containing two elements is returned: the pattern that was tested an a list
   #'   of type RM, RCM or RSM (depending on modelType) with the fit model.
@@ -40,12 +43,15 @@ test_DIFtree <- function(items=NULL,
   if (is.null(model)){
     if (na.rm==TRUE){ds_test<- stats::na.omit(ds_test)
     } else{ds_test <- ds_test[rowSums(is.na(ds_test)) < ncol(ds_test)-1, ]}
-    try(suppressWarnings({
-      model <- get(modelType)(ds_test, se=TRUE)
-      items <- which(colnames(dset) %in% colnames(model$X))}), silent=TRUE)
+    #try(suppressWarnings({
+    #  model <- get(modelType)(ds_test, se=TRUE)
+    #}), silent=TRUE)
+    model <- fit_rasch(X=ds_test, modelType=modelType,
+                       estimation_param=estimation_param)
+    items <- which(colnames(dset) %in% colnames(model$X))
   }
 
-  ds_DIF <-  ds_DIF <- merge(ds_test, DIFvars, by=0)
+  ds_DIF <- merge(ds_test, DIFvars, by=0)
   ds_DIF$Row.names <- NULL
   ds_DIF$rasch <- as.matrix(ds_DIF[ , seq_len(length(items))])
   ds_DIF <- ds_DIF[ , -(seq_len(length(items)))]

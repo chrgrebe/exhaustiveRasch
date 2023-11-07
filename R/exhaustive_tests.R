@@ -1,10 +1,9 @@
 exhaustive_tests <- function(dset,
-                             modelType="RM",
+                             modelType="PCM",
                              combos=NULL,
                              scale_length=4:length(dset),
                              na.rm=TRUE,
                              tests=c("test_itemfit"),
-                             itemfit_param=NULL,
                              splitcr_mloef=NULL,
                              splitcr_LR=NULL,
                              splitcr_wald=NULL,
@@ -14,9 +13,14 @@ exhaustive_tests <- function(dset,
                              gap_prop=0,
                              extremes=TRUE,
                              max_contrast=NULL,
-                             ignoreCores=0,
+                             PSI=0.8,
+                             ICs=FALSE,
+                             ignoreCores=1,
                              silent=FALSE,
-                             ...){
+                             ...,
+                             itemfit_param=NULL,
+                             estimation_param=NULL
+){
   #' (main function) Runs exhaustive tests
   #' @param dset a data.frame containing the data
   #' @param modelType a character value defining the rasch model to fit.
@@ -41,8 +45,6 @@ exhaustive_tests <- function(dset,
   #'  Possible values: all_rawscores, test_itemfit, test_LR, test_mloef,
   #'   test_waldtest, threshold_order, test_DIFtree, test_personsItems,
   #'    test_respca. Tests will be performed in the given order.
-  #' @param itemfit_param a list from \link{itemfit_control} with options for
-  #'  \link{test_itemfit}
   #' @param splitcr_LR as defined by eRm::LRtest. Split criterion for subject
   #'  raw score splitting. "all.r" corresponds to a full raw score split,
   #'   "median" uses the median as split criterion, "mean" performs a
@@ -60,8 +62,8 @@ exhaustive_tests <- function(dset,
   #'    vector which assigns each person to a certain subgroup (e.g., following
   #'     an external criterion). This vector can be numeric, character or
   #'      a factor.
-  #' @param alpha a numeric value for the alpha level. Will be ignored for
-  #'  \link{test_itemfit} if use.pval in \link{itemfit_control} is FALSE
+  #' @param alpha a numeric value for the alpha level. Will be ignored
+  #' for \link{test_itemfit} if use.pval in \link{itemfit_control} is FALSE
   #' @param bonf a boolean value wheter to use a Bonferroni correction.
   #'  Will be ignored if use.pval is FALSE
   #' @param DIFvars a data.frame containing the variables and their data to use
@@ -76,13 +78,22 @@ exhaustive_tests <- function(dset,
   #' @param max_contrast a numeric value defining the maximum loading of a
   #'  factor in the principal components analysis of the standardised residuals.
   #'  Only relevant, if test_respca is one of the tests.
+  #' @param PSI a numeric value defining the minimum value for the person-
+  #' separation-index (separation reliablility).
+  #' @param ICs a boolean value defining whether to compute information criteria
+  #' for the remaining models. You can add these later to the object of class
+  #'  \link{passed_exRa-class} by using the \link{add_ICs} function.
   #' @param ignoreCores a numeric value for the number of cpu cores to hold out
   #'  in parallelizing the test run.
   #' @param silent a boolean value. If set to TRUE, all output during the
   #'  analysis will be suppressed.
-  #' @param ... options for \link{itemfit_control} can be passed directly to
-  #'  this function.
-  #' @return an object on \link{passed_exRa-class}.
+  #' @param ... arguments for \link{itemfit_control}
+  #'  and \link{estimation_control}can be passed directly to this function.
+  #' @param itemfit_param a list from \link{itemfit_control} with options
+  #' for \link{test_itemfit}
+  #' @param estimation_param options for parameter estimation using
+  #' \link{estimation_control}
+  #' @return an object of \link{passed_exRa-class}.
   #' @export
   #' @examples
   #'   passed <- exhaustive_tests(ADL[c(1,4,6,7,10,14,15)],
@@ -91,16 +102,17 @@ exhaustive_tests <- function(dset,
 
   if (na.rm==FALSE & "test_mloef" %in% tests){
     na.rm <- TRUE
-    warning("test_mloef is part of the test. This test does not currently allow
-            for missing values, so na.rm was set TRUE for all tests.")
+    cat(paste("test_mloef is part of the test. This test does not currently
+    allow for missing values, so na.rm was set TRUE for all tests.", "\n"))
   }
 
   if ("threshold_order" %in% tests & modelType=="RM"){
     tests <- tests[-which("threshold_order" %in% tests)]
-    warning("threshold_order is part of the test. This test is not meaningful
+    cat(paste("threshold_order is part of the test. This test is not meaningful
             for the dichotomous rasch model and was removed from the list of
-            tests.")
+            tests.", "\n"))
   }
+
 
   if (length(tests)>0){ # stop execution, if no test is left
     # loop over item combinations with scale length j
@@ -108,26 +120,65 @@ exhaustive_tests <- function(dset,
     passed_combos <- list()
     process <- data.frame()
 
-    # pass optional arguments for itemfit to itemfit_control()
+    # pass optional arguments to itemfit_control() and estimation_control()
     extraArgs <- list(...)
     if (length(extraArgs)) {
-      allowed_args <- names(formals(itemfit_control))
+      allowed_args <- names(c(formals(itemfit_control),
+                              formals(estimation_control)))
       indx <- match(names(extraArgs), allowed_args, nomatch = 0L)
       if (any(indx == 0L))
-        stop(gettextf("Argument %s not matched",
-                      names(extraArgs)[indx == 0L]),
-             domain = NA)
+        cat(paste(gettextf("Argument %s was ignored. It is neither an argument
+        of itemfit_control() nor of estimation_control() and could not be
+                           matched", names(extraArgs)[indx == 0L],
+                           domain = NA)), "\n")
     }
-    itemfit_param <- itemfit_control(...)
-    if (!missing(itemfit_param)){itemfit_param[names(
-      itemfit_param)] <- itemfit_param}
+    itemfit_extraArgs <- extraArgs[intersect(
+      names(extraArgs), names(formals(itemfit_control)))]
+    estimation_extraArgs <- extraArgs[intersect(
+      names(extraArgs), names(formals(estimation_control)))]
 
+    if (missing(itemfit_param)){
+      itemfit_param <- do.call(itemfit_control, itemfit_extraArgs)
+    }
+    #    if (!missing(itemfit_param)){itemfit_param[names(
+    #      itemfit_param)] <- itemfit_param
+    #    }
+    if (missing(estimation_param)){
+      estimation_param <- do.call(estimation_control, estimation_extraArgs)
+    }
+    #    if (!missing(estimation_param)){estimation_param[names(
+    #      estimation_param)] <- estimation_param
+    #    }
+
+    if(!estimation_param$se & ("test_personsItems" %in% tests |
+                               "threshold_order" %in% tests)){
+      estimation_param$se <-T
+      cat(paste("at least one out of 'test_personsItems' or 'threshold_order'
+      ware part of the tests and argument 'se' of the estimation arguments
+      was FALSE. These tests require hessians, so argument 'se' was set to
+              TRUE for all tests.", "\n"))
+    }
+
+    if(!estimation_param$est=="eRm" & modelType=="RSM"){
+      estimation_param$est <- "eRm"
+      cat(paste("estimation of RSM models using est='psychotools' is not yet
+              supported. Argument 'est' was set to 'eRm'",
+                "\n"))
+    }
 
     if (!is.null(combos)){
       scale_length <-1:1
       if (inherits(combos,"passed_exRa")){
-        current_models <- combos@passed_models
-        combos <- combos@passed_combos
+        if(estimation_param$se==T & is.null(combos@passed_models[[1]]$hessian)){
+          current_models <- NULL
+          combos <- combos@passed_combos
+          cat(paste("parameter 'se' of the estimation parameters is TRUE, but
+          the pre-fit models provided by 'combos' did not contain hessians. All
+          models will be re-estimated."), "\n")
+        }else{
+          current_models <- combos@passed_models
+          combos <- combos@passed_combos
+        }
       } else{
         current_models <- NULL
       }
@@ -182,7 +233,9 @@ exhaustive_tests <- function(dset,
                                            gap_prop=gap_prop,
                                            extremes=extremes,
                                            max_contrast=max_contrast,
-                                           ignoreCores=ignoreCores)
+                                           PSI=PSI,
+                                           ignoreCores=ignoreCores,
+                                           estimation_param=estimation_param)
         if (length(current_return)>0 & !is.character(current_return)){
           if (tests[l] %in% c("all_rawscores", "test_pca", "rel_coefs")){
             current_combos <- current_return
@@ -230,25 +283,23 @@ exhaustive_tests <- function(dset,
 
     if (length(process)>0){colnames(process) <- c(
       "Scale-Length", "Combinations", tests)}
-    if (length(passed_combos)>0 & length(passed_models)>0){
-      information_criteria <- lapply(
-        seq_len(length(passed_models)),
-        function(x) eRm::IC(
-          eRm::person.parameter(passed_models[[x]]))$ICtable[3,3:5])
-    }
 
     colnames(timings) <- c("Scale length", "Test", "Runtime")
     final_list <- methods::new("passed_exRa", process=process,
                                passed_combos=passed_combos,
                                passed_models=passed_models,
-                               "IC"=as.data.frame(
-                                 do.call(rbind, information_criteria)),
+                               "IC"=data.frame(),
                                "data"=dset, "timings"=timings)
+    if (length(passed_combos)>0 & length(passed_models)>0 & ICs==TRUE){
+      final_list <- add_ICs(final_list, ignoreCores=ignoreCores)
+    }
+
     tictoc::toc(log = TRUE, quiet = TRUE)
     log.lst <- tictoc::tic.log(format = FALSE)
     tim <- round(unlist(lapply(log.lst, function(x) x$toc - x$tic)),2)
     timings <- rbind(timings, c(0, "constructing passed_exRa objekt", tim))
     final_list@timings <- timings
+
     return(final_list)
   }
 

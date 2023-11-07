@@ -1,3 +1,10 @@
+# exhaustiveRasch 0.2.0
+This release adds some new functionality.
+
+### New feature
+- **new parameter in main function: est**. Setting the parameter to "psychotools" will speed up model estimation by using the estimation functions of the package of the same name. Use est=eRm" for the old behaviour."
+
+
 # exhaustiveRasch 0.1.8
 This release adds some new (changed) functionality.
 
@@ -5,7 +12,7 @@ This release adds some new (changed) functionality.
 - **new function: add_ICs()**. Passing an object of class *passed_exRa* will add information criteria in the @IC slot for all models in the @passed_models slot.
 
 ### Bug fixes
-- in some cases unordered thersholds were not correctly recognized when using *threshold_order* as one of the tests in *exhaustive_tests()*. This bug was fixed.
+- in some cases unordered thresholds were not correctly recognized when using *threshold_order* as one of the tests in *exhaustive_tests()*. This bug was fixed.
 - several minor bug fixes
 
 ### Other changes

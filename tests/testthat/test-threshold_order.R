@@ -5,7 +5,9 @@ testthat::test_that("threshold_order 1",{
   testthat::expect_equal(length(
     exhaustiveRasch::threshold_order(items=1:5,
                                      dset=InterprofessionalCollaboration,
-                                     na.rm=T, modelType="PCM")),
+                                     na.rm=T, modelType="PCM",
+                                     estimation_param=
+                                       estimation_control(est="eRm"))),
     expected=2)})
 
 data("InterprofessionalCollaboration")
@@ -13,7 +15,9 @@ testthat::test_that("threshold_order 1; na.rm=FALSE",{
   testthat::expect_equal(length(
     exhaustiveRasch::threshold_order(items=1:5,
                                      dset=InterprofessionalCollaboration,
-                                     na.rm=FALSE, modelType="PCM")),
+                                     na.rm=FALSE, modelType="PCM",
+                                     estimation_param=
+                                       estimation_control(est="psychotools"))),
     expected=2)})
 
 
@@ -21,12 +25,16 @@ testthat::test_that("threshold_order 1; na.rm=FALSE",{
 data("InterprofessionalCollaboration")
 firstrun <- exhaustiveRasch::threshold_order(items=1:5,
                                             dset=InterprofessionalCollaboration,
-                                            na.rm=T, modelType="PCM")
+                                            na.rm=T, modelType="PCM",
+                                            estimation_param=
+                                              estimation_control(est="psychotools"))
 testthat::test_that("threshold_order: pre-fit model in the 'items' parameter",{
   testthat::expect_equal(length(
     exhaustiveRasch::threshold_order(items=firstrun,
                                      dset=InterprofessionalCollaboration,
-                                     na.rm=T, modelType="PCM")),
+                                     na.rm=T, modelType="PCM",
+                                     estimation_param=
+                                       estimation_control(est="psychotools"))),
     expected=2)})
 
 

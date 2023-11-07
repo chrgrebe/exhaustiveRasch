@@ -1,3 +1,5 @@
+methods::setGeneric("summary")
+
 #' summary function for class passed_exRa
 #' @param object an object of \link{passed_exRa-class}
 #' @export
@@ -6,12 +8,13 @@ methods::setMethod("summary", "passed_exRa", function(object){
   cat("-----------------------", "\n")
   if (length(object@process)>0){
     if (object@process[[1]][[1]]==1){
+      cat("Pre-defined set of item combinations ('combos' parameter was used")
       scale_lengths <- paste(
         unique(lapply(1:length(
           object@passed_combos),
           function(x) length(
-            object@passed_combos[[x]]))),
-        "; pre-defined set of item combinations ('combos' parameter was used)")
+            object@passed_combos[[x]]))))
+
     } else{
       scale_lengths <- object@process[[1]]
     }

@@ -44,5 +44,5 @@ rules[[1]] <- list("max", 1, 1:2)
 rules[[2]] <- list("max", 1, 3:4)
 rules[[3]] <- list("max", 1, 5:6)
 testthat::test_that("apply_combo_rules: impossible min, max, forbidden",{
-  testthat::expect_equal(apply_combo_rules(1:6, 4, rules=rules),
-               expected=list())})
+  testthat::expect_equal(length(apply_combo_rules(1:6, 4, rules=rules)),
+               expected=0)})

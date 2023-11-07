@@ -12,7 +12,8 @@ test_waldtest(
   modelType = NULL,
   splitcr = "median",
   alpha = 0.1,
-  bonf = FALSE
+  bonf = FALSE,
+  estimation_param = NULL
 )
 }
 \arguments{
@@ -43,6 +44,9 @@ use.pval is FALSE}
 
 \item{bonf}{a boolean value wheter to use a Bonferroni correction. Will be
 ignored if use.pval is FALSE}
+
+\item{estimation_param}{options for parameter estimation using
+\link{estimation_control}}
 }
 \value{
 if none of the p-values is significant (above p=0.05), a list

@@ -13,7 +13,8 @@ test_itemfit(
   modelType = NULL,
   model = NULL,
   alpha = 0.1,
-  bonf = FALSE
+  bonf = FALSE,
+  estimation_param = NULL
 )
 }
 \arguments{
@@ -37,8 +38,11 @@ matching the value of modelType. If model is provided, this model is used.
 \item{alpha}{a numeric value for the alpha level. Will be ignored if
 use.pval is FALSE}
 
-\item{bonf}{a boolean value wheter to use a Bonferroni correction. Will
+\item{bonf}{a boolean value whether to use a Bonferroni correction. Will
 be ignored if use.pval is FALSE}
+
+\item{estimation_param}{options for parameter estimation using
+\link{estimation_control}}
 }
 \value{
 if all fit indices meet the given criteria, a list containing

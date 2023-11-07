@@ -11,8 +11,10 @@ parallized_tests <- function(dset,
                              DIFvars,
                              gap_prop,
                              max_contrast,
+                             PSI,
                              extremes,
                              ignoreCores,
+                             estimation_param,
                              ...){
   #' conducts and controls the parallelisation of the tests, Intentionally,
   #'  there are no defauklt values for the parameters, as this internal
@@ -68,6 +70,8 @@ parallized_tests <- function(dset,
   #'  in parallelizing the test run.
   #' @param ... options for \link{itemfit_control} can be passed directly
   #'  to this function.
+  #' @param estimation_param options for parameter estimation using
+  #' \link{estimation_control}
   #' @return a list containing a) a list of item combinations that passed the
   #'  actual test; and b) a list containing the fit models
   #'   of type RM, PCM or RSM.
@@ -91,19 +95,26 @@ parallized_tests <- function(dset,
       cl <- parallel::makePSOCKcluster(parallel::detectCores()- ignoreCores)
     }
     parallel::setDefaultCluster(cl)
-    parallel::clusterExport(cl, testfunction)
+    parallel::clusterExport(cl, c(testfunction, "fit_rasch", "Mloef",
+                                  "datcheck", "dataprep", "LRtest",
+                                  "Waldtest", "datcheck.LRtest"))
     parallel::clusterEvalQ(cl, library(eRm))
     parallel::clusterEvalQ(cl, library(psych))
     parallel::clusterEvalQ(cl, library(psychotree))
+    parallel::clusterEvalQ(cl, library(psychotools))
+
 
     if (!is.null(models)){
       modelcombo_pairs <- lapply(seq_len(length(combos)), function(x){
         list(combos[[x]], models[[x]])})
       param1 <- list(cl=cl, X=modelcombo_pairs, dset=dset,
-                     modelType=modelType, na.rm=na.rm, fun= testfunction)
+                     modelType=modelType, na.rm=na.rm,
+                     estimation_param=estimation_param,
+                     fun= testfunction)
     } else{
       param1 <- list(cl=cl, X=combos, dset=dset, modelType=modelType,
-                     na.rm=na.rm, fun= testfunction)
+                     na.rm=na.rm, estimation_param=estimation_param,
+                     fun= testfunction)
     }
 
     if (testfunction=="test_itemfit"){
@@ -114,8 +125,10 @@ parallized_tests <- function(dset,
       param1$splitcr <- splitcr
     }
     if (testfunction %in% c("test_LR", "test_waldtest")){
-      param1$alpha <- alpha
       param1$bonf <- bonf
+    }
+    if (testfunction %in% c("test_LR", "test_waldtest", "test_mloef")){
+      param1$alpha <- alpha
     }
     if (testfunction=="test_DIFtree"){
       param1$DIFvars <- DIFvars
@@ -123,6 +136,9 @@ parallized_tests <- function(dset,
     if (testfunction=="test_personsItems"){
       param1$gap_prop <-gap_prop
       param1$extremes <- extremes
+    }
+    if (testfunction=="test_PSI"){
+      param1$PSI <-PSI
     }
     a <- do.call(parallel::parLapply, param1)
     parallel::stopCluster(cl)

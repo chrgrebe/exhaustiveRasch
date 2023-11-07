@@ -12,7 +12,8 @@ testthat::test_that("test_itemfit: MSQ infits 0.7-1.3",{
   testthat::expect_equal(length(exhaustiveRasch::test_itemfit(
     items=c(6,7,12,14), dset=ADL, na.rm=TRUE, modelType="RM",
                                    exhaustiveRasch::itemfit_control(
-                                     outfits = FALSE, use.pval = FALSE))),
+                                     outfits = FALSE, use.pval = FALSE),
+    estimation_param= estimation_control(est="eRm"))),
                expected=2)})
 
 # only MSQ infits: list of 2 is returned (item combinations and fit rasch model)
@@ -21,7 +22,8 @@ testthat::test_that("test_itemfit: MSQ infits 0.7-1.3; na.rm=FALSE",{
   testthat::expect_equal(length(exhaustiveRasch::test_itemfit(
     items=c(6,7,12,14), dset=ADL, na.rm=FALSE, modelType="RM",
     exhaustiveRasch::itemfit_control(
-      outfits = FALSE, use.pval = FALSE))),
+      outfits = FALSE, use.pval = FALSE),
+    estimation_param= estimation_control(est="psychotools"))),
     expected=2)})
 
 
@@ -31,7 +33,8 @@ testthat::test_that("test_itemfit: MSQ in- and outfits 0.7-1.3",{
   testthat::expect_equal(length(exhaustiveRasch::test_itemfit(
     items=c(6,7,12,14), dset=ADL, na.rm=TRUE, modelType="RM",
                                    exhaustiveRasch::itemfit_control(
-                                     outfits = TRUE, use.pval = FALSE))),
+                                     outfits = TRUE, use.pval = FALSE),
+    estimation_param= estimation_control(est="psychotools"))),
                expected=0)})
 
 # MSQ infits and p-values: list of 2 is returned
@@ -41,7 +44,8 @@ testthat::test_that("test_itemfit: MSQ infits and p-values",{
   testthat::expect_equal(length(exhaustiveRasch::test_itemfit(
     items=c(6,7,12,14), dset=ADL, na.rm=TRUE, modelType="RM",
                                    exhaustiveRasch::itemfit_control(
-                                     outfits = FALSE, use.pval = TRUE))),
+                                     outfits = FALSE, use.pval = TRUE),
+    estimation_param= estimation_control(est="psychotools"))),
                expected=2)})
 
 # standardized infits and outfits: empty list is returned
@@ -51,7 +55,8 @@ testthat::test_that("test_itemfit: std in- and outfits",{
     items=c(6,7,12,14), dset=ADL, na.rm=TRUE, modelType="RM",
                                    exhaustiveRasch::itemfit_control(
                                      outfits = TRUE, use.pval = FALSE,
-                                     zstd=TRUE))),
+                                     zstd=TRUE),
+    estimation_param= estimation_control(est="psychotools"))),
                expected=0)})
 
 # only MSQ infits with pre-fit model in the 'itemss' parameter:
@@ -59,9 +64,11 @@ testthat::test_that("test_itemfit: std in- and outfits",{
 data(ADL)
 firstrun <- exhaustiveRasch::test_itemfit(
   items=c(6,7,12,14), dset=ADL, na.rm=TRUE, modelType="RM",
-  exhaustiveRasch::itemfit_control(outfits = FALSE,  use.pval = FALSE))
+  exhaustiveRasch::itemfit_control(outfits = FALSE,  use.pval = FALSE),
+  estimation_param= estimation_control(est="psychotools"))
 testthat::test_that("test_itemfit: pre-fit model",{
   testthat::expect_equal(length(exhaustiveRasch::test_itemfit(
     items=firstrun, dset=ADL, na.rm=TRUE, modelType="RM",
-    exhaustiveRasch::itemfit_control(outfits = FALSE,  use.pval = FALSE))),
+    exhaustiveRasch::itemfit_control(outfits = FALSE,  use.pval = FALSE),
+    estimation_param= estimation_control(est="psychotools"))),
                          expected=2)})

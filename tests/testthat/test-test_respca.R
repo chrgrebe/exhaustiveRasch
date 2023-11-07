@@ -4,16 +4,19 @@ library(eRm)
 data(ADL)
 testthat::test_that("test_respca",{
   testthat::expect_equal(length(exhaustiveRasch::test_respca(
-    items=1:4, dset=ADL, na.rm=TRUE, modelType="RM")),
+    items=1:4, dset=ADL, na.rm=TRUE, modelType="RM",
+    estimation_param= estimation_control(est="eRm"))),
     expected=2)})
 
 # list of 2 is returned (item combinations and fit rasch model)
 data(ADL)
 firstrun <- exhaustiveRasch::test_respca(
-  items=1:4, dset=ADL, na.rm=TRUE, modelType="RM")
+  items=1:4, dset=ADL, na.rm=TRUE, modelType="RM",
+  estimation_param= estimation_control(est="eRm"))
 testthat::test_that("test_respca with pre-fit model in the 'items' parameter",{
   testthat::expect_equal(length(exhaustiveRasch::test_respca(
-    items=firstrun, dset=ADL, na.rm=TRUE, modelType="RM")),
+    items=firstrun, dset=ADL, na.rm=TRUE, modelType="RM",
+    estimation_param= estimation_control(est="psychotools"))),
     expected=2)})
 
 
@@ -21,6 +24,7 @@ testthat::test_that("test_respca with pre-fit model in the 'items' parameter",{
 data(ADL)
 testthat::test_that("test_respca",{
   testthat::expect_equal(length(exhaustiveRasch::test_respca(
-    items=c(1,2,3,8), dset=ADL, na.rm=TRUE, modelType="RM")),
+    items=c(1,2,3,8), dset=ADL, na.rm=TRUE, modelType="RM",
+    estimation_param= estimation_control(est="psychotools"))),
     expected=0)})
 

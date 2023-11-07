@@ -22,11 +22,10 @@ add_ICs <- function(obj, ignoreCores=1){
   parallel::clusterEvalQ(cl, library(eRm))
 
 
-  information_criteria <-
-    parallel::parLapply(cl,seq_len(
-      length(obj@passed_models)),
-      function(x) eRm::IC(
-        eRm::person.parameter(obj@passed_models[[x]]))$ICtable[3,3:5])
+  information_criteria <- parallel::parLapply(cl,
+                                              seq_len(length(obj@passed_models)),
+                                              function(x) eRm::IC(
+                                                eRm::person.parameter(obj@passed_models[[x]]))$ICtable[3,3:5])
   obj@IC <- as.data.frame(do.call(rbind, information_criteria))
   return(obj)
 }

@@ -8,7 +8,7 @@ testthat::test_that("all_rawscores: RM",{
   testthat::expect_equal(length(
     exhaustiveRasch::all_rawscores(items=1:5,
                                      dset=ADL,
-                                     na.rm=T, modelType="RM")),
+                                     na.rm=T, modelType="RM")[[1]]),
     expected=5)})
 
 data("ADL")
@@ -16,7 +16,7 @@ testthat::test_that("all_rawscores: RM; na.rm=FALSE",{
   testthat::expect_equal(length(
     exhaustiveRasch::all_rawscores(items=1:5,
                                    dset=ADL,
-                                   na.rm=F, modelType="RM")),
+                                   na.rm=F, modelType="RM")[[1]]),
     expected=5)})
 
 

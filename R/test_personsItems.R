@@ -4,7 +4,8 @@ test_personsItems <- function(items=NULL,
                               model=NULL,
                               modelType=NULL,
                               gap_prop=0,
-                              extremes=TRUE){
+                              extremes=TRUE,
+                              estimation_param=NULL){
   #' checks the relationship between the person parameter distribution and
   #'  the item (or: threshold) locations for defined criteria
   #' @param items a numeric vector containing the index numbers of the items
@@ -23,7 +24,9 @@ test_personsItems <- function(items=NULL,
   #'    not be checked.
   #' @param extremes a boolean value indicating if a check for the
   #'  item/threshold locations left of the 2nd lowest and right of the 2nd
-  #'   highest person parameter
+  #'   highest person parameter.
+  #' @param estimation_param options for parameter estimation using
+  #' \link{estimation_control}
   #' @return if the criteria are met, a list containing two elements is
   #'  returned: the pattern that was tested an a list of type RM, RCM or RSM
   #'   (depending on modelType) with the fit model. If the criteria are not met,
@@ -40,9 +43,11 @@ test_personsItems <- function(items=NULL,
     ds_test <- dset[items]
     if (na.rm==TRUE){ds_test<- stats::na.omit(ds_test)
     } else{ds_test <- ds_test[rowSums(is.na(ds_test)) < ncol(ds_test)-1, ]}
-    try(suppressWarnings({
-      model <- get(modelType)(ds_test, se=TRUE)
-    }), silent=TRUE)
+    #try(suppressWarnings({
+    #  model <- get(modelType)(ds_test, se=TRUE)
+    #}), silent=TRUE)
+    model <- fit_rasch(X=ds_test, modelType=modelType,
+                       estimation_param=estimation_param)
   } else{
     items <- which(colnames(dset) %in% colnames(model$X))
   }

@@ -5,7 +5,7 @@
 \alias{InterprofessionalCollaboration}
 \title{InterprofessionalCollaboration - polytomous example data}
 \format{
-V01-V19: "How confident do you feel in the follwing situation?"
+V01-V19: "How confident do you feel in the following situation?"
  (0= not confident; 1= hardly confident; 2= rather confident;
   3=very confident)
 \itemize{

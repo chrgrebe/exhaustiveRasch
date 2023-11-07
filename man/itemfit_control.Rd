@@ -26,16 +26,16 @@ itemfit_control(
 \item{use.pval}{a boolean value whether to exclude combinations with at
 least one item with significant p-value}
 
-\item{lowerMSQ}{a numeric value for the lower bound for acceptable Infit
+\item{lowerMSQ}{a numeric value for the lower bound for acceptable fit
 (mean-squared fit indices)}
 
-\item{upperMSQ}{a numeric value for the upper bound for acceptable Infit
+\item{upperMSQ}{a numeric value for the upper bound for acceptable fit
 (mean-squared fit indices)}
 
-\item{lowerZ}{a numeric value for the lower bound for acceptable Infit
+\item{lowerZ}{a numeric value for the lower bound for acceptable fit
 (standardised fit indices)}
 
-\item{upperZ}{a numeric value for the upper bound for acceptable Infit
+\item{upperZ}{a numeric value for the upper bound for acceptable fit
 (standardised fit indices)}
 }
 \value{

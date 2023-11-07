@@ -5,7 +5,8 @@ test_itemfit<- function(items=NULL,
                         modelType=NULL,
                         model=NULL,
                         alpha=0.1,
-                        bonf=FALSE){
+                        bonf=FALSE,
+                        estimation_param=NULL){
   #' checks the itemfit indices of a rasch model using the itemfit() function
   #'  of eRm.
   #' @param items a numeric vector containing the index numbers of the items
@@ -21,8 +22,10 @@ test_itemfit<- function(items=NULL,
   #'  Possible values: RM, PCM, RSM
   #' @param alpha a numeric value for the alpha level. Will be ignored if
   #'  use.pval is FALSE
-  #' @param bonf a boolean value wheter to use a Bonferroni correction. Will
+  #' @param bonf a boolean value whether to use a Bonferroni correction. Will
   #'  be ignored if use.pval is FALSE
+  #' @param estimation_param options for parameter estimation using
+  #' \link{estimation_control}
   #' @return if all fit indices meet the given criteria, a list containing
   #'  two elements is returned: the pattern that was tested an a list of type
   #'   RM, RCM or RSM (depending on modelType) with the fit model. If at least
@@ -41,9 +44,11 @@ test_itemfit<- function(items=NULL,
     ds_test <- dset[items]
     if (na.rm==TRUE){ds_test<- stats::na.omit(ds_test)
     } else{ds_test <- ds_test[rowSums(is.na(ds_test)) < ncol(ds_test)-1, ]}
-    try(suppressWarnings({
-      model <- get(modelType)(ds_test, se=TRUE)
-    }), silent=TRUE)
+    #try(suppressWarnings({
+    #  model <- get(modelType)(ds_test, se=TRUE)
+    #}), silent=TRUE)
+    model <- fit_rasch(X=ds_test, modelType=modelType,
+                       estimation_param=estimation_param)
   } else{
     items <- which(colnames(dset) %in% colnames(model$X))
   }

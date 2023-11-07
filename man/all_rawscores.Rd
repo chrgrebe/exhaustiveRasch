@@ -9,7 +9,8 @@ all_rawscores(
   dset = NULL,
   na.rm = TRUE,
   model = NULL,
-  modelType = NULL
+  modelType = NULL,
+  estimation_param = NULL
 )
 }
 \arguments{
@@ -27,6 +28,9 @@ matching the value of modelType. If model is provided, this model is used.
 
 \item{modelType}{a character value defining the rasch model to fit.
 Possible values: RM, PCM, RSM}
+
+\item{estimation_param}{options for parameter estimation using
+\link{estimation_control}}
 }
 \value{
 if all possible raw scores occur in dset, a list containing two
