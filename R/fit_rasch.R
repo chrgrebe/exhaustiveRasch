@@ -16,11 +16,18 @@ fit_rasch <- function(X, modelType, estimation_param){
   #' @export
   #' @keywords internal
 
+  # This function implements the respective estimation of the item parameters,
+  # depending on the estimation method and other arguments set in the
+  # estimation_param argument. It is an internal function, a call by the user is
+  # not indicated. It is nevertheless exported in order to work in
+  # parallelization. However, it is not included in the package documentation
+  # (roxygen2 keyword 'internal').
+
   #estimation_param$se=F
   #  if(!estimation_param$est=="eRm" & modelType=="RM"){
   #    estimation_param$est="eRm"
   #    warning("Estimation using functions from package 'psychotools' is
-  #      currently only sipported for PCM and RSM models. Argument 'est' was set to
+  #      currently only supported for PCM and RSM models. Argument 'est' was set to
   #      'eRm'. Parameter estimations used functions of package eRm.",
   #            "\n")
   #  }

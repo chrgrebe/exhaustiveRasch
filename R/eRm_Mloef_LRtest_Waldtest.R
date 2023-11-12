@@ -1,3 +1,9 @@
+# The functions in this file implement model tests. They are internal functions,
+# calling by the user is not indicated. They are nevertheless exported in order
+# to work in parallelization. However, it is not included in the package
+# documentation (roxygen2 keyword 'internal').
+
+
 Mloef <- function(robj, splitcr="median", estimation_param)
 {
   #' This code is identical to the function of the eRM package (version 0.1.4)

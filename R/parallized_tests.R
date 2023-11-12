@@ -78,6 +78,11 @@ parallized_tests <- function(dset,
   #' @export
   #' @keywords internal
 
+  # This function implements the parallilization of the tests. It is an internal
+  # function, a call by the user is not indicated. It is nevertheless exported
+  # in order to work in parallelization. However, it is not included in the
+  # package documentation (roxygen2 keyword 'internal').
+
   arguments <- list(...)
   # catch, if no itemcombinations are handed over or if a combos is a character
   # that indicates a warning message.

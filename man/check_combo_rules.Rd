@@ -19,3 +19,4 @@ a list of numeric vectors containing the selected item combinations
 \description{
 selects item combinations based on defined rules
 }
+\keyword{internal}

@@ -1,3 +1,10 @@
+# The functions in this file implement the data prepartion that are executed
+# in advance of fitting eRm models, called by the fit_rasch() function. They are
+# internal functions, calling by the user is not indicated. They are
+# nevertheless exported in order to work in parallelization. However, it is not
+# included in the package documentation (roxygen2 keyword 'internal').
+
+
 dataprep <- function(X,W,sum0, modelType){
   #' This function makes non-exported functions from the package eRm
   #' (datprep_RM(), datprep_PCM(), datprep_RSM() available. The code is

@@ -26,6 +26,12 @@ no_test <- function(items=NULL,
   #' @export
   #' @keywords internal
 
+  # This function implements one of the tests that are executed via the 'tests'
+  # argument of the exhaustive_tests() function. It is an internal function, a
+  # call by the user is not indicated. It is nevertheless exported in order to
+  # work in parallelization. However, it is not included in the package
+  # documentation (roxygen2 keyword 'internal').
+
   if (inherits(items, "list")){
     model <- items[[2]]
     items <- items[[1]]

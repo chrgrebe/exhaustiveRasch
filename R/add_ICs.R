@@ -2,8 +2,8 @@ add_ICs <- function(obj, ignoreCores=1){
   #' adds information criteria to the @IC slot of an object of
   #'  class \link{passed_exRa-class}
   #' @param obj an object of class \link{passed_exRa-class}
-  #' @param ignoreCores a numeric value for the number of cpu cores to hold out
-  #'  in parallelizing computing of the information criteria.
+  #' @param ignoreCores a numeric value for the number of virtial CPU cores
+  #' (threads)to hold out in computing the information criteria.
 
   if (!inherits(obj,"passed_exRa")){
     stop("add_ICs() requires an object of class passed_exRa")

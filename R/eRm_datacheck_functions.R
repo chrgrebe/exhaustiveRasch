@@ -17,6 +17,15 @@ datcheck <- function(X, W, mpoints, groupvec, model){
   #'  value for groupcev.
   #' @export
   #' @keywords internal
+  #' @useDynLib exhaustiveRasch
+
+
+  # This function implements the datachecks that are executed in advance of
+  # fitting eRm models, called by the fit_rasch() function. It is an internal
+  # function, a call by the user is not indicated. It is nevertheless exported
+  # in order to work in parallelization. However, it is not included in the
+  # package documentation (roxygen2 keyword 'internal').
+
 
   ######################################################
   prettyPaste <- function(...){
@@ -42,7 +51,7 @@ datcheck <- function(X, W, mpoints, groupvec, model){
       #           warning("Nonunique unilateral component partition detected in component.dist.  Problem vertices will be arbitrarily assigned to one of their components.\n")
       membership <- rep(0, n)
       membership <- .C("component_dist_R", as.double(dat), as.double(n),
-                       membership = as.double(membership), PACKAGE="eRm")$membership
+                       membership = as.double(membership), PACKAGE="exhaustiveRasch")$membership
       o <- list()
       o$membership <- membership
       o$csize <- vector()
@@ -87,7 +96,7 @@ datcheck <- function(X, W, mpoints, groupvec, model){
     sigma<-matrix(0,nrow=n,ncol=n)
     gd<-matrix(Inf,nrow=n,ncol=n)
     #Perform the calculation
-    geo<-.C("geodist_R",as.double(dat),as.double(n),gd=as.double(gd), sigma=as.double(sigma),NAOK=TRUE,PACKAGE="eRm")
+    geo<-.C("geodist_R",as.double(dat),as.double(n),gd=as.double(gd), sigma=as.double(sigma),NAOK=TRUE,PACKAGE="exhaustiveRasch")
     #Return the results
     o<-list()
     o$counts<-matrix(geo$sigma,n,n)

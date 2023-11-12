@@ -130,7 +130,9 @@ an object of \link{passed_exRa-class}.
 (main function) Runs exhaustive tests
 }
 \examples{
+\dontrun{
   passed <- exhaustive_tests(ADL[c(1,4,6,7,10,14,15)],
     modelType = "RM", scale_length = 4:5, upperMSQ=1.5, lowerMSQ=0.5,
     tests=c("test_itemfit", "test_mloef", "test_respca"))
+ }
 }

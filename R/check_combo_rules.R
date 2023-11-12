@@ -7,6 +7,13 @@ check_combo_rules <- function(full,
   #' @return a list of numeric vectors containing the selected item combinations
   #'  that match the defined rules of forced_items and/or rules.
   #' @export
+  #' @keywords internal
+
+  # This function implements the checks for the min-, max- and forbidden rules
+  # and is calles from apply_combo_rules. It is an internal function, a
+  # call by the user is not indicated. It is nevertheless exported in order to
+  # work in parallelization. However, it is not included in the package
+  # documentation (roxygen2 keyword 'internal').
 
   passed_max_rules <- FALSE; passed_min_rules <- FALSE
   passed_forbidden_rules <- FALSE
