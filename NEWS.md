@@ -1,3 +1,10 @@
+# exhaustiveRasch 0.2.2
+This release fixes two bugs.
+
+### Bug fixes
+Accidently, the add_ICs() function was ignored when compiling the package, so it was not available. This bug was fixed.
+The C- and FORTRAN- code from eRm (originally from the sna package) is now integrated into the package. Previously it was imported from eRm. This was changed to to CRAN's restrictions that (of course!) does not allow importing compiled code from other packages.
+
 # exhaustiveRasch 0.2.1
 This release adds some new functionality.
 
