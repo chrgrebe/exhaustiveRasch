@@ -12,7 +12,8 @@ itemfit_control(
   lowerMSQ = 0.7,
   upperMSQ = 1.3,
   lowerZ = -1.96,
-  upperZ = 1.96
+  upperZ = 1.96,
+  use.rel = FALSE
 )
 }
 \arguments{
@@ -37,6 +38,10 @@ least one item with significant p-value}
 
 \item{upperZ}{a numeric value for the upper bound for acceptable fit
 (standardised fit indices)}
+
+\item{use.rel}{a boolean value wheter to use the .rel estimates of the
+pairwise temfit for MSQ and z-standardised fit-indiced. Will be ignored,
+for eRm and psychotools estimation.}
 }
 \value{
 a list containing the options

@@ -5,7 +5,8 @@ itemfit_control <- function(zstd=FALSE,
                             lowerMSQ=0.7,
                             upperMSQ=1.3,
                             lowerZ=-1.96,
-                            upperZ=1.96){
+                            upperZ=1.96,
+                            use.rel=FALSE){
   #' options for test_itemfit()
   #' @param zstd a boolean value whether to check the standardised fit indices
   #' @param msq aboolean value whether to check the mean-squared fit indices
@@ -21,10 +22,15 @@ itemfit_control <- function(zstd=FALSE,
   #'  (standardised fit indices)
   #' @param upperZ a numeric value for the upper bound for acceptable fit
   #'  (standardised fit indices)
+  #' @param use.rel a boolean value wheter to use the .rel estimates of the
+  #'  pairwise temfit for MSQ and z-standardised fit-indiced. Will be ignored,
+  #'  for eRm and psychotools estimation.
   #' @return a list containing the options
   #' @export
 
   return(list("zstd"= zstd, "msq"= msq, "outfits"= outfits,
               "use.pval"= use.pval, "lowerMSQ"= lowerMSQ,
-              "upperMSQ"= upperMSQ, "lowerZ"= lowerZ, "upperZ"= upperZ))
+              "upperMSQ"= upperMSQ, "lowerZ"= lowerZ, "upperZ"= upperZ,
+              "use.rel"= use.rel))
 }
+

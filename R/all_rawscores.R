@@ -2,8 +2,10 @@ all_rawscores <- function(items=NULL,
                           dset=NULL,
                           na.rm=TRUE,
                           model=NULL,
+                          p.par=NULL,
                           modelType=NULL,
-                          estimation_param=NULL){
+                          estimation_param=NULL,
+                          pair_param=NULL){
   #' checks if all possible raw scores occur in the data.
   #' @param items a numeric vector containing the index numbers of the items in
   #'  dset that are used to fit the model
@@ -17,6 +19,8 @@ all_rawscores <- function(items=NULL,
   #'  Possible values: RM, PCM, RSM
   #' @param estimation_param options for parameter estimation using
   #' \link{estimation_control}
+  #' @param pair_param options for options for fitting pairwise models using
+  #' \link{pairwise_control}
   #' @return if all possible raw scores occur in dset, a list containing two
   #'  elements is returned: the pattern that was tested an a list of type
   #'   RM, RCM or RSM (depending on modelType) with the fit model. If at least
@@ -33,6 +37,7 @@ all_rawscores <- function(items=NULL,
 
   if (inherits(items, "list")){
     model <- items[[2]]
+    p.par <- items[[3]]
     items <- items[[1]]
   }
 
@@ -45,7 +50,7 @@ all_rawscores <- function(items=NULL,
   poss_rawscores <- seq(min_cat*length(ds_test), max_cat*length(ds_test))
   emp_rawscores <- as.numeric(names((table(rowSums(ds_test)))))
   if (length(which(!poss_rawscores %in% emp_rawscores))==0){
-    return(list(items, model))
+    return(list(items, model, p.par))
   }
 
 }

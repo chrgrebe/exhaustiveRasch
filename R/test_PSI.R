@@ -2,9 +2,11 @@ test_PSI <- function(items=NULL,
                      dset=NULL,
                      na.rm=TRUE,
                      model=NULL,
+                     p.par=NULL,
                      modelType=NULL,
                      PSI=NULL,
-                     estimation_param=NULL){
+                     estimation_param=NULL,
+                     pair_param=NULL){
   #' runs a principal component analysis (PCA) on the residuals of the
   #'  rasch model.
   #' @param items a numeric vector containing the index numbers of the items
@@ -18,6 +20,8 @@ test_PSI <- function(items=NULL,
   #' separation-index (separation reliablility).
   #' @param estimation_param options for parameter estimation using
   #' \link{estimation_control}
+  #' @param pair_param options for options for fitting pairwise models using
+  #' \link{pairwise_control}
   #' @return if the maximum eigenvalue of the contrasts of the pca
   #'  is < max_contrast a   #'  list containing two elements is returned:
   #'  the item combination that was tested and a list of type RM, RCM or RSM
@@ -33,6 +37,7 @@ test_PSI <- function(items=NULL,
 
   if (inherits(items, "list")){
     model <- items[[2]]
+    p.par <- items[[3]]
     items <- items[[1]]
   }
 
@@ -41,22 +46,38 @@ test_PSI <- function(items=NULL,
   if (is.null(model)){
     if (na.rm==TRUE){ds_test<- stats::na.omit(ds_test)
     } else{ds_test <- ds_test[rowSums(is.na(ds_test)) < ncol(ds_test)-1, ]}
-    #try(suppressWarnings({
-    #  model <- get(modelType)(ds_test, se=TRUE)
-    #}), silent=TRUE)
     model <- fit_rasch(X=ds_test, modelType=modelType,
-                       estimation_param=estimation_param)
-  } else{
-    items <- which(colnames(dset) %in% colnames(model$X))
+                       estimation_param=estimation_param,
+                       pair_param = pair_param)
   }
 
-  if (exists("model")==TRUE){
-    try(p.par <- eRm::person.parameter(model), silent=TRUE)
-    if (exists("p.par")){
-      res <- eRm::SepRel(p.par)$sep.rel
-      if (!res<PSI){
-        return(list(items, model))
+  ### get person parameter object if not already existing
+  if (exists("model") & is.null(p.par)){
+    if (estimation_param$est=="pairwise"){
+      p.par <- pairwise::pers(model)
+    } else if (estimation_param$est=="eRm"){
+      p.par <- eRm::person.parameter(model)
+    } else{ # psychotools
+      p.par <- ppar.psy(model)
+    }
+  }
+
+  ### get person person separation reliability
+
+  if (exists("p.par")){
+    if (estimation_param$est=="pairwise"){
+      if (exists("p.par")){
+        res <- pairwise::pairwise.SepRel(p.par)$sep.rel
       }
+    } else if (estimation_param$est=="eRm"){
+      res <- eRm::SepRel(p.par)$sep.rel
+    } else if (estimation_param$est=="psychotools"){
+      res <- p.par$PSI
+    }
+  }
+  if(!is.null(p.par)){
+    if (!res<PSI){
+      return(list(items, model, p.par))
     }
   }
 }

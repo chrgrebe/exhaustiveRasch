@@ -14,6 +14,8 @@ exhaustive_tests(
   splitcr_mloef = NULL,
   splitcr_LR = NULL,
   splitcr_wald = NULL,
+  splitcr_Q = NULL,
+  icat_wald = FALSE,
   alpha = 0.1,
   bonf = FALSE,
   DIFvars = NULL,
@@ -22,11 +24,13 @@ exhaustive_tests(
   max_contrast = NULL,
   PSI = 0.8,
   ICs = FALSE,
+  keep = FALSE,
   ignoreCores = 1,
   silent = FALSE,
   ...,
   itemfit_param = NULL,
-  estimation_param = NULL
+  estimation_param = NULL,
+  pair_param = NULL
 )
 }
 \arguments{
@@ -79,10 +83,15 @@ subject raw score splitting. median uses the median as split criterion,
    an external criterion). This vector can be numeric, character or
     a factor.}
 
+\item{icat_wald}{a boolean value indicating if the waldtest will be
+conducted on item level (TRUE, default value) or on item category level.
+This parameter only effects estimations using psychotools or pairwise and
+will be ignored for eRm estimations.}
+
 \item{alpha}{a numeric value for the alpha level. Will be ignored
 for \link{test_itemfit} if use.pval in \link{itemfit_control} is FALSE}
 
-\item{bonf}{a boolean value wheter to use a Bonferroni correction.
+\item{bonf}{a boolean value whether to use a Bonferroni correction.
 Will be ignored if use.pval is FALSE}
 
 \item{DIFvars}{a data.frame containing the variables and their data to use
@@ -108,6 +117,12 @@ separation-index (separation reliablility).}
 for the remaining models. You can add these later to the object of class
  \link{passed_exRa-class} by using the \link{add_ICs} function.}
 
+\item{keep}{a boolean value difining whether des person parameters will be
+part of the \link{passed_exRa-class} results object (TRUE) or not (FALSE).
+Keeping the person parameters will result in shorter runtimes, if several
+tests that   #'  need these parameters are used. On the other hand there
+will be a largeramount of memeory usage.}
+
 \item{ignoreCores}{a numeric value for the number of cpu cores to hold out
 in parallelizing the test run.}
 
@@ -122,6 +137,9 @@ for \link{test_itemfit}}
 
 \item{estimation_param}{options for parameter estimation using
 \link{estimation_control}}
+
+\item{pair_param}{options for options for fitting pairwise models using
+\link{pairwise_control}}
 }
 \value{
 an object of \link{passed_exRa-class}.

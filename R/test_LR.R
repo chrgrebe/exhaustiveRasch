@@ -2,11 +2,12 @@ test_LR <- function(items=NULL,
                     dset=NULL,
                     na.rm=TRUE,
                     model=NULL,
+                    p.par=NULL,
                     modelType=NULL,
                     splitcr="median",
                     alpha=0.1,
-                    bonf=FALSE,
-                    estimation_param=NULL){
+                    estimation_param=NULL,
+                    pair_param=NULL){
   #' runs Anderson's likelihood ration test using the LRtest() function of eRm.
   #' @param items a numeric vector containing the index numbers of the items
   #'  in dset that are used to fit the model
@@ -26,10 +27,10 @@ test_LR <- function(items=NULL,
   #'      This vector can be numeric, character or a factor.
   #' @param alpha a numeric value for the alpha level. Will be ignored if
   #'  use.pval is FALSE
-  #' @param bonf a boolean value whether to use a Bonferroni correction. Will be
-  #'  ignored if use.pval is FALSE
   #' @param estimation_param options for parameter estimation using
   #' \link{estimation_control}
+  #' @param pair_param options for options for fitting pairwise models using
+  #' \link{pairwise_control}
   #' @return if the p-value of the test is not significant (above p=0.05) AND
   #'  if no items were excluded in the test due to missing patterns
   #'   (length of betalist == number of items), a list containing two elements
@@ -47,12 +48,11 @@ test_LR <- function(items=NULL,
 
   if (inherits(items, "list")){
     model <- items[[2]]
+    p.par <- items[[3]]
     items <- items[[1]]
   }
 
   ds_test <- dset[items]
-
-  if (bonf==TRUE){local_alpha <- alpha/length(items)} else{local_alpha <- alpha}
 
   if (is.null(model)){
     if (na.rm==TRUE){ds_test<- stats::na.omit(ds_test)
@@ -61,21 +61,40 @@ test_LR <- function(items=NULL,
     #  model <- get(modelType)(ds_test, se=TRUE)
     #}), silent=TRUE)
     model <- fit_rasch(X=ds_test, modelType=modelType,
-                       estimation_param=estimation_param)
-  } else{
-    items <- which(colnames(dset) %in% colnames(model$X))
+                       estimation_param=estimation_param,
+                       pair_param = pair_param)
   }
 
-  #    try(suppressWarnings({lr <- eRm::LRtest(
-  #      model, splitcr=splitcr)}),
-  #        silent=TRUE)
-
-  try(suppressWarnings({lr <- LRtest(
-    model, splitcr=splitcr, estimation_param= estimation_param)}),
-    silent=TRUE)
-  if (exists("lr")==TRUE){
-    if (lr$pvalue >=local_alpha & length(lr$X[1,])==length(lr$X.list[[1]][1,])){
-      return(list(items, model))
+  if (estimation_param$est=="pairwise"){
+    try(p.par <- pairwise::pers(model), silent=TRUE)
+    if (exists("p.par")){
+      try(suppressWarnings({lr <- pairwise::andersentest.pers(
+        p.par, split=splitcr)$p}),
+        silent=TRUE)
+    }
+    if (exists("lr")==TRUE){
+      if (lr >=alpha){
+        return(list(items, model, p.par))
+      }
+    }
+  } else if (estimation_param$est=="psychotools"){
+    try(suppressWarnings({lr <- LRtest.psy(
+      model=model, modelType=modelType, splitcr=splitcr)}),
+      silent=TRUE)
+    if (exists("lr")==TRUE){
+      if (lr >=alpha ){
+        return(list(items, model, p.par))
+      }
+    }
+  } else if (estimation_param$est=="eRm"){
+    try(suppressWarnings({lr <- eRm::LRtest(
+      model, splitcr=splitcr)}),
+      silent=TRUE)
+    if (exists("lr")==TRUE){
+      if (lr$pvalue >=alpha & length(lr$X[1,])==length(
+        lr$X.list[[1]][1,])){
+        return(list(items, model, p.par))
+      }
     }
   }
 }

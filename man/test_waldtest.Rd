@@ -9,11 +9,14 @@ test_waldtest(
   dset = NULL,
   na.rm = TRUE,
   model = NULL,
+  p.par = NULL,
   modelType = NULL,
   splitcr = "median",
+  icat = F,
   alpha = 0.1,
   bonf = FALSE,
-  estimation_param = NULL
+  estimation_param = NULL,
+  pair_param = NULL
 )
 }
 \arguments{
@@ -39,6 +42,11 @@ raw score splitting. median uses the median as split criterion, mean
    (e.g., following an external criterion). This vector can be numeric,
     character or a factor.}
 
+\item{icat}{a boolean value indicating if the waldtest will be
+conducted on item level (TRUE, default value) or on item category level.
+This parameter only effects estimations using psychotools or pairwise and
+will be ignored for eRm estimations.}
+
 \item{alpha}{a numeric value for the alpha level. Will be ignored if
 use.pval is FALSE}
 
@@ -47,6 +55,9 @@ ignored if use.pval is FALSE}
 
 \item{estimation_param}{options for parameter estimation using
 \link{estimation_control}}
+
+\item{pair_param}{options for options for fitting pairwise models using
+\link{pairwise_control}}
 }
 \value{
 if none of the p-values is significant (above p=0.05), a list

@@ -10,9 +10,11 @@ test_PSI(
   dset = NULL,
   na.rm = TRUE,
   model = NULL,
+  p.par = NULL,
   modelType = NULL,
   PSI = NULL,
-  estimation_param = NULL
+  estimation_param = NULL,
+  pair_param = NULL
 )
 }
 \arguments{
@@ -32,6 +34,9 @@ separation-index (separation reliablility).}
 
 \item{estimation_param}{options for parameter estimation using
 \link{estimation_control}}
+
+\item{pair_param}{options for options for fitting pairwise models using
+\link{pairwise_control}}
 }
 \value{
 if the maximum eigenvalue of the contrasts of the pca

@@ -9,10 +9,12 @@ test_mloef(
   dset = NULL,
   na.rm = TRUE,
   model = NULL,
+  p.par = NULL,
   modelType = NULL,
   splitcr = "median",
   alpha = 0.1,
-  estimation_param = NULL
+  estimation_param = NULL,
+  pair_param = NULL
 )
 }
 \arguments{
@@ -42,6 +44,9 @@ use.pval is FALSE}
 
 \item{estimation_param}{options for parameter estimation using
 \link{estimation_control}}
+
+\item{pair_param}{options for options for fitting pairwise models using
+\link{pairwise_control}}
 }
 \value{
 if the p-value of the test is not significant (above p=0.05),

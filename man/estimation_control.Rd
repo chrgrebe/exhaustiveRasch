@@ -2,9 +2,9 @@
 % Please edit documentation in R/estimation_control.R
 \name{estimation_control}
 \alias{estimation_control}
-\title{options for fit_rasch()}
+\title{options for item parameter estimation}
 \usage{
-estimation_control(est = "psychotools", se = TRUE, sum0 = FALSE)
+estimation_control(est = "psychotools", se = TRUE, sum0 = TRUE)
 }
 \arguments{
 \item{est}{a character value defining the estimation function to use.
@@ -22,5 +22,5 @@ always computed by setting the first parameter 0.}
 a list containing the options
 }
 \description{
-options for fit_rasch()
+options for item parameter estimation
 }

@@ -12,10 +12,12 @@ parallized_tests(
   modelType,
   combos,
   models,
+  p.par,
   na.rm,
   testfunction,
   itemfit_param,
   splitcr = NULL,
+  icat_wald,
   alpha,
   bonf,
   DIFvars,
@@ -25,6 +27,8 @@ parallized_tests(
   extremes,
   ignoreCores,
   estimation_param,
+  pair_param,
+  tests_count,
   ...
 )
 }
@@ -66,6 +70,11 @@ is test_LR or test_waldtest.Split criterion for subject raw score
     to a certain subgroup (e.g., following an external criterion).
      This vector can be numeric, character or a factor.}
 
+\item{icat_wald}{a boolean value indicating if the waldtest will be
+conducted on item level (TRUE, default value) or on item category level.
+This parameter only effects estimations using psychotools or pairwise and
+will be ignored for eRm estimations.}
+
 \item{alpha}{a numeric value for the alpha level. Will be ignored for
 \link{test_itemfit} if use.pval in \link{itemfit_control} is FALSE}
 
@@ -93,6 +102,9 @@ in parallelizing the test run.}
 
 \item{estimation_param}{options for parameter estimation using
 \link{estimation_control}}
+
+\item{pair_param}{options for options for fitting pairwise models using
+\link{pairwise_control}}
 
 \item{...}{options for \link{itemfit_control} can be passed directly
 to this function.}

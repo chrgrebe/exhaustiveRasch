@@ -1,4 +1,4 @@
-test_mloef <- function(items=NULL,
+test_Qtest <- function(items=NULL,
                        dset=NULL,
                        na.rm=TRUE,
                        model=NULL,
@@ -8,9 +8,9 @@ test_mloef <- function(items=NULL,
                        alpha=0.1,
                        estimation_param=NULL,
                        pair_param=NULL){
-  #' runs Martin-Loef Test using the MLoef() function of eRm.
-  #' @param items a numeric vector containing the index numbers of the items in
-  #'  dset that are used to fit the model
+  #' runs Anderson's likelihood ration test using the LRtest() function of eRm.
+  #' @param items a numeric vector containing the index numbers of the items
+  #'  in dset that are used to fit the model
   #' @param dset a data.frame containing the data
   #' @param na.rm a boolean value. If TRUE, all cases with any NA are removed
   #'  (na.omit). If FALSE, only cases with full NA responses are removed
@@ -19,21 +19,24 @@ test_mloef <- function(items=NULL,
   #'   If NULL, a model is fit using dset and items.
   #' @param modelType a character value defining the rasch model to fit.
   #'  Possible values: RM, PCM, RSM
-  #' @param splitcr as defined by eRm::MLoef: Split criterion to define the
-  #'  item groups. "median" and "mean" split items in two groups based on their
-  #'   items' raw scores. splitcr can also be a vector of length k (where k
-  #'   denotes the number of items) that takes two or more distinct values to
-  #'    define groups used for the Martin-Löf Test.
+  #' @param splitcr as defined by eRm::LRtest. Split criterion for subject
+  #'  raw score splitting. "all.r" corresponds to a full raw score split,
+  #'   "median" uses the median as split criterion, "mean" performs a
+  #'    mean split. Optionally splitcr can also be a vector which assigns each
+  #'     person to a certain subgroup (e.g., following an external criterion).
+  #'      This vector can be numeric, character or a factor.
   #' @param alpha a numeric value for the alpha level. Will be ignored if
   #'  use.pval is FALSE
   #' @param estimation_param options for parameter estimation using
   #' \link{estimation_control}
   #' @param pair_param options for options for fitting pairwise models using
   #' \link{pairwise_control}
-  #' @return if the p-value of the test is not significant (above p=0.05),
-  #'  a list containing two elements is returned: the pattern that was tested
-  #'   an a list of type RM, RCM or RSM (depending on modelType) with the fit
-  #'    model. If the test is significant (p<0.05), NULL is returned.
+  #' @return if the p-value of the test is not significant (above p=0.05) AND
+  #'  if no items were excluded in the test due to missing patterns
+  #'   (length of betalist == number of items), a list containing two elements
+  #'    is returned: the pattern that was tested an a list of type RM, RCM or
+  #'     RSM (depending on modelType) with the fit model. If the test is
+  #'      significant, NULL is returned.
   #' @export
   #' @keywords internal
 
@@ -49,8 +52,9 @@ test_mloef <- function(items=NULL,
     items <- items[[1]]
   }
 
+  ds_test <- dset[items]
+
   if (is.null(model)){
-    ds_test <- dset[items]
     if (na.rm==TRUE){ds_test<- stats::na.omit(ds_test)
     } else{ds_test <- ds_test[rowSums(is.na(ds_test)) < ncol(ds_test)-1, ]}
     #try(suppressWarnings({
@@ -61,23 +65,14 @@ test_mloef <- function(items=NULL,
                        pair_param = pair_param)
   }
 
-  if (exists("model")==TRUE){
-    if (estimation_param$est=="psychotools"){
-      try(suppressWarnings({
-        ml <- mloef.psy(model, modelType, splitcr)
-      }), silent=TRUE)
-    } else if (estimation_param$est=="eRm"){
-      try(suppressWarnings({ml <- eRm::MLoef(model, splitcr=splitcr)
-      }), silent=TRUE)
-    }
-  }
-
-  if (exists("ml")==TRUE){
-    if (!is.null(ml)){
-      if (ml$p.value >=alpha){
+  if (estimation_param$est=="pairwise"){
+    try(suppressWarnings({pval <- pairwise::Qtest(
+      model, split=splitcr)$p.value}),
+      silent=TRUE)
+    if (exists("pval")==TRUE){
+      if (pval >= alpha){
         return(list(items, model, p.par))
       }
     }
   }
-
 }

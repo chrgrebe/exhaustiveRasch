@@ -1,7 +1,7 @@
 estimation_control <- function(est="psychotools",
                                se=TRUE,
-                               sum0=FALSE){
-  #' options for fit_rasch()
+                               sum0=TRUE){
+  #' options for item parameter estimation
   #' @param est a character value defining the estimation function to use.
   #'  Possible values: 'psychotools', 'eRm'.
   #' @param se a boolean value defining if hessian values and standard errors

@@ -2,10 +2,12 @@ test_personsItems <- function(items=NULL,
                               dset=NULL,
                               na.rm=TRUE,
                               model=NULL,
+                              p.par=NULL,
                               modelType=NULL,
                               gap_prop=0,
                               extremes=TRUE,
-                              estimation_param=NULL){
+                              estimation_param=NULL,
+                              pair_param=NULL){
   #' checks the relationship between the person parameter distribution and
   #'  the item (or: threshold) locations for defined criteria
   #' @param items a numeric vector containing the index numbers of the items
@@ -27,6 +29,8 @@ test_personsItems <- function(items=NULL,
   #'   highest person parameter.
   #' @param estimation_param options for parameter estimation using
   #' \link{estimation_control}
+  #' @param pair_param options for options for fitting pairwise models using
+  #' \link{pairwise_control}
   #' @return if the criteria are met, a list containing two elements is
   #'  returned: the pattern that was tested an a list of type RM, RCM or RSM
   #'   (depending on modelType) with the fit model. If the criteria are not met,
@@ -42,6 +46,7 @@ test_personsItems <- function(items=NULL,
 
   if (inherits(items, "list")){
     model <- items[[2]]
+    p.par <- items[[3]]
     items <- items[[1]]
   }
 
@@ -49,30 +54,45 @@ test_personsItems <- function(items=NULL,
     ds_test <- dset[items]
     if (na.rm==TRUE){ds_test<- stats::na.omit(ds_test)
     } else{ds_test <- ds_test[rowSums(is.na(ds_test)) < ncol(ds_test)-1, ]}
-    #try(suppressWarnings({
-    #  model <- get(modelType)(ds_test, se=TRUE)
-    #}), silent=TRUE)
     model <- fit_rasch(X=ds_test, modelType=modelType,
-                       estimation_param=estimation_param)
-  } else{
-    items <- which(colnames(dset) %in% colnames(model$X))
+                       estimation_param=estimation_param,
+                       pair_param = pair_param)
   }
-  PImapExtremes <- TRUE
-  try(p.par <- eRm::person.parameter(model), silent=TRUE)
-  if (exists("p.par")){
-    perspars <- sort(unique(unlist(p.par$thetapar)))
-    if (modelType=="RM"){
-      threshs <- sort(as.vector(0-model$betapar))
-    } else{
-      threshs <- sort(as.vector(
-        eRm::thresholds(model)$threshtable$'1'[,2:length(eRm::thresholds(
-          model)$threshtable$'1'[1,])]))
+
+  ### get person parameter object if not already existing
+  if (exists("model") & is.null(p.par)){
+    if (estimation_param$est=="pairwise"){
+      p.par <- pairwise::pers(model)
+    } else if (estimation_param$est=="eRm"){
+      p.par <- eRm::person.parameter(model)
+    } else{ # psychotools
+      p.par <- ppar.psy(model)
     }
+  }
+
+  ### get ordered unique person parameters and itrem thresholds
+  if (exists("p.par")){
+    if (estimation_param$est=="pairwise"){
+      if (exists("p.par")){
+        perspars <- sort(unique(p.par$pers$WLE))
+        threshs <- as.vector(sort(model$threshold))
+      }
+    } else if (estimation_param$est=="eRm"){
+      perspars <- sort(unique(unlist(p.par$thetapar)))
+      threshs <- as.vector(sort(eRm::thresholds(model)$threshpar))
+    } else if (estimation_param$est=="psychotools"){
+      perspars <- sort(unique(unlist(model$theta)))
+      threshs <- as.vector(sort(unlist(model$thresholds)))
+    }
+  }
+
+  PImapExtremes <- TRUE
+  gap_crit <- TRUE
+
+  if (exists("perspars")){
     if (extremes==TRUE){
       # checks if there are items (thresholds) left of the 2nd lowest and
       # right of the 2nd highest person parameter
-      no_items <- length(items)
-      no_thres <- length(model$betapar)/no_items
       PImapExtremes <-FALSE
       low_pers <- perspars[2]
       high_pers <- perspars[length(perspars)-1]
@@ -81,7 +101,7 @@ test_personsItems <- function(items=NULL,
         PImapExtremes <-TRUE
       }
     }
-    gap_crit <- TRUE
+
     if (gap_prop>0){
       # calculates the proportions of neighboring person parameters with an
       # items/threshold location in between
@@ -95,7 +115,7 @@ test_personsItems <- function(items=NULL,
       if (prop_gaps < gap_prop){gap_crit <- FALSE}
     }
     if (PImapExtremes==TRUE & gap_crit==TRUE){
-      return(list(items, model))
+      return(list(items, model, p.par))
     }
   }
 }

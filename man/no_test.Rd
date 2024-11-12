@@ -10,8 +10,10 @@ no_test(
   dset = NULL,
   na.rm = TRUE,
   model = NULL,
+  p.par = NULL,
   modelType = NULL,
-  estimation_param = NULL
+  estimation_param = NULL,
+  pair_param = NULL
 )
 }
 \arguments{
@@ -32,6 +34,9 @@ Possible values: RM, PCM, RSM}
 
 \item{estimation_param}{options for parameter estimation using
 \link{estimation_control}}
+
+\item{pair_param}{options for options for fitting pairwise models using
+\link{pairwise_control}}
 }
 \value{
 if there are no items with disordered thresholds in the model, a

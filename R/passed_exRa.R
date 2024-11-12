@@ -14,7 +14,7 @@
 methods::setClass("passed_exRa", slots=c(process="data.frame",
                                          passed_combos="list",
                                          passed_models="list",
+                                         passed_p.par="list",
                                          IC="data.frame",
                                          data="data.frame",
                                          timings="data.frame"))
-methods::setGeneric("summary")

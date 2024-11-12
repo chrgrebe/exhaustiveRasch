@@ -3,9 +3,11 @@ test_DIFtree <- function(items=NULL,
                          dset=NULL,
                          na.rm=TRUE,
                          model=NULL,
+                         p.par=NULL,
                          modelType=NULL,
                          alpha=0.1,
-                         estimation_param=NULL){
+                         estimation_param=NULL,
+                         pair_param=NULL){
 
   #' builds a raschtree using the raschtree or rstree function of the
   #'  psychotree Package.
@@ -25,6 +27,8 @@ test_DIFtree <- function(items=NULL,
   #'  use.pval is FALSE
   #' @param estimation_param options for parameter estimation using
   #' \link{estimation_control}
+  #' @param pair_param options for options for fitting pairwise models using
+  #' \link{pairwise_control}
   #' @return if none of the p-values is significant (above p=0.05), a list
   #'  containing two elements is returned: the pattern that was tested an a list
   #'   of type RM, RCM or RSM (depending on modelType) with the fit model.
@@ -41,6 +45,7 @@ test_DIFtree <- function(items=NULL,
 
   if (inherits(items, "list")){
     model <- items[[2]]
+    p.par <- items[[3]]
     items <- items[[1]]
   }
 
@@ -53,8 +58,8 @@ test_DIFtree <- function(items=NULL,
     #  model <- get(modelType)(ds_test, se=TRUE)
     #}), silent=TRUE)
     model <- fit_rasch(X=ds_test, modelType=modelType,
-                       estimation_param=estimation_param)
-    items <- which(colnames(dset) %in% colnames(model$X))
+                       estimation_param=estimation_param,
+                       pair_param = pair_param)
   }
 
   ds_DIF <- merge(ds_test, DIFvars, by=0)
@@ -76,7 +81,7 @@ test_DIFtree <- function(items=NULL,
 
   if (exists("DIF_tree")==TRUE & !is.null(model)){
     if (length(DIF_tree)==1){
-      return(list(items, model))
+      return(list(items, model, p.par))
     }
   }
 }

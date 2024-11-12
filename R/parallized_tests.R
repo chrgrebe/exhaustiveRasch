@@ -2,10 +2,12 @@ parallized_tests <- function(dset,
                              modelType,
                              combos,
                              models,
+                             p.par,
                              na.rm,
                              testfunction,
                              itemfit_param,
                              splitcr=NULL,
+                             icat_wald,
                              alpha,
                              bonf,
                              DIFvars,
@@ -15,6 +17,8 @@ parallized_tests <- function(dset,
                              extremes,
                              ignoreCores,
                              estimation_param,
+                             pair_param,
+                             tests_count,
                              ...){
   #' conducts and controls the parallelisation of the tests, Intentionally,
   #'  there are no defauklt values for the parameters, as this internal
@@ -50,6 +54,10 @@ parallized_tests <- function(dset,
   #'     Optionally splitcr can also be a vector which assigns each person
   #'      to a certain subgroup (e.g., following an external criterion).
   #'       This vector can be numeric, character or a factor.
+  #' @param icat_wald a boolean value indicating if the waldtest will be
+  #' conducted on item level (TRUE, default value) or on item category level.
+  #' This parameter only effects estimations using psychotools or pairwise and
+  #' will be ignored for eRm estimations.
   #' @param alpha a numeric value for the alpha level. Will be ignored for
   #'  \link{test_itemfit} if use.pval in \link{itemfit_control} is FALSE
   #' @param bonf a boolean value wheter to use a Bonferroni correction.
@@ -72,6 +80,8 @@ parallized_tests <- function(dset,
   #'  to this function.
   #' @param estimation_param options for parameter estimation using
   #' \link{estimation_control}
+  #' @param pair_param options for options for fitting pairwise models using
+  #' \link{pairwise_control}
   #' @return a list containing a) a list of item combinations that passed the
   #'  actual test; and b) a list containing the fit models
   #'   of type RM, PCM or RSM.
@@ -84,7 +94,7 @@ parallized_tests <- function(dset,
   # package documentation (roxygen2 keyword 'internal').
 
   arguments <- list(...)
-  # catch, if no itemcombinations are handed over or if a combos is a character
+  # catch, if no item combinations are handed over or if a combos is a character
   # that indicates a warning message.
 
   if (length(combos)==0 | is.character(combos)){
@@ -100,40 +110,54 @@ parallized_tests <- function(dset,
       cl <- parallel::makePSOCKcluster(parallel::detectCores()- ignoreCores)
     }
     parallel::setDefaultCluster(cl)
-    parallel::clusterExport(cl, c(testfunction, "fit_rasch", "Mloef",
-                                  "datcheck", "dataprep", "LRtest",
-                                  "Waldtest", "datcheck.LRtest"))
+    #    parallel::clusterExport(cl, c(testfunction, "fit_rasch", "Mloef",
+    #                                  "datcheck", "dataprep", "LRtest",
+    #                                  "Waldtest", "datcheck.LRtest",
+    #                                  "ppar.psy", "expscore", "pvx.matrix", "pvx",
+    #                                  "mloef.psy", "waldtest.psy"))
+    parallel::clusterExport(cl, c(testfunction, "fit_rasch",
+                                  "ppar.psy", "expscore", "pvx.matrix", "pvx",
+                                  "mloef.psy", "waldtest.psy", "LRtest.psy"))
+
     parallel::clusterEvalQ(cl, library(eRm))
     parallel::clusterEvalQ(cl, library(psych))
     parallel::clusterEvalQ(cl, library(psychotree))
     parallel::clusterEvalQ(cl, library(psychotools))
+    parallel::clusterEvalQ(cl, library(pairwise))
 
 
     if (!is.null(models)){
       modelcombo_pairs <- lapply(seq_len(length(combos)), function(x){
-        list(combos[[x]], models[[x]])})
+        list(combos[[x]], models[[x]], p.par[[x]])})
       param1 <- list(cl=cl, X=modelcombo_pairs, dset=dset,
                      modelType=modelType, na.rm=na.rm,
                      estimation_param=estimation_param,
-                     fun= testfunction)
+                     pair_param=pair_param,
+                     FUN= testfunction)
     } else{
       param1 <- list(cl=cl, X=combos, dset=dset, modelType=modelType,
                      na.rm=na.rm, estimation_param=estimation_param,
-                     fun= testfunction)
+                     pair_param=pair_param, FUN= testfunction)
     }
 
     if (testfunction=="test_itemfit"){
       param1$control <- itemfit_param
     }
     if (!is.null(splitcr) & (testfunction=="test_mloef" | testfunction==
-                             "test_LR" | testfunction=="test_waldtest")){
+                             "test_LR" |
+                             testfunction=="test_waldtest" |
+                             testfunction=="test_Qtest")){
       param1$splitcr <- splitcr
     }
-    if (testfunction %in% c("test_LR", "test_waldtest")){
+    if (testfunction %in% c("test_itemfit", "test_waldtest")){
       param1$bonf <- bonf
     }
-    if (testfunction %in% c("test_LR", "test_waldtest", "test_mloef")){
+    if (testfunction %in% c("test_LR", "test_waldtest", "test_mloef",
+                            "test_Qtest")){
       param1$alpha <- alpha
+    }
+    if (testfunction=="test_waldtest" & estimation_param$est !="eRm"){
+      param1$icat <-icat_wald
     }
     if (testfunction=="test_DIFtree"){
       param1$DIFvars <- DIFvars
@@ -145,7 +169,10 @@ parallized_tests <- function(dset,
     if (testfunction=="test_PSI"){
       param1$PSI <-PSI
     }
-    a <- do.call(parallel::parLapply, param1)
+    print(paste("computing process ", tests_count[1],"/", tests_count[2],": ",
+                testfunction, sep=""))
+    pbapply::pboptions()
+    a <- do.call(pbapply::pblapply, param1)
     parallel::stopCluster(cl)
     a[sapply(a, is.null)] <- NULL
     return(a)
