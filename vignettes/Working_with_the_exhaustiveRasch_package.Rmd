@@ -23,7 +23,7 @@ The selection of items from a larger item pool is a challenge in the context of 
 
 The package *exhaustiveRasch* conducts an exhaustive search over all possible item combinations. It identifies item combinations that meet the item and model fit criteria as defined by the user. Theoretically alowed item combinations can be defined beforehand by pre-defining rules for inclusion and exclusion.
 
-(Semi-) automatic item selection using Rasch principles is also addressed by the *autorasch* package (Wijayanto et al. 2023). In contrast to *exhaustiveRasch,* this package aims to identify exactly one optimal model. ExhaustiveRasch, on the other hand, tests all item combinations (possibly previously reduced on a theoretical basis) against the criteria specified by the user using common model tests for Rasch models. Ultimately, it does not return the one optimal model, but all item combinations that fulfil the specified criteria.
+(Semi-) automatic item selection using Rasch principles is also addressed by the *autorasch* package (Wijayanto et al. 2023). In contrast to *autorasch,* this package aims to identify exactly one optimal model. ExhaustiveRasch, on the other hand, tests all item combinations (possibly previously reduced on a theoretical basis) against the criteria specified by the user using common model tests for Rasch models. Ultimately, it does not return the one optimal model, but all item combinations that fulfil the specified criteria.
 
 ## 2. Package overview
 
@@ -33,7 +33,7 @@ The package consists of two main parts (functions). The first is to define rules
 
 You can use the *apply_combo_rules()* function to define rules for item combinations to be recongnized or permitted in the candidate models. The function needs the *full* argument, a vector of numeric values for the item indices of the full item set to be processed. For example, if the function should be applied to a full set of 10 items, the *full* argument must be set to 1:10.
 
-You can define the length of the scales by setting the *combo_length* argument. This argument can be a single numeric value or a vector of numeric values. For example, with *combo_length=6* only combinations of 6 items are selected. or with *combo_length=4:6* only combinations with at least 4 and not more than 6 items are selected. with *combo_length c(4,7,8)* only combinations with 4,7 and 8 items are selected. If not specified, all scale length between 3 and the maximum number of items in full will be used.
+You can define the length of the scales by setting the *combo_length* argument. This argument can be a single numeric value or a vector of numeric values. For example, with *combo_length=6* only combinations of 6 items are selected. or with *combo_length=4:6* only combinations with at least 4 and not more than 6 items are selected. with *combo_length c(4,7,8)* only combinations with 4,7 and 8 items are selected. If not specified, all scale length between 4 and the maximum number of items in full will be used.
 
 There are four types of rules that can be defined:
 
@@ -312,7 +312,7 @@ Depending of your data and the test criteria used for the *exhaustive_tests()* f
 
 Currently, the package comes with three datasets:
 
-**ADL:** dichotomous data for activities of daily living
+**ADL:** dichotomous data for activities of daily living of nursing home residents (Grebe 2013).
 
 **InterProfessionalCollaboration:** polytomous data with four item categories for interprofessional collaboration from nurses, midwifes, occupational therapists, physiotherapists ans speech therapists, measures with the Health Professionals Competence Scales (Grebe et al. 2021).
 
@@ -394,6 +394,8 @@ Not to compute standard errors reduces the calculation time for parameter estima
 In general, the individual tests for analyses with longer runtimes (PCM models with \>4 response categories and several 1,000 item combinations) should not be carried out in a single call of exhaustive_tests. If no item combinations remain after a test, there is no longer access to the item combinations that remained after the penultimate test. A workflow would be better here in which the first test is carried out first (e.g. argument tests=test_mloef). Then the passed_exRA object is passed in the combos argument for the second test. See the example with passed_ADL and passed_ADL2 in section 3 of this vignette.
 
 ## References
+
+**Grebe C, Schürmann M, Latteck ÄD (2021).** Die Health Professionals Competence Scales (HePCoS) zur Kompetenzerfassung in den Gesundheitsfachberufen. Technical Report. Berichte aus Forschung und Lehre (48). Bielefeld, Fachhochschule Bielefeld. DOI: <http://dx.doi.org/10.13140/RG.2.2.13480.08967/1>
 
 ***Grebe C (2013).*** "Pflegeaufwand und Personalbemessung in der stationären Langzeitpflege. Entwicklung eines empirischen Fallgruppensystems auf der Basis von Bewohnercharakteristika". Oral presentation at the 3-Länderkonferenz Pflege & Pflegewissenschaft, September 2013, Konstanz.
 

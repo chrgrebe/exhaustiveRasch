@@ -35,10 +35,11 @@ Possible values: RM, PCM, RSM}
 
 \item{splitcr}{as defined by eRm::LRtest. Split criterion for subject
 raw score splitting. "all.r" corresponds to a full raw score split,
- "median" uses the median as split criterion, "mean" performs a
-  mean split. Optionally splitcr can also be a vector which assigns each
-   person to a certain subgroup (e.g., following an external criterion).
-    This vector can be numeric, character or a factor.}
+"median" uses the median as split criterion, "mean" performs a
+mean split. Optionally splitcr can also be a vector which assigns each
+person to a certain subgroup (e.g., following an external criterion).
+This vector can be numeric, character or a factor.
+A random split, as in pairwise, is also a possible option.}
 
 \item{alpha}{a numeric value for the alpha level. Will be ignored if
 use.pval is FALSE}

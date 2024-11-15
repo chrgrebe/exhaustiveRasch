@@ -2,8 +2,31 @@
 ########################################################
 
 LRtest.psy <- function(model, modelType, splitcr="median", splitseed=NULL){
+  # function adapted from the package pairwise by Joerg-Henrik Heine and from
+  # function LRtest.Rm of the package eRm by
+  # Patrick Mair, Thomas Rusch, Reinhold Hatzinger, Marco J. Maier &
+  # Rudolf Debelak
+  #' itemfit statistics for psychotools
+  #' Anderson's likelihood ratio test for psychotools
+  #' @param model a list of type RM, PCM or RSM (a previously fit model)
+  #'  matching the value of modelType. If model is provided, this model is used.
+  #'   If NULL, a model is fit using dset and items.
+  #' @param modelType a character value defining the rasch model to fit.
+  #'  Possible values: RM, PCM, RSM
+  #' @param splitcr as defined by eRm::MLoef: Split criterion to define the
+  #'  item groups. "median" and "mean" split items in two groups based on their
+  #'   items' raw scores. splitcr can also be a vector of length k (where k
+  #'   denotes the number of items) that takes two or more distinct values to
+  #'    define groups used for the Martin-Löf Test.
+  #'  A random split, as in pairwise, is also a possible option.
+  #' @param splitseed seed for random split
+  #' @return a list containing a) a list of item combinations that passed the
+  #'  actual test; and b) a list containing the fit models
+  #'   of type RM, PCM or RSM.
   #' @export
-  X <- model$data
+  #' @keywords internal
+
+    X <- model$data
 
   #### split criteria
   if (!length(splitcr)>1){
@@ -59,7 +82,30 @@ LRtest.psy <- function(model, modelType, splitcr="median", splitseed=NULL){
 ########################################################
 
 waldtest.psy <- function(model, modelType, splitcr="median", splitseed=NULL, icat=FALSE){
+  #  function adapted from the package pairwise by Joerg-Henrik Heine
+  #' Fischer and Scheiblechner's "wald-like" S-statistic for psychotools
+  #' @param model a list of type RM, PCM or RSM (a previously fit model)
+  #'  matching the value of modelType. If model is provided, this model is used.
+  #'   If NULL, a model is fit using dset and items.
+  #' @param modelType a character value defining the rasch model to fit.
+  #'  Possible values: RM, PCM, RSM
+  #' @param splitcr as defined by eRm::Waldtest: Split criterion for subject
+  #'  raw score splitting. median uses the median as split criterion, mean
+  #'   performs a mean-split. Optionally splitcr can also be a dichotomous
+  #'    vector which assigns each person to a certain subgroup
+  #'     (e.g., following an external criterion). This vector can be numeric,
+  #'      character or a factor.
+  #'  A random split, as in pairwise, is also a possible option.
+  #' @param splitseed seed for random split
+  #' @param icat a boolean value defining wheter to use item parameters
+  #' (psychotools function itempar, if TRUE) or item category parameters (psychotools
+  #' function threshpar)
+  #' @return a list containing a) a list of item combinations that passed the
+  #'  actual test; and b) a list containing the fit models
+  #'   of type RM, PCM or RSM.
   #' @export
+  #' @keywords internal
+
   X <- model$data
   #### split criteria
   if (!length(splitcr)>1){
@@ -138,8 +184,29 @@ waldtest.psy <- function(model, modelType, splitcr="median", splitseed=NULL, ica
 ########################################################
 
 mloef.psy <- function(model, modelType, splitcr="median"){
+  # code adapted from function erson.parameter.eRm of the package eRm by
+  # Patrick Mair, Thomas Rusch, Reinhold Hatzinger, Marco J. Maier &
+  # Rudolf Debelak
+  #  function adapted from the package pairwise by Joerg-Henrik Heine
+  #' Martin-Loef test for psychotools
+  #' @param model a list of type RM, PCM or RSM (a previously fit model)
+  #'  matching the value of modelType. If model is provided, this model is used.
+  #'   If NULL, a model is fit using dset and items.
+  #' @param modelType a character value defining the rasch model to fit.
+  #'  Possible values: RM, PCM, RSM
+  #' @param splitcr as defined by eRm::MLoef: Split criterion to define the
+  #' item groups. "median" and "mean" split items in two groups based on their
+  #' items' raw scores. splitcr can also be a vector of length k (where k
+  #' denotes the number of items) that takes two or more distinct values to
+  #' define groups used for the Martin-Löf Test.
+  #' A random split, as in pairwise, is also a possible option.
+  #' @return a list containing a) a list of item combinations that passed the
+  #'  actual test; and b) a list containing the fit models
+  #'   of type RM, PCM or RSM.
   #' @export
-  X <- model$data
+  #' @keywords internal
+
+    X <- model$data
   #### split criteria
   if(splitcr=="random"){
     if(is.numeric(splitseed)){set.seed(splitseed)}
@@ -211,10 +278,20 @@ mloef.psy <- function(model, modelType, splitcr="median"){
 ########################################################
 
 pvx<-function(theta,thres,xm=NULL){
+  # function adapted from the package pairwise by Joerg-Henrik Heine
   #' @export
   # func. by joerg-henrik heine jhheine(at)googlemail.com
   # nichts geändert aber zum merken theta: einzelne zahl; thres: thurstonian threshold eines items
   # korrigierte formel aus markus buch seite 330 siehe auch s. 522 2006
+
+  #' internal pvx function
+  #' @param theta_v internal
+  #' @param thres internal
+  #' @param xm internal
+  #' @return
+  #' @export
+  #' @keywords internal
+
   s<-0:length(thres)
   thres<-c(0,thres)
   oben<- exp((s*theta)-cumsum(thres))
@@ -228,13 +305,22 @@ pvx<-function(theta,thres,xm=NULL){
 }
 
 pvx.matrix<-function(theta_v,thres,xm_v=NULL){
-  #' @export
+  # function adapted from the package pairwise by Joerg-Henrik Heine
   # func. by joerg-henrik heine jhheine(at)googlemail.com
   # ein dimension dazu und zum merken
   # theta_v: ein vector oder zahl;
   # thres: thurstonian thresholds eines items
   # xm_v: vector welche kategorie prob jeweils ausgegeben werden soll
   # korrigierte formel aus markus buch seite 330
+
+  #' pvx matrix
+  #' @param theta_v internal
+  #' @param thres internal
+  #' @param xm_v internal
+  #' @return internal
+  #' @export
+  #' @keywords internal
+
   s<-0:length(thres)
   thres0<-c(0,thres)
   oben_v <- exp(apply((s%o%theta_v),2,function(x){x-cumsum(thres0)})) # ok - für theta_v als vector oder zahl
@@ -250,12 +336,22 @@ pvx.matrix<-function(theta_v,thres,xm_v=NULL){
 
 
 expscore <- function(X, thres, ppar, na_treat=NA){
+  # function adapted from the package pairwise by Joerg-Henrik Heine
+
+  #' returns a matrix with dims like resp matrix with expected scores and more ...
+  #' func. by joerg-henrik heine jhheine(at)googlemail.com
+  #' needs func. \code{pvx} in i.pvx.R and \code{pvx.matrix} in i.pvx.matrix.R
+  #' Notation and formulas see:  Wright & Masters 1982 p.100
+  #' in a revised form  (korrigendum) see http://www.rasch.org/rmt/rmt34e.htm
+  #' @param X internal
+  #' @param thres internal
+  #' @param ppar internal
+  #' @param na_treat internal
+  #' @return internal
   #' @export
-  # returns a matrix with dims like resp matrix with expected scores and more ...
-  # func. by joerg-henrik heine jhheine(at)googlemail.com
-  # needs func. \code{pvx} in i.pvx.R and \code{pvx.matrix} in i.pvx.matrix.R
-  # Notation and formulas see:  Wright & Masters 1982 p.100
-  # in a revised form  (korrigendum) see http://www.rasch.org/rmt/rmt34e.htm
+  #' @keywords internal
+
+
   nitems <- dim(thres)[1]
   emp_resp <- X # empirical responses
   N <- dim(X)[1]
@@ -331,8 +427,19 @@ expscore <- function(X, thres, ppar, na_treat=NA){
 }
 
 ppar.psy <- function(model=NULL){
+  # code adapted from function person.parameter.eRm of the package eRm by
+  # Patrick Mair, Thomas Rusch, Reinhold Hatzinger, Marco J. Maier &
+  # Rudolf Debelak
+  #  function adapted from the package pairwise by Joerg-Henrik Heine
+  #' itemfit statistics for psychotools
+  #' @param model a list of type RM, PCM or RSM (a previously fit model)
+  #'  matching the value of modelType. If model is provided, this model is used.
+  #'   If NULL, a model is fit using dset and items.
+  #' @return an object containing person parameters, residuals and PSI
   #' @export
-  X <- model$data
+  #' @keywords internal
+
+    X <- model$data
   thres <- t(simplify2array(model$thresholds))
   if (dim(thres)[1]==1){ #dichotomous case
     thres <- as.matrix((simplify2array(model$thresholds)))
