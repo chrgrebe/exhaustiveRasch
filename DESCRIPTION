@@ -8,7 +8,7 @@ Description: Automation of the item selection Processes for rasch scales by mean
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-Imports: eRm, psychotree, parallel, stats, utils, psych, tictoc, methods, psychotools, arrangements
+Imports: eRm, psychotree, parallel, stats, utils, psych, tictoc, methods, psychotools, pairwise, arrangements
 Depends: R (>= 3.5.0)
 Suggests: knitr, rmarkdown, testthat (>= 3.0.0)
 Config/testthat/edition: 3
