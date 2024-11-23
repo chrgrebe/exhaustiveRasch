@@ -1,3 +1,13 @@
+# exhaustiveRasch 0.3.2
+### Bug fixes
+fixed error messages with RSM-models estimated with eRm (issue in context of calculating hessians). Affected item combinations are considered as not passing the test.
+
+# exhaustiveRasch 0.3.1
+### New features
+This version implements parameter calculation (not estimation) using the pairwise approach and the respective model tests provided by the pairwise package.
+Person parameters are no longer calculated for each test, but are passed from test to test and are part (as an additonal slot of the S4-class) of the passed_exRa object, if a test relying on person parameters is part of the test circuit.
+When using psychotools for estimation, the results are no longer converted to an eRm class, and functions of eRm are no longer used in this case. There are new internal functions for model tests based on psychotools estimations since this version.
+
 # exhaustiveRasch 0.2.2
 This release fixes two bugs.
 
