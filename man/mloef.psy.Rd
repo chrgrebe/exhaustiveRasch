@@ -4,7 +4,7 @@
 \alias{mloef.psy}
 \title{Martin-Loef test for psychotools}
 \usage{
-mloef.psy(model, modelType, splitcr = "median")
+mloef.psy(model, modelType, splitcr = "median", splitseed = NULL)
 }
 \arguments{
 \item{model}{a list of type RM, PCM or RSM (a previously fit model)
@@ -20,6 +20,8 @@ items' raw scores. splitcr can also be a vector of length k (where k
 denotes the number of items) that takes two or more distinct values to
 define groups used for the Martin-Löf Test.
 A random split, as in pairwise, is also a possible option.}
+
+\item{splitseed}{seed for random split}
 }
 \value{
 a list containing a) a list of item combinations that passed the

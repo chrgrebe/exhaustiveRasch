@@ -14,7 +14,6 @@ exhaustive_tests(
   splitcr_mloef = NULL,
   splitcr_LR = NULL,
   splitcr_wald = NULL,
-  splitcr_Q = NULL,
   icat_wald = FALSE,
   alpha = 0.1,
   bonf = FALSE,

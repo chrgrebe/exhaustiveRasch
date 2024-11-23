@@ -39,9 +39,10 @@ least one item with significant p-value}
 \item{upperZ}{a numeric value for the upper bound for acceptable fit
 (standardised fit indices)}
 
-\item{use.rel}{a boolean value wheter to use the .rel estimates of the
-pairwise temfit for MSQ and z-standardised fit-indiced. Will be ignored,
-for eRm and psychotools estimation.}
+\item{use.rel}{a boolean value wheter to use the unweighted
+(default, FALSE) or weighted item fit indices for MSQ and z-standardised
+ fit-indices. Only available for pairwise and psychotools estiomation,
+ will be ignored, for eRm estimation.}
 }
 \value{
 a list containing the options

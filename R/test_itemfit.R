@@ -64,18 +64,20 @@ test_itemfit<- function(items=NULL,
   check <- FALSE
 
   ### get person parameter object if not already existing
-  if (exists("model") & is.null(p.par)){
+  if (!is.null(model) & is.null(p.par)){
     if (estimation_param$est=="pairwise"){
       p.par <- pairwise::pers(model)
     } else if (estimation_param$est=="eRm"){
-      p.par <- eRm::person.parameter(model)
+      try(suppressWarnings({
+        p.par <- eRm::person.parameter(model)
+      }), silent=TRUE)
     } else{ # psychotools
       p.par <- ppar.psy(model)
     }
   }
 
   ### get fit indices
-  if (exists("p.par")){
+  if (!is.null(p.par)){
     if (estimation_param$est=="pairwise"){
       ifit <- pairwise::pairwise.item.fit(p.par)
     } else if (estimation_param$est=="eRm"){

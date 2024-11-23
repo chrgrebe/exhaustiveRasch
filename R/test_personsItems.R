@@ -60,29 +60,35 @@ test_personsItems <- function(items=NULL,
   }
 
   ### get person parameter object if not already existing
-  if (exists("model") & is.null(p.par)){
+  if (!is.null(model) & is.null(p.par)){
     if (estimation_param$est=="pairwise"){
       p.par <- pairwise::pers(model)
     } else if (estimation_param$est=="eRm"){
-      p.par <- eRm::person.parameter(model)
+      try(suppressWarnings({
+        p.par <- eRm::person.parameter(model)
+      }), silent=TRUE)
     } else{ # psychotools
       p.par <- ppar.psy(model)
     }
   }
 
-  ### get ordered unique person parameters and itrem thresholds
-  if (exists("p.par")){
+  ### get ordered unique person parameters and item thresholds
+  if (!is.null(p.par)){
     if (estimation_param$est=="pairwise"){
       if (exists("p.par")){
         perspars <- sort(unique(p.par$pers$WLE))
         threshs <- as.vector(sort(model$threshold))
       }
     } else if (estimation_param$est=="eRm"){
-      perspars <- sort(unique(unlist(p.par$thetapar)))
-      threshs <- as.vector(sort(eRm::thresholds(model)$threshpar))
+       perspars <- sort(unique(unlist(p.par$thetapar)))
+       if (modelType=="RM"){
+         threshs <- as.vector(sort(model$betapar))
+         } else{
+           threshs <- as.vector(sort(eRm::thresholds(model)$threshpar))
+         }
     } else if (estimation_param$est=="psychotools"){
-      perspars <- sort(unique(unlist(model$theta)))
-      threshs <- as.vector(sort(unlist(model$thresholds)))
+       perspars <- sort(unique(unlist(model$theta)))
+       threshs <- as.vector(sort(unlist(model$thresholds)))
     }
   }
 

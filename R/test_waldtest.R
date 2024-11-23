@@ -71,7 +71,7 @@ test_waldtest <- function(items=NULL,
                        pair_param = pair_param)
   }
 
-  if (exists("model")==TRUE){
+  if (!is.null(model)){
     if (estimation_param$est=="pairwise"){
       try(suppressWarnings({wald <- pairwise::pairwise.S(
         daten=ds_test, split=splitcr)}),

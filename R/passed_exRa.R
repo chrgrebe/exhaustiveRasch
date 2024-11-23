@@ -6,6 +6,9 @@
 #'  using the indices of the items
 #' @slot passed_models a list of objects of the classes RM, PCM or RSM
 #'  of the eRm package (fit rasch models)
+#' @slot passed_p.par a list of objects containing the person parameters.
+#'  Depending on the package used for estimation, also residuals and/or
+#'  the PSI value can be part of this list
 #' @slot IC a data.frame conatining information criteria for each of the
 #'  models in passed_models
 #' @slot data a data.frame containing the data used for the analyes.

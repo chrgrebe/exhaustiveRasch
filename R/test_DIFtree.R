@@ -62,23 +62,24 @@ test_DIFtree <- function(items=NULL,
                        pair_param = pair_param)
   }
 
-  ds_DIF <- merge(ds_test, DIFvars, by=0)
-  ds_DIF$Row.names <- NULL
-  ds_DIF$rasch <- as.matrix(ds_DIF[ , seq_len(length(items))])
-  ds_DIF <- ds_DIF[ , -(seq_len(length(items)))]
-  if (modelType=="RM"){
-    try(suppressWarnings({
-      DIF_tree <- psychotree::raschtree(rasch ~., data=ds_DIF)}), silent=TRUE)
+  if (!is.null(model)){
+    ds_DIF <- merge(ds_test, DIFvars, by=0)
+    ds_DIF$Row.names <- NULL
+    ds_DIF$rasch <- as.matrix(ds_DIF[ , seq_len(length(items))])
+    ds_DIF <- ds_DIF[ , -(seq_len(length(items)))]
+    if (modelType=="RM"){
+      try(suppressWarnings({
+        DIF_tree <- psychotree::raschtree(rasch ~., data=ds_DIF)}), silent=TRUE)
+      }
+    if (modelType=="RSM"){
+      try(suppressWarnings({
+        DIF_tree <- psychotree::rstree(rasch ~., data=ds_DIF)}), silent=TRUE)
+      }
+    if (modelType=="PCM"){
+      try(suppressWarnings({
+        DIF_tree <- psychotree::pctree(rasch ~., data=ds_DIF)}), silent=TRUE)
+      }
   }
-  if (modelType=="RSM"){
-    try(suppressWarnings({
-      DIF_tree <- psychotree::rstree(rasch ~., data=ds_DIF)}), silent=TRUE)
-  }
-  if (modelType=="PCM"){
-    try(suppressWarnings({
-      DIF_tree <- psychotree::pctree(rasch ~., data=ds_DIF)}), silent=TRUE)
-  }
-
   if (exists("DIF_tree")==TRUE & !is.null(model)){
     if (length(DIF_tree)==1){
       return(list(items, model, p.par))

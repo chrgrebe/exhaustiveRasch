@@ -1,13 +1,13 @@
 library(eRm)
-# list of 2 is returned (item combinations and fit rasch model)
+# list of 3 is returned (item combinations, fit rasch model and ppar)
 data(ADL)
 testthat::test_that("test_mloef: p-value 0.088, alpha: 0.05",{
   testthat::expect_equal(length(
     exhaustiveRasch::test_mloef(items=1:5, dset=ADL, na.rm=TRUE, modelType="RM",
                                  alpha=0.05, estimation_param = estimation_control(est="eRm"))),
-               expected=2)})
+               expected=3)})
 
-# list of 2 is returned (item combinations and fit rasch model)
+# list of 3 is returned (item combinations, fit rasch model and ppar)
 data(ADL)
 testthat::test_that("test_mloef: p-value 0.088, alpha: 0.05; na.rm=FALSE",{
   testthat::expect_equal(length(
@@ -16,9 +16,9 @@ testthat::test_that("test_mloef: p-value 0.088, alpha: 0.05; na.rm=FALSE",{
                                 alpha=0.05,
                                 estimation_param=
                                   estimation_control(est="eRm"))),
-    expected=2)})
+    expected=3)})
 
-# list of 2 is returned (item combinations and fit rasch model)
+# list of 3 is returned (item combinations, fit rasch model and ppar)
 data(ADL)
 firstrun <- exhaustiveRasch::test_mloef(
   items=1:5, dset=ADL,
@@ -34,7 +34,7 @@ testthat::test_that("test_mloef: p-value 0.088, alpha: 0.05;
                                 alpha=0.05,
                                 estimation_param=
                                   estimation_control(est="eRm"))),
-                         expected=2)})
+                         expected=3)})
 
 
 # empty list is returned

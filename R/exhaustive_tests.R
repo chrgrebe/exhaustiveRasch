@@ -7,7 +7,7 @@ exhaustive_tests <- function(dset,
                              splitcr_mloef=NULL,
                              splitcr_LR=NULL,
                              splitcr_wald=NULL,
-                             splitcr_Q=NULL,
+                             #splitcr_Q=NULL,
                              icat_wald=FALSE,
                              alpha=0.1,
                              bonf=FALSE,
@@ -116,6 +116,18 @@ exhaustive_tests <- function(dset,
   #'     tests=c("test_itemfit", "test_mloef", "test_respca"))
   #'  }
 
+  # get lowest and highest category
+  maxcat<-apply(dset,2,function(x){max(x,na.rm=TRUE)})
+  mincat <-apply(dset,2,function(x){min(x,na.rm=TRUE)})
+  # if necessary, shift all categories to start with 0
+  if (min(mincat)>0){
+    dset <- as.data.frame(apply(dset,2,function(x){x-min(mincat)}))
+    cat(paste("item-categories did not start with 0. Categories were shifted to
+              set the first category 0. Consider inspecting your data matrix",
+              "\n"))
+  }
+
+  # some checks for not allowed test
   if (na.rm==FALSE & "test_mloef" %in% tests){
     na.rm <- TRUE
     cat(paste("test_mloef is part of the test. This test does not currently
@@ -260,7 +272,7 @@ exhaustive_tests <- function(dset,
         if (tests[l]=="test_mloef"){splitcr <- splitcr_mloef}
         if (tests[l]=="test_LR"){splitcr <- splitcr_LR}
         if (tests[l]=="test_waldtest"){splitcr <- splitcr_wald}
-        if (tests[l]=="test_Qtest"){splitcr <- splitcr_Q}
+        #if (tests[l]=="test_Qtest"){splitcr <- splitcr_Q}
         current_return <- parallized_tests(dset=dset,
                                            combos=current_combos,
                                            models=current_models,

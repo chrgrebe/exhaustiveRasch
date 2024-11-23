@@ -14,9 +14,6 @@ category is at least once present in the data.}
 \item{use.thurst}{a boolean value defining whether thurstonian threshold
 parameters (TRUE, default) or Rasch-Andrich thresholds (step parameters)
 will be computed.}
-
-\item{use.rel}{a boolean value defining if unweighted (default, FALSE) or
-weighted item fit indices will be used.}
 }
 \value{
 a list containing the options

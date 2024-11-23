@@ -61,7 +61,7 @@ test_mloef <- function(items=NULL,
                        pair_param = pair_param)
   }
 
-  if (exists("model")==TRUE){
+  if (!is.null(model)){
     if (estimation_param$est=="psychotools"){
       try(suppressWarnings({
         ml <- mloef.psy(model, modelType, splitcr)

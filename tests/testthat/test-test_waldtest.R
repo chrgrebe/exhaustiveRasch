@@ -25,7 +25,8 @@ testthat::test_that("test_waldtest: inapprpriate response patterns",{
 # beta V27       0.488   0.626
 # beta V36      -0.645   0.519
 # beta V39      -0.128   0.899
-# list of 2 is returned (item combinations and fit rasch model)
+
+# list of 3 is returned (item combinations, fit rasch model and ppar)
 data(ADL)
 testthat::test_that("test_waldtest: lowest p-value=0.519",{
   testthat::expect_equal(length(
@@ -33,8 +34,9 @@ testthat::test_that("test_waldtest: lowest p-value=0.519",{
                                     modelType="RM", bonf=FALSE,
                                    estimation_param=
                                      estimation_control(est="psychotools"))),
-               expected=2)})
+               expected=3)})
 
+# list of 3 is returned (item combinations, fit rasch model and ppar)
 data(ADL)
 testthat::test_that("test_waldtest: lowest p-value=0.519; na.rm=FALSE",{
   testthat::expect_equal(length(
@@ -42,9 +44,9 @@ testthat::test_that("test_waldtest: lowest p-value=0.519; na.rm=FALSE",{
                                    modelType="RM", bonf=FALSE,
                                    estimation_param=
                                      estimation_control(est="psychotools"))),
-    expected=2)})
+    expected=3)})
 
-# list of 2 is returned (item combinations and fit rasch model)
+# list of 3 is returned (item combinations, fit rasch model and ppar)
 data(ADL)
 firstrun <- exhaustiveRasch::test_waldtest(
   items=c(6,7,12,14,15), dset=ADL, na.rm=TRUE,  modelType="RM", bonf=FALSE,
@@ -57,4 +59,4 @@ testthat::test_that("test_waldtest: lowest p-value=0.519; pre-fit model
                                               modelType="RM", bonf=F,
                                    estimation_param=
                                      estimation_control(est="psychotools"))),
-                         expected=2)})
+                         expected=3)})

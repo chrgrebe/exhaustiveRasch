@@ -22,9 +22,10 @@ itemfit_control <- function(zstd=FALSE,
   #'  (standardised fit indices)
   #' @param upperZ a numeric value for the upper bound for acceptable fit
   #'  (standardised fit indices)
-  #' @param use.rel a boolean value wheter to use the .rel estimates of the
-  #'  pairwise temfit for MSQ and z-standardised fit-indiced. Will be ignored,
-  #'  for eRm and psychotools estimation.
+  #' @param use.rel a boolean value wheter to use the unweighted
+  #' (default, FALSE) or weighted item fit indices for MSQ and z-standardised
+  #'  fit-indices. Only available for pairwise and psychotools estiomation,
+  #'  will be ignored, for eRm estimation.
   #' @return a list containing the options
   #' @export
 

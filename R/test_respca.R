@@ -53,11 +53,13 @@ test_respca <- function(items=NULL,
   }
 
   ### get person parameter object if not already existing
-  if (exists("model") & is.null(p.par)){
+  if (!is.null(model) & is.null(p.par)){
     if (estimation_param$est=="pairwise"){
       p.par <- pairwise::pers(model)
     } else if (estimation_param$est=="eRm"){
-      p.par <- eRm::person.parameter(model)
+      try(suppressWarnings({
+        p.par <- eRm::person.parameter(model)
+      }), silent=TRUE)
     } else{ # psychotools
       p.par <- ppar.psy(model)
     }
@@ -65,9 +67,11 @@ test_respca <- function(items=NULL,
 
   ### get std. residuals
 
-  if (exists("p.par")){
+  if (!is.null(p.par)){
     if (estimation_param$est=="pairwise"){
-      res <- pairwise::residuals.pers(p.par, res="stdr")
+      res <- residuals.pers(p.par, res="stdr") # change to pairwise:: as soon as
+                                               # the package exports that
+                                               # function
     } else if (estimation_param$est=="eRm"){
       res <- eRm::itemfit(p.par)$st.res
     } else{ # psychotools

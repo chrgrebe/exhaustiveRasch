@@ -52,11 +52,13 @@ test_PSI <- function(items=NULL,
   }
 
   ### get person parameter object if not already existing
-  if (exists("model") & is.null(p.par)){
+  if (!is.null(model) & is.null(p.par)){
     if (estimation_param$est=="pairwise"){
       p.par <- pairwise::pers(model)
     } else if (estimation_param$est=="eRm"){
-      p.par <- eRm::person.parameter(model)
+      try(suppressWarnings({
+        p.par <- eRm::person.parameter(model)
+      }), silent=TRUE)
     } else{ # psychotools
       p.par <- ppar.psy(model)
     }
@@ -64,7 +66,7 @@ test_PSI <- function(items=NULL,
 
   ### get person person separation reliability
 
-  if (exists("p.par")){
+  if (!is.null(p.par)){
     if (estimation_param$est=="pairwise"){
       if (exists("p.par")){
         res <- pairwise::pairwise.SepRel(p.par)$sep.rel

@@ -37,7 +37,7 @@ LRtest.psy <- function(model, modelType, splitcr="median", splitseed=NULL){
     if(splitcr=="mean"){
       X<-as.matrix(X)
       rscore<-rowSums(X,na.rm = TRUE)
-      split<-factor(ifelse(rscore > round(stats::mean(rscore)),"above mean" ,"mean and below" ))
+      split<-factor(ifelse(rscore > round(mean(rscore)),"above mean" ,"mean and below" ))
     }
     if(splitcr=="median"){
       X<-as.matrix(X)
@@ -116,7 +116,7 @@ waldtest.psy <- function(model, modelType, splitcr="median", splitseed=NULL, ica
     if(splitcr=="mean"){
       X<-as.matrix(X)
       rscore<-rowSums(X,na.rm = TRUE)
-      split<-factor(ifelse(rscore > round(stats::mean(rscore)),"above mean" ,"mean and below" ))
+      split<-factor(ifelse(rscore > round(mean(rscore)),"above mean" ,"mean and below" ))
     }
     if(splitcr=="median"){
       X<-as.matrix(X)
@@ -147,7 +147,7 @@ waldtest.psy <- function(model, modelType, splitcr="median", splitseed=NULL, ica
   if (modelType=="RM"){
     submodels <- lapply(datalist, psychotools::raschmodel, hessian=T, nullcats="ignore")
   } else if(modelType=="RSM"){
-    submodels <- lapply(datalist, psychotools:rsmodel, hessian=T, nullcats="ignore")
+    submodels <- lapply(datalist, psychotools::rsmodel, hessian=T, nullcats="ignore")
   } else{
     submodels <- lapply(datalist, psychotools::pcmodel, hessian=T, nullcats="ignore")
   }
@@ -166,8 +166,8 @@ waldtest.psy <- function(model, modelType, splitcr="median", splitseed=NULL, ica
     ipar1 <- psychotools::threshpar(submodels[[1]], vcov=T, type="mode")
     ipar2 <- psychotools::threshpar(submodels[[2]], vcov=T, type="mode")
   }
-  se1 <- as.numeric(sqrt(diag(vcov(ipar1))))
-  se2 <- as.numeric(sqrt(diag(vcov(ipar2))))
+  se1 <- as.numeric(sqrt(diag(stats::vcov(ipar1))))
+  se2 <- as.numeric(sqrt(diag(stats::vcov(ipar2))))
   if (icat){
     ipar1 <- unlist(ipar1)
     ipar2 <- unlist(ipar2)
@@ -183,7 +183,7 @@ waldtest.psy <- function(model, modelType, splitcr="median", splitseed=NULL, ica
 
 ########################################################
 
-mloef.psy <- function(model, modelType, splitcr="median"){
+mloef.psy <- function(model, modelType, splitcr="median", splitseed=NULL){
   # code adapted from function erson.parameter.eRm of the package eRm by
   # Patrick Mair, Thomas Rusch, Reinhold Hatzinger, Marco J. Maier &
   # Rudolf Debelak
@@ -200,6 +200,7 @@ mloef.psy <- function(model, modelType, splitcr="median"){
   #' denotes the number of items) that takes two or more distinct values to
   #' define groups used for the Martin-Löf Test.
   #' A random split, as in pairwise, is also a possible option.
+  #' @param splitseed seed for random split
   #' @return a list containing a) a list of item combinations that passed the
   #'  actual test; and b) a list containing the fit models
   #'   of type RM, PCM or RSM.
@@ -215,7 +216,7 @@ mloef.psy <- function(model, modelType, splitcr="median"){
   if(splitcr=="mean"){
     X<-as.matrix(X)
     rscore<-colSums(X,na.rm = TRUE)
-    split<-factor(ifelse(rscore > round(stats::mean(rscore)),"above mean" ,"mean and below" ))
+    split<-factor(ifelse(rscore > round(mean(rscore)),"above mean" ,"mean and below" ))
   }
   if(splitcr=="median"){
     X<-as.matrix(X)
@@ -279,16 +280,14 @@ mloef.psy <- function(model, modelType, splitcr="median"){
 
 pvx<-function(theta,thres,xm=NULL){
   # function adapted from the package pairwise by Joerg-Henrik Heine
-  #' @export
   # func. by joerg-henrik heine jhheine(at)googlemail.com
   # nichts geändert aber zum merken theta: einzelne zahl; thres: thurstonian threshold eines items
   # korrigierte formel aus markus buch seite 330 siehe auch s. 522 2006
 
-  #' internal pvx function
-  #' @param theta_v internal
+  #' this is an internal function for expscore()
   #' @param thres internal
   #' @param xm internal
-  #' @return
+  #' @return internal
   #' @export
   #' @keywords internal
 
@@ -335,7 +334,7 @@ pvx.matrix<-function(theta_v,thres,xm_v=NULL){
 }
 
 
-expscore <- function(X, thres, ppar, na_treat=NA){
+expscore.psy <- function(X, thres, ppar, na_treat=NA){
   # function adapted from the package pairwise by Joerg-Henrik Heine
 
   #' returns a matrix with dims like resp matrix with expected scores and more ...
@@ -377,7 +376,7 @@ expscore <- function(X, thres, ppar, na_treat=NA){
   ## Variance Wni (of xni)--------
   foo2 <- function(i, X, thres, ppar, Eni=Eni){
     theta_v <- ppar # empirical theta vector
-    thres <- na.omit(thres[i,]) # thurst. thresholds item i
+    thres <- stats::na.omit(thres[i,]) # thurst. thresholds item i
     kat <- 0:length(thres) # categories item i
     xm_v <- X[,i]+1  # responses item i | +1 ist wichtig es heißt 1 und 2 kategorie nicht 0 und 1
     pnik <- (pvx.matrix(theta_v,thres)); dimnames(pnik)[[2]] <- names(xm_v)
@@ -394,7 +393,7 @@ expscore <- function(X, thres, ppar, na_treat=NA){
   ## Kurtosis Cni (of xni)--------
   foo3 <- function(i, X, thres, ppar, Eni=Eni){
     theta_v <- ppar # empirical theta vector
-    thres <- na.omit(thres[i,]) # thurst. thresholds item i
+    thres <- stats::na.omit(thres[i,]) # thurst. thresholds item i
     kat <- 0:length(thres) # categories item i
     xm_v <- X[,i]+1  # responses item i | +1 ist wichtig es heißt 1 und 2 kategorie nicht 0 und 1
     pnik <- (pvx.matrix(theta_v,thres)); dimnames(pnik)[[2]] <- names(xm_v)
@@ -464,7 +463,7 @@ ppar.psy <- function(model=NULL){
     }
     se <- unique_tab[match(ppar, unique_tab),2]
 
-    obj <- expscore(X, thres, ppar, na_treat=NA) # calls internal function
+    obj <- expscore.psy(X, thres, ppar, na_treat=NA) # calls internal function
     emp_resp <- X
     Eni <- obj$Eni # expected scores (Expected Mean of ...) gegencheck eRm OK
     Wni <- obj$Wni # Variance of ... gegencheck eRm OK
@@ -479,7 +478,7 @@ ppar.psy <- function(model=NULL){
 
     Chi <- colSums(Z2ni,na.rm=TRUE) # ... gegencheck eRm (ifit in itemfit.ppar) OK
     df <- Nna_v-1 # sowieso besser als eRm, da wird das -1 vergessen
-    pChi <- 1-pchisq(Chi, df) # p-value
+    pChi <- 1-stats::pchisq(Chi, df) # p-value
     #loc.chi.square.p<-1-pchisq(loc.chi.square,loc.df)
     #-----------------------------------------------------------------
 
@@ -536,4 +535,5 @@ ppar.psy <- function(model=NULL){
     return(val_full)
   }
 }
+
 

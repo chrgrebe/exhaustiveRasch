@@ -36,7 +36,7 @@ fit_rasch <- function(X, modelType, estimation_param, pair_param){
   mod <- NULL
   if (estimation_param$est=="eRm"){
     try(suppressWarnings({
-      mod <- get(modelType)(X, se=estimation_param$se,
+      mod <- get(modelType,envir = loadNamespace("eRm"))(X, se=estimation_param$se,
                             sum0=estimation_param$sum0)
     }), silent=TRUE)
   } else if (estimation_param$est=="psychotools"){
@@ -54,6 +54,7 @@ fit_rasch <- function(X, modelType, estimation_param, pair_param){
     try(suppressWarnings({
       mod <- pairwise::pair(daten=X, m=pair_param$m)
     }), silent=TRUE)
+
   }
 
   return(mod)

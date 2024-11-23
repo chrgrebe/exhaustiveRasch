@@ -21,6 +21,10 @@ using the indices of the items}
 \item{\code{passed_models}}{a list of objects of the classes RM, PCM or RSM
 of the eRm package (fit rasch models)}
 
+\item{\code{passed_p.par}}{a list of objects containing the person parameters.
+Depending on the package used for estimation, also residuals and/or
+the PSI value can be part of this list}
+
 \item{\code{IC}}{a data.frame conatining information criteria for each of the
 models in passed_models}
 

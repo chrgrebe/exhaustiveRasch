@@ -8,8 +8,6 @@ pairwise_control <- function(resp.cat=NULL,
   #' @param use.thurst a boolean value defining whether thurstonian threshold
   #' parameters (TRUE, default) or Rasch-Andrich thresholds (step parameters)
   #' will be computed.
-  #' @param use.rel a boolean value defining if unweighted (default, FALSE) or
-  #' weighted item fit indices will be used.
   #' @return a list containing the options
   #' @export
 
