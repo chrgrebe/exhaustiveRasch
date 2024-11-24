@@ -17,7 +17,6 @@ parallized_tests <- function(dset,
                              extremes,
                              ignoreCores,
                              estimation_param,
-                             pair_param,
                              tests_count,
                              ...){
   #' conducts and controls the parallelisation of the tests, Intentionally,
@@ -80,8 +79,6 @@ parallized_tests <- function(dset,
   #'  to this function.
   #' @param estimation_param options for parameter estimation using
   #' \link{estimation_control}
-  #' @param pair_param options for options for fitting pairwise models using
-  #' \link{pairwise_control}
   #' @return a list containing a) a list of item combinations that passed the
   #'  actual test; and b) a list containing the fit models
   #'   of type RM, PCM or RSM.
@@ -132,12 +129,11 @@ parallized_tests <- function(dset,
       param1 <- list(cl=cl, X=modelcombo_pairs, dset=dset,
                      modelType=modelType, na.rm=na.rm,
                      estimation_param=estimation_param,
-                     pair_param=pair_param,
                      FUN= testfunction)
     } else{
       param1 <- list(cl=cl, X=combos, dset=dset, modelType=modelType,
                      na.rm=na.rm, estimation_param=estimation_param,
-                     pair_param=pair_param, FUN= testfunction)
+                     FUN= testfunction)
     }
 
     if (testfunction=="test_itemfit"){

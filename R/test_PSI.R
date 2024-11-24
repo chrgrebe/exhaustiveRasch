@@ -5,8 +5,7 @@ test_PSI <- function(items=NULL,
                      p.par=NULL,
                      modelType=NULL,
                      PSI=NULL,
-                     estimation_param=NULL,
-                     pair_param=NULL){
+                     estimation_param=NULL){
   #' runs a principal component analysis (PCA) on the residuals of the
   #'  rasch model.
   #' @param items a numeric vector containing the index numbers of the items
@@ -20,8 +19,6 @@ test_PSI <- function(items=NULL,
   #' separation-index (separation reliablility).
   #' @param estimation_param options for parameter estimation using
   #' \link{estimation_control}
-  #' @param pair_param options for options for fitting pairwise models using
-  #' \link{pairwise_control}
   #' @return if the maximum eigenvalue of the contrasts of the pca
   #'  is < max_contrast a   #'  list containing two elements is returned:
   #'  the item combination that was tested and a list of type RM, RCM or RSM
@@ -47,8 +44,7 @@ test_PSI <- function(items=NULL,
     if (na.rm==TRUE){ds_test<- stats::na.omit(ds_test)
     } else{ds_test <- ds_test[rowSums(is.na(ds_test)) < ncol(ds_test)-1, ]}
     model <- fit_rasch(X=ds_test, modelType=modelType,
-                       estimation_param=estimation_param,
-                       pair_param = pair_param)
+                       estimation_param=estimation_param)
   }
 
   ### get person parameter object if not already existing

@@ -4,8 +4,7 @@ all_rawscores <- function(items=NULL,
                           model=NULL,
                           p.par=NULL,
                           modelType=NULL,
-                          estimation_param=NULL,
-                          pair_param=NULL){
+                          estimation_param=NULL){
   #' checks if all possible raw scores occur in the data.
   #' @param items a numeric vector containing the index numbers of the items in
   #'  dset that are used to fit the model
@@ -19,8 +18,6 @@ all_rawscores <- function(items=NULL,
   #'  Possible values: RM, PCM, RSM
   #' @param estimation_param options for parameter estimation using
   #' \link{estimation_control}
-  #' @param pair_param options for options for fitting pairwise models using
-  #' \link{pairwise_control}
   #' @return if all possible raw scores occur in dset, a list containing two
   #'  elements is returned: the pattern that was tested an a list of type
   #'   RM, RCM or RSM (depending on modelType) with the fit model. If at least

@@ -1,17 +1,18 @@
 estimation_control <- function(est="psychotools",
-                               se=TRUE,
-                               sum0=TRUE){
+                               resp.cat=NULL,
+                               use.thurst=T){
   #' options for item parameter estimation
   #' @param est a character value defining the estimation function to use.
   #'  Possible values: 'psychotools', 'eRm'.
-  #' @param se a boolean value defining if hessian values and standard errors
-  #' for the item parameter estimates are to be computed.
-  #' @param sum0 a boolean value defining if item parameters are to be
-  #' computed in a way that their sum is 0. This parameter is only meaninful, if
-  #' the 'est' parameter is 'eRm". Estimates computed using 'psychotools' are
-  #' always computed by setting the first parameter 0.
+  #' @param resp.cat number of response (answer) categories for all items.
+  #' If not given, they will be calculated from the data, assuming that
+  #' every response category is at least once present in the data. Currently
+  #' only used for pairwise estimations (m parameter in pairwise::pair).
+  #' @param use.thurst a boolean value defining whether thurstonian threshold
+  #' parameters (TRUE, default) or Rasch-Andrich thresholds (step parameters)
+  #' will be computed.
   #' @return a list containing the options
   #' @export
 
-  return(list("est"= est, "se"= se, "sum0"= sum0))
+  return(list("est"= est, "resp.cat"= resp.cat, "use.thurst"= use.thurst))
 }

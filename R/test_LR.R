@@ -6,8 +6,7 @@ test_LR <- function(items=NULL,
                     modelType=NULL,
                     splitcr="median",
                     alpha=0.1,
-                    estimation_param=NULL,
-                    pair_param=NULL){
+                    estimation_param=NULL){
   #' runs Anderson's likelihood ration test using the LRtest() function of eRm.
   #' @param items a numeric vector containing the index numbers of the items
   #'  in dset that are used to fit the model
@@ -30,8 +29,6 @@ test_LR <- function(items=NULL,
   #'  use.pval is FALSE
   #' @param estimation_param options for parameter estimation using
   #' \link{estimation_control}
-  #' @param pair_param options for options for fitting pairwise models using
-  #' \link{pairwise_control}
   #' @return if the p-value of the test is not significant (above p=0.05) AND
   #'  if no items were excluded in the test due to missing patterns
   #'   (length of betalist == number of items), a list containing two elements
@@ -62,8 +59,7 @@ test_LR <- function(items=NULL,
     #  model <- get(modelType)(ds_test, se=TRUE)
     #}), silent=TRUE)
     model <- fit_rasch(X=ds_test, modelType=modelType,
-                       estimation_param=estimation_param,
-                       pair_param = pair_param)
+                       estimation_param=estimation_param)
   }
 
   if (estimation_param$est=="pairwise"){

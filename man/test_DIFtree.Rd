@@ -14,8 +14,7 @@ test_DIFtree(
   p.par = NULL,
   modelType = NULL,
   alpha = 0.1,
-  estimation_param = NULL,
-  pair_param = NULL
+  estimation_param = NULL
 )
 }
 \arguments{
@@ -42,9 +41,6 @@ use.pval is FALSE}
 
 \item{estimation_param}{options for parameter estimation using
 \link{estimation_control}}
-
-\item{pair_param}{options for options for fitting pairwise models using
-\link{pairwise_control}}
 }
 \value{
 if none of the p-values is significant (above p=0.05), a list

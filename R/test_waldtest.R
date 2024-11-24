@@ -8,8 +8,7 @@ test_waldtest <- function(items=NULL,
                           icat=F,
                           alpha=0.1,
                           bonf=FALSE,
-                          estimation_param=NULL,
-                          pair_param=NULL){
+                          estimation_param=NULL){
 
   #' runs a Wald test using the Waldtest() function of eRm.
   #' @param items a numeric vector containing the index numbers of the items in
@@ -38,8 +37,6 @@ test_waldtest <- function(items=NULL,
   #'  ignored if use.pval is FALSE
   #' @param estimation_param options for parameter estimation using
   #' \link{estimation_control}
-  #' @param pair_param options for options for fitting pairwise models using
-  #' \link{pairwise_control}
   #' @return if none of the p-values is significant (above p=0.05), a list
   #'  containing two elements is returned: the pattern that was tested an a list
   #'   of type RM, RCM or RSM (depending on modelType) with the fit model.
@@ -67,8 +64,7 @@ test_waldtest <- function(items=NULL,
     if (na.rm==TRUE){ds_test<- stats::na.omit(ds_test)
     } else{ds_test <- ds_test[rowSums(is.na(ds_test)) < ncol(ds_test)-1, ]}
     model <- fit_rasch(X=ds_test, modelType=modelType,
-                       estimation_param=estimation_param,
-                       pair_param = pair_param)
+                       estimation_param=estimation_param)
   }
 
   if (!is.null(model)){
@@ -97,7 +93,7 @@ test_waldtest <- function(items=NULL,
       try(suppressWarnings({wald <- eRm::Waldtest(
         model,splitcr=splitcr)}),
         silent=TRUE)
-      if (estimation_param$sum0==T){minNaN=1} else{minNaN=2}
+      minNaN <- 1
       if (exists("wald")){
         if (bonf==TRUE){local_alpha <- alpha/length(wald$coef.table[,2])
         }else{local_alpha <- alpha}

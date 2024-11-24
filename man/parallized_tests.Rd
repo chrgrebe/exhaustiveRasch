@@ -27,7 +27,6 @@ parallized_tests(
   extremes,
   ignoreCores,
   estimation_param,
-  pair_param,
   tests_count,
   ...
 )
@@ -102,9 +101,6 @@ in parallelizing the test run.}
 
 \item{estimation_param}{options for parameter estimation using
 \link{estimation_control}}
-
-\item{pair_param}{options for options for fitting pairwise models using
-\link{pairwise_control}}
 
 \item{...}{options for \link{itemfit_control} can be passed directly
 to this function.}

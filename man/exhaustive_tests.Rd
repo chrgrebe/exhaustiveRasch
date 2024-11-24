@@ -28,8 +28,7 @@ exhaustive_tests(
   silent = FALSE,
   ...,
   itemfit_param = NULL,
-  estimation_param = NULL,
-  pair_param = NULL
+  estimation_param = NULL
 )
 }
 \arguments{
@@ -136,9 +135,6 @@ for \link{test_itemfit}}
 
 \item{estimation_param}{options for parameter estimation using
 \link{estimation_control}}
-
-\item{pair_param}{options for options for fitting pairwise models using
-\link{pairwise_control}}
 }
 \value{
 an object of \link{passed_exRa-class}.

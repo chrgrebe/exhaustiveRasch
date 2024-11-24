@@ -1,11 +1,29 @@
+---
+output:
+  html_document: default
+  pdf_document: default
+---
 # exhaustiveRasch 0.3.2
+This release fixes several bugs and changes minor parts of the handling.
+
+### changed features and usability
+the parameters sum0 and se were removed from estimation_control(). From this version on, item parameters are always estimated summed to zero, and standard errors are always computed.
+The parameters resp.cat and use.thurst for pairwise estimation have moved from pairwise_control() to estimation_control(). The function pairwise_control() was removed.
+
 ### Bug fixes
 fixed error messages with RSM-models estimated with eRm (issue in context of calculating hessians). Affected item combinations are considered as not passing the test.
+When estimating with psychotools, no models passed test_personsItems. This bug was fixed.
+
+### Contributors
+as code from the packages pairwise and eRm was used (cited in the respective functions), the authors and contributors of these packages were added as contributors in the DESCRIPTION file.
 
 # exhaustiveRasch 0.3.1
+This release adds some new (changed) functionality.
+
 ### New features
 This version implements parameter calculation (not estimation) using the pairwise approach and the respective model tests provided by the pairwise package.
-Person parameters are no longer calculated for each test, but are passed from test to test and are part (as an additonal slot of the S4-class) of the passed_exRa object, if a test relying on person parameters is part of the test circuit.
+Parameters resp.cat and use.thurst for pairwise estimation can be set using the new function pairwise_control().
+Person parameters are no longer calculated for each test, but are passed from test to test and are part (as an additional slot of the S4-class) of the passed_exRa object, if a test relying on person parameters is part of the test circuit.
 When using psychotools for estimation, the results are no longer converted to an eRm class, and functions of eRm are no longer used in this case. There are new internal functions for model tests based on psychotools estimations since this version.
 
 # exhaustiveRasch 0.2.2

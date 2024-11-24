@@ -4,19 +4,20 @@
 \alias{estimation_control}
 \title{options for item parameter estimation}
 \usage{
-estimation_control(est = "psychotools", se = TRUE, sum0 = TRUE)
+estimation_control(est = "psychotools", resp.cat = NULL, use.thurst = T)
 }
 \arguments{
 \item{est}{a character value defining the estimation function to use.
 Possible values: 'psychotools', 'eRm'.}
 
-\item{se}{a boolean value defining if hessian values and standard errors
-for the item parameter estimates are to be computed.}
+\item{resp.cat}{number of response (answer) categories for all items.
+If not given, they will be calculated from the data, assuming that
+every response category is at least once present in the data. Currently
+only used for pairwise estimations (m parameter in pairwise::pair).}
 
-\item{sum0}{a boolean value defining if item parameters are to be
-computed in a way that their sum is 0. This parameter is only meaninful, if
-the 'est' parameter is 'eRm". Estimates computed using 'psychotools' are
-always computed by setting the first parameter 0.}
+\item{use.thurst}{a boolean value defining whether thurstonian threshold
+parameters (TRUE, default) or Rasch-Andrich thresholds (step parameters)
+will be computed.}
 }
 \value{
 a list containing the options

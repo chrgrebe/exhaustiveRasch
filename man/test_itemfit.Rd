@@ -15,8 +15,7 @@ test_itemfit(
   p.par = NULL,
   alpha = 0.1,
   bonf = FALSE,
-  estimation_param = NULL,
-  pair_param = NULL
+  estimation_param = NULL
 )
 }
 \arguments{
@@ -45,9 +44,6 @@ be ignored if use.pval is FALSE}
 
 \item{estimation_param}{options for parameter estimation using
 \link{estimation_control}}
-
-\item{pair_param}{options for options for fitting pairwise models using
-\link{pairwise_control}}
 }
 \value{
 if all fit indices meet the given criteria, a list containing

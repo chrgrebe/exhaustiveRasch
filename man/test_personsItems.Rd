@@ -14,8 +14,7 @@ test_personsItems(
   modelType = NULL,
   gap_prop = 0,
   extremes = TRUE,
-  estimation_param = NULL,
-  pair_param = NULL
+  estimation_param = NULL
 )
 }
 \arguments{
@@ -45,9 +44,6 @@ item/threshold locations left of the 2nd lowest and right of the 2nd
 
 \item{estimation_param}{options for parameter estimation using
 \link{estimation_control}}
-
-\item{pair_param}{options for options for fitting pairwise models using
-\link{pairwise_control}}
 }
 \value{
 if the criteria are met, a list containing two elements is

@@ -4,7 +4,7 @@
 \alias{fit_rasch}
 \title{parameter estimation for for rasch models.}
 \usage{
-fit_rasch(X, modelType, estimation_param, pair_param)
+fit_rasch(X, modelType, estimation_param)
 }
 \arguments{
 \item{X}{a numeric vector containing the index numbers of the items
@@ -15,9 +15,6 @@ Possible values: RM, PCM, RSM}
 
 \item{estimation_param}{options for parameter estimation using
 \link{estimation_control}}
-
-\item{pair_param}{options for options for fitting pairwise models using
-\link{pairwise_control}}
 }
 \value{
 if est=eRm was used: an object of the respecting classes RM, PCM

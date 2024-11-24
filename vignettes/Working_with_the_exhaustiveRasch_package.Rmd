@@ -1,13 +1,13 @@
 ---
 title: "Working with the exhaustiveRasch package"
-subtitle: "for package version 0.3.2"
 author: "Christian Grebe and Mirko Schürmann"
 date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{Working_with_the_exhaustiveRasch_package}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+output:
+  rmarkdown::word_document: default
+  word_document: default
+subtitle: for package version 0.3.2
+vignette: "%\\VignetteIndexEntry{Working_with_the_exhaustiveRasch_package} %\\VignetteEngine{knitr::rmarkdown}
+  %\\VignetteEncoding{UTF-8}"
 ---
 
 ```{r, include = FALSE}
@@ -19,11 +19,43 @@ knitr::opts_chunk$set(
 
 ## 1. Introduction
 
+The exhaustiveRasch package provides tools for exhaustive testing of Rasch models to ensure measurement quality and model fit. It automates the process of testing various subsets of items under different Rasch model assumptions, helping researchers and psychometricians:
+
+-   Identify item subsets that fit the Rasch model.
+
+-   Ensure unidimensionality and local independence.
+
+-   Customize analyses with flexible options.
+
+The Rasch model is a foundational framework in Item Response Theory (IRT), offering a probabilistic approach to measure latent traits. This vignette explains the theory behind Rasch models, describes the problem the package solves, and demonstrates how to use the package effectively.
+
 The selection of items from a larger item pool is a challenge in the context of developing rasch valid instruments in practice. For example, items from an item bank can be combined in many different ways to form a scale in order to fulfill the criteria of a rasch scale. A serial and manual procedure to exclude individual items can lead to early exclusion of potentially suitable item combinations. Additionally, in order to derive an appropriate short form from an existing instrument, theoretical considerations are usually required in order to take into account the respective content domains or facets of the long form.
 
-The package *exhaustiveRasch* conducts an exhaustive search over all possible item combinations. It identifies item combinations that meet the item and model fit criteria as defined by the user. Theoretically alowed item combinations can be defined beforehand by pre-defining rules for inclusion and exclusion.
+Analyzing Rasch models often requires extensive testing to identify the best-fitting subsets of items, to ensure that the model assumptions like unidimensionality and local independence are met and to account for Differential Item Functioning (DIF). Manual testing of all item subsets is computationally expensive. *exhaustiveRasch* solves this by automating item subset generation, conducting rigorous model fit tests und summarizing the results.The package *exhaustiveRasch* conducts an exhaustive search over all possible item combinations. It identifies item combinations that meet the item and model fit criteria as defined by the user. Theoretically alowed item combinations can be defined beforehand by pre-defining rules for inclusion and exclusion.
 
 (Semi-) automatic item selection using Rasch principles is also addressed by the *autorasch* package (Wijayanto et al. 2023). In contrast to *autorasch,* this package aims to identify exactly one optimal model. ExhaustiveRasch, on the other hand, tests all item combinations (possibly previously reduced on a theoretical basis) against the criteria specified by the user using common model tests for Rasch models. Ultimately, it does not return the one optimal model, but all item combinations that fulfil the specified criteria.
+
+The package supports 1PL Rasch models:
+
+1) The **Dichotomous Rasch Model** applies to binary responses (e.g., correct/incorrect answers). The probability of a correct response is:
+
+$$
+P(X_{ij} = 1|\theta_j, \beta_i) = \frac{\exp(\theta_j - \beta_i)}{1 + \exp(\theta_j - \beta_i)}
+$$
+
+where: - $\theta_j$: Person's latent trait. - $\beta_i$: Item difficulty.
+
+2) The **Partial Credit Model (PCM)** extends the Rasch model to polytomous responses (e.g., Likert scales). The probability of a response in category $k$ is:
+
+$$
+P(X_{ij} = k|\theta_j, \beta_{ih}) = \frac{\exp\left(\sum_{h=0}^k (\theta_j - \beta_{ih})\right)}{\sum_{m=0}^{m_i} \exp\left(\sum_{h=0}^m (\theta_j - \beta_{ih})\right)}
+$$
+
+where: - $\beta_{ih}$: The threshold for category $h$.
+
+3) The **Rating Scale Model** is a special PCM case where thresholds are uniform across items, simplifying parameter estimation.
+
+In *exhaustiveRasch*, functions of the packages ***eRm***, ***psychotools*** or ***pairwise*** can be used for parameter estimation and testing the model assumptions. For models estimated with psychotools we provide own functions for the model tests, as this package does not provide them.
 
 ## 2. Package overview
 
@@ -394,11 +426,13 @@ Estimating the person parameters of Rasch models is computationally expensive, e
 
 The following therefore applies: Many cores (and a processor generation that is as up-to-date as possible) help a lot. Not only a higher number of physical cores is useful here, a higher number of virtual cores (threads) is also helpful. For analyses with a high number of item combinations (\>20 items) and more than four response categories, a calculation in a cloud computing environment may be useful.
 
-Since version 0.21, in addition to the CML estimation algorithms from the eRm package, the use of CML estimation algorithms from the psychotools package is also available (default from version 0.21). This reduces the calculation time for estimating the item parameters by a factor of 3 to 8, depending on the scenario.
+Since version 0.2.1, in addition to the CML estimation algorithms from the *eRm* package, the use of CML estimation algorithms from the *psychotools* package is also available and default since version 0.2.1. Since version 0.3.2 parameters calculations and model testing functions of the *pairwise* package also can be used.
 
-However, even when using psychotools-based parameter estimation, some consideration should be given to a productive sequence of tests to be used before carrying out the analyses. The tests with the shortest runtime are those based exclusively on the item parameters and which do not require any estimation of the person parameters: test_mloef, test_waldtest and test_LR. However, the expected trade-off between runtime and reduction of the remaining item combinations after the test should be considered less than the pure runtime of a test. For example, the fastest test is usually the Martin-Löf test (test-mloef). Depending on the characteristics of the selected item combinations and depending on the choice of alpha level (argument alpha) and the use of a Bonferroni correction (argument bonf), however, the Wald test (test_waldtest) may select the remaining item combinations much stricter.
+The choice of the respective package has a significant influence on the computation times. Compared to *eRM,* RM models are estimated with *pychotools* around 4x faster, and with *pairwise* around 5x faster. In our experience, with PCM models, *psychotools* is around 7x faster than *eRm* on a CPU with 8 physical cores, and *pairwise* is 14 times faster. These values ​​refer to the pure model estimation (no_test). Since submodels resulting from the split also have to be re-estimated in *test_mloef*, *test_L*R and *test_waldtest*, this difference also has an effect on these tests, albeit to a lesser extent. With *test_LR*, this does not apply to pairwise, which is actually significantly slower in this test. Pairwise requires the person parameters for the likelihood ratio test, which must first be calculated.
 
-A test of the fit indices (test_itemfit) is probably desirable in every scenario. However, this test has a comparatively long runtime and should therefore be carried out at a later point in time when the number of remaining item combinations has already been significantly reduced.
+However, when analyzing a large number of item combinations, some consideration should be given to a productive sequence of tests to be used before carrying out the analyses. The tests with the shortest runtime are those based exclusively on the item parameters and which do not require any estimation of the person parameters: *test_mloef*, *test_waldtest* and *test_LR*. However, the expected trade-off between runtime and reduction of the remaining item combinations after the test should be considered less than the pure runtime of a test. Depending on the characteristics of the selected item combinations and the strictness of the selection criteria (e.g. alpha level, Bonferroni correction, upper/lower bound of itemfit parameters) item combinations much stricter. Reducing the remaining item combinations using tests with relatively short computation times should be the preferred strategy.  Before testing a large number of item combinations, it may be a good idea to first draw a random sample of, for example, 1,000 to 3,000 item combinations to check how selectively the intended tests reduce the remaining item combinations and to incorporate this into the considerations regarding the order of the tests.
+
+A test of the fit indices (test_itemfit) is probably desirable in every scenario. However, this test has a comparatively long runtime and should therefore be carried out at a later point in time when the number of remaining item combinations has already been significantly reduced. The same applies to all other tests that rely on person parameters (*test_personsItems*, *test_respca*, *test_PSI*).
 
 Testing for differential item functioning using test_DIFtree can require a comparatively long runtime for polytomous items (PCM or RSM models). This also increases with the number of external variables to be tested (argument DIFvars) and if these are metrically scaled variables or categorical variables with many factors.
 
@@ -411,6 +445,8 @@ In general, the individual tests for analyses with longer runtimes (PCM models w
 **Grebe C, Schürmann M, Latteck ÄD (2021).** Die Health Professionals Competence Scales (HePCoS) zur Kompetenzerfassung in den Gesundheitsfachberufen. Technical Report. Berichte aus Forschung und Lehre (48). Bielefeld, Fachhochschule Bielefeld. DOI: <http://dx.doi.org/10.13140/RG.2.2.13480.08967/1>
 
 ***Grebe C (2013).*** "Pflegeaufwand und Personalbemessung in der stationären Langzeitpflege. Entwicklung eines empirischen Fallgruppensystems auf der Basis von Bewohnercharakteristika". Oral presentation at the 3-Länderkonferenz Pflege & Pflegewissenschaft, September 2013, Konstanz.
+
+**Heine JH & Tarnei C (2015).** Pairwise Rasch model item parameter recovery under sparse data conditions. Psychological Test and Asessment Modeling, 57(1), 3-36.
 
 ***Katz S, Ford AB, Moskowitz RW, Jackson BA, Jaffe MW (1963).*** "Studies of illness in the aged: the index of ADL: a standardized measure of biological and psychosocial function". jama, 185(12), 914-919. <doi:10.1001/jama.1963.03060120024016>.
 

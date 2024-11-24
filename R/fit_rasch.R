@@ -1,4 +1,4 @@
-fit_rasch <- function(X, modelType, estimation_param, pair_param){
+fit_rasch <- function(X, modelType, estimation_param){
   #' parameter estimation for for rasch models.
   #' @param X a numeric vector containing the index numbers of the items
   #'  in dset that are used to fit the model
@@ -6,8 +6,6 @@ fit_rasch <- function(X, modelType, estimation_param, pair_param){
   #'  Possible values: RM, PCM, RSM
   #' @param estimation_param options for parameter estimation using
   #' \link{estimation_control}
-  #' @param pair_param options for options for fitting pairwise models using
-  #' \link{pairwise_control}
   #' @return if est=eRm was used: an object of the respecting classes RM, PCM
   #' or RSM of the eRm package (fit rasch models);
   #' if est=psychotools was used: a reduced list of model parameters with the
@@ -36,8 +34,8 @@ fit_rasch <- function(X, modelType, estimation_param, pair_param){
   mod <- NULL
   if (estimation_param$est=="eRm"){
     try(suppressWarnings({
-      mod <- get(modelType,envir = loadNamespace("eRm"))(X, se=estimation_param$se,
-                            sum0=estimation_param$sum0)
+      mod <- get(modelType,envir = loadNamespace("eRm"))(X, se=T,
+                            sum0=T)
     }), silent=TRUE)
   } else if (estimation_param$est=="psychotools"){
     if (modelType=="RM"){
@@ -52,7 +50,7 @@ fit_rasch <- function(X, modelType, estimation_param, pair_param){
     #if (is.na(mod$vcov[1])){mod <- NULL}
   } else{ # pairwise model
     try(suppressWarnings({
-      mod <- pairwise::pair(daten=X, m=pair_param$m)
+      mod <- pairwise::pair(daten=X, m=estimation_param$resp.cat)
     }), silent=TRUE)
 
   }

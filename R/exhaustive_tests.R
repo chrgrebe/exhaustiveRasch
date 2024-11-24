@@ -22,8 +22,7 @@ exhaustive_tests <- function(dset,
                              silent=FALSE,
                              ...,
                              itemfit_param=NULL,
-                             estimation_param=NULL,
-                             pair_param=NULL
+                             estimation_param=NULL
 ){
   #' (main function) Runs exhaustive tests
   #' @param dset a data.frame containing the data
@@ -106,8 +105,6 @@ exhaustive_tests <- function(dset,
   #' for \link{test_itemfit}
   #' @param estimation_param options for parameter estimation using
   #' \link{estimation_control}
-  #' @param pair_param options for options for fitting pairwise models using
-  #' \link{pairwise_control}
   #' @return an object of \link{passed_exRa-class}.
   #' @export
   #' @examples \dontrun{
@@ -149,13 +146,11 @@ exhaustive_tests <- function(dset,
     passed_p.par <- list()
     process <- data.frame()
 
-    # pass optional arguments to itemfit_control(), estimation_control() and
-    # pairwise_control
+    # pass optional arguments to itemfit_control() and estimation_control()
     extraArgs <- list(...)
     if (length(extraArgs)) {
       allowed_args <- names(c(formals(itemfit_control),
-                              formals(estimation_control),
-                              formals(pairwise_control)))
+                              formals(estimation_control)))
       indx <- match(names(extraArgs), allowed_args, nomatch = 0L)
       if (any(indx == 0L))
         cat(paste(gettextf("Argument %s was ignored. It is neither an argument
@@ -167,9 +162,6 @@ exhaustive_tests <- function(dset,
       names(extraArgs), names(formals(itemfit_control)))]
     estimation_extraArgs <- extraArgs[intersect(
       names(extraArgs), names(formals(estimation_control)))]
-    pair_extraArgs <- extraArgs[intersect(
-      names(extraArgs), names(formals(pairwise_control)))]
-
 
     if (missing(itemfit_param)){
       itemfit_param <- do.call(itemfit_control, itemfit_extraArgs)
@@ -177,19 +169,7 @@ exhaustive_tests <- function(dset,
     if (missing(estimation_param)){
       estimation_param <- do.call(estimation_control, estimation_extraArgs)
     }
-    if (missing(pair_param)){
-      pair_param <- do.call(pairwise_control, pair_extraArgs)
-    }
 
-
-    if(!estimation_param$se & ("test_personsItems" %in% tests |
-                               "threshold_order" %in% tests)){
-      estimation_param$se <-T
-      cat(paste("at least one out of 'test_personsItems' or 'threshold_order'
-      ware part of the tests and argument 'se' of the estimation arguments
-      was FALSE. These tests require hessians, so argument 'se' was set to
-              TRUE for all tests.", "\n"))
-    }
 
     #    if(!estimation_param$est=="eRm" & modelType=="RSM"){
     #      estimation_param$est <- "eRm"
@@ -292,7 +272,6 @@ exhaustive_tests <- function(dset,
                                            PSI=PSI,
                                            ignoreCores=ignoreCores,
                                            estimation_param=estimation_param,
-                                           pair_param= pair_param,
                                            tests_count)
         if (length(current_return)>0 & !is.character(current_return)){
           if (tests[l] %in% c("all_rawscores", "test_pca", "rel_coefs")){
