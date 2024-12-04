@@ -42,4 +42,3 @@ a list containing a) a list of item combinations that passed the
 \description{
 Fischer and Scheiblechner's "wald-like" S-statistic for psychotools
 }
-\keyword{internal}

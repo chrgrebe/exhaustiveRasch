@@ -17,12 +17,8 @@ Possible values: RM, PCM, RSM}
 \link{estimation_control}}
 }
 \value{
-if est=eRm was used: an object of the respecting classes RM, PCM
-or RSM of the eRm package (fit rasch models);
-if est=psychotools was used: a reduced list of model parameters with the
-same names as they are used in the respective eRm object (X, betapar,
-etapar, loglik, se.beta, X01, model), but estimated using the respective
-function of psychotools.
+a model of the class depending of modelType and
+estimation_param$est.If no model can be fit, NULL is returened.
 }
 \description{
 parameter estimation for for rasch models.

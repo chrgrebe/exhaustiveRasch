@@ -24,9 +24,8 @@ LRtest.psy <- function(model, modelType, splitcr="median", splitseed=NULL){
   #'  actual test; and b) a list containing the fit models
   #'   of type RM, PCM or RSM.
   #' @export
-  #' @keywords internal
 
-    X <- model$data
+  X <- model$data
 
   #### split criteria
   if (!length(splitcr)>1){
@@ -104,7 +103,6 @@ waldtest.psy <- function(model, modelType, splitcr="median", splitseed=NULL, ica
   #'  actual test; and b) a list containing the fit models
   #'   of type RM, PCM or RSM.
   #' @export
-  #' @keywords internal
 
   X <- model$data
   #### split criteria
@@ -184,7 +182,7 @@ waldtest.psy <- function(model, modelType, splitcr="median", splitseed=NULL, ica
 ########################################################
 
 mloef.psy <- function(model, modelType, splitcr="median", splitseed=NULL){
-  # code adapted from function erson.parameter.eRm of the package eRm by
+  # code adapted from function person.parameter.eRm of the package eRm by
   # Patrick Mair, Thomas Rusch, Reinhold Hatzinger, Marco J. Maier &
   # Rudolf Debelak
   #  function adapted from the package pairwise by Joerg-Henrik Heine
@@ -205,9 +203,8 @@ mloef.psy <- function(model, modelType, splitcr="median", splitseed=NULL){
   #'  actual test; and b) a list containing the fit models
   #'   of type RM, PCM or RSM.
   #' @export
-  #' @keywords internal
 
-    X <- model$data
+  X <- model$data
   #### split criteria
   if(splitcr=="random"){
     if(is.numeric(splitseed)){set.seed(splitseed)}
@@ -436,9 +433,8 @@ ppar.psy <- function(model=NULL){
   #'   If NULL, a model is fit using dset and items.
   #' @return an object containing person parameters, residuals and PSI
   #' @export
-  #' @keywords internal
 
-    X <- model$data
+  X <- model$data
   thres <- t(simplify2array(model$thresholds))
   if (dim(thres)[1]==1){ #dichotomous case
     thres <- as.matrix((simplify2array(model$thresholds)))

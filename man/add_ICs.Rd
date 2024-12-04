@@ -10,7 +10,7 @@ add_ICs(obj, ignoreCores = 1)
 \arguments{
 \item{obj}{an object of class \link{passed_exRa-class}}
 
-\item{ignoreCores}{a numeric value for the number of virtial CPU cores
+\item{ignoreCores}{a numeric value for the number of virtual CPU cores
 (threads)to hold out in computing the information criteria.}
 }
 \description{

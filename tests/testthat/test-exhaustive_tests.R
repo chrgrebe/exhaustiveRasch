@@ -14,7 +14,18 @@ testthat::test_that("exhaustive_tests",{
     exhaustiveRasch::exhaustive_tests(dset=ADL[1:15],
                             combos=combos, modelType= "RM",
                             upperMSQ=1.5, lowerMSQ=0.5, use.pval=FALSE,
-                            bonf=TRUE, na.rm=TRUE, tests=c("test_itemfit")),
+                            bonf=TRUE, na.rm=TRUE, tests=c("test_itemfit"),
+                            est="pairwise"),
+    class="passed_exRa")})
+
+data(ADL)
+testthat::test_that("exhaustive_tests",{
+  testthat::expect_s4_class(
+    exhaustiveRasch::exhaustive_tests(dset=ADL[1:15],
+                                      combos=combos, modelType= "RM",
+                                      upperMSQ=1.5, lowerMSQ=0.5, use.pval=FALSE,
+                                      bonf=TRUE, na.rm=TRUE, tests=c("test_itemfit"),
+                                      est="eRm"),
     class="passed_exRa")})
 
 # test 2
@@ -27,7 +38,8 @@ testthat::test_that("exhaustive_tests",{
                                       use.pval=FALSE, bonf=TRUE,
                                       na.rm=FALSE, tests=c(
                                         "test_itemfit",
-                                        "all_rawscores")),
+                                        "all_rawscores"),
+                                      est="psychotools"),
     class="passed_exRa")})
 
 # test 3
@@ -35,9 +47,38 @@ data(ADL)
 testthat::test_that("exhaustive_tests",{
   testthat::expect_s4_class(
     exhaustiveRasch::exhaustive_tests(dset=ADL[1:6],
-                                      scale_length=4:4, modelType= "RM",
+                                      scale_length=4, modelType= "RM",
                                       upperMSQ=1.5, lowerMSQ=0.5,
-                                      use.pval=FALSE, bonf=TRUE,
+                                      use.pval=FALSE, bonf=TRUE, ICs=TRUE,
                                       na.rm=FALSE, DIFvars=ADL[16:17], tests=c(
                                         "test_LR")),
+    class="passed_exRa")})
+
+testthat::test_that("exhaustive_tests",{
+  testthat::expect_s4_class(
+    exhaustiveRasch::exhaustive_tests(dset=ADL[1:6],
+                                      scale_length=4, modelType= "RM",
+                                      upperMSQ=1.5, lowerMSQ=0.5,
+                                      use.pval=FALSE, bonf=TRUE, ICs=TRUE,
+                                      na.rm=FALSE, DIFvars=ADL[16:17], tests=c(
+                                        "test_LR"),est="eRm"),
+    class="passed_exRa")})
+
+testthat::test_that("exhaustive_tests",{
+  testthat::expect_s4_class(
+    exhaustiveRasch::exhaustive_tests(dset=ADL[1:6],
+                                      scale_length=4, modelType= "RM",
+                                      upperMSQ=1.5, lowerMSQ=0.5,
+                                      use.pval=FALSE, bonf=TRUE, ICs=TRUE,
+                                      na.rm=TRUE, tests=c(
+                                        "test_mloef"),est="psychotools"),
+    class="passed_exRa")})
+
+testthat::test_that("exhaustive_tests",{
+  testthat::expect_s4_class(
+    exhaustiveRasch::exhaustive_tests(dset=ADL[1:6],
+                                      scale_length=4, modelType= "RM",
+                                      bonf=TRUE, ICs=TRUE,
+                                      na.rm=TRUE, tests=c(
+                                        "test_waldtest"),est="pairwise"),
     class="passed_exRa")})

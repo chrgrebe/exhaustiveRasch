@@ -29,12 +29,13 @@ test_LR <- function(items=NULL,
   #'  use.pval is FALSE
   #' @param estimation_param options for parameter estimation using
   #' \link{estimation_control}
-  #' @return if the p-value of the test is not significant (above p=0.05) AND
-  #'  if no items were excluded in the test due to missing patterns
-  #'   (length of betalist == number of items), a list containing two elements
-  #'    is returned: the pattern that was tested an a list of type RM, RCM or
-  #'     RSM (depending on modelType) with the fit model. If the test is
-  #'      significant, NULL is returned.
+  #' @return if the p-value of the test is not significant AND if no items were
+  #'  excluded in the test due to missing patterns, a list containing 3 elements
+  #'  is returned: the item combination that was tested, a list of the class
+  #'  the model was estimated with (depending on modelType and
+  #'  estimation_param$est) with the fit model and a list with a person
+  #'  parameter object (depending on estimation_param$est). If the test is
+  #'  significant, NULL is returned.
   #' @export
   #' @keywords internal
 

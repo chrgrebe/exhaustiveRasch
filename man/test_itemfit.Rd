@@ -47,9 +47,11 @@ be ignored if use.pval is FALSE}
 }
 \value{
 if all fit indices meet the given criteria, a list containing
- two elements is returned: the pattern that was tested an a list of type
-  RM, RCM or RSM (depending on modelType) with the fit model. If at least
-   one item's fit indices do not meet the given criteria, NULL is returned.
+ 3 elements is returned: the item combination that was tested, a list of
+ the class the model was estimated with (depending on modelType and
+ estimation_param$est) with the fit model and a list with a person
+ parameter object (depending on estimation_param$est). If at least one
+ item's fit indices do not meet the given criteria, NULL is returned.
 }
 \description{
 checks the itemfit indices of a rasch model using the itemfit() function

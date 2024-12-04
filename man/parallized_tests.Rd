@@ -106,9 +106,10 @@ in parallelizing the test run.}
 to this function.}
 }
 \value{
-a list containing a) a list of item combinations that passed the
- actual test; and b) a list containing the fit models
-  of type RM, PCM or RSM.
+a list containing 3 elements is returned: a list of the item
+ combinations, a list of the models (depending on modelType and
+ estimation_param$est) with the fit models and a list with the person
+ parameter objects (depending on estimation_param$est).
 }
 \description{
 conducts and controls the parallelisation of the tests, Intentionally,

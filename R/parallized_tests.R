@@ -79,9 +79,10 @@ parallized_tests <- function(dset,
   #'  to this function.
   #' @param estimation_param options for parameter estimation using
   #' \link{estimation_control}
-  #' @return a list containing a) a list of item combinations that passed the
-  #'  actual test; and b) a list containing the fit models
-  #'   of type RM, PCM or RSM.
+  #' @return a list containing 3 elements is returned: a list of the item
+  #'  combinations, a list of the models (depending on modelType and
+  #'  estimation_param$est) with the fit models and a list with the person
+  #'  parameter objects (depending on estimation_param$est).
   #' @export
   #' @keywords internal
 

@@ -33,4 +33,3 @@ a list containing a) a list of item combinations that passed the
 itemfit statistics for psychotools
 Anderson's likelihood ratio test for psychotools
 }
-\keyword{internal}

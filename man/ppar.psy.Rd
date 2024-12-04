@@ -17,4 +17,3 @@ an object containing person parameters, residuals and PSI
 \description{
 itemfit statistics for psychotools
 }
-\keyword{internal}

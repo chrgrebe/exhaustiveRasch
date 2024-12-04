@@ -45,10 +45,12 @@ use.pval is FALSE}
 \link{estimation_control}}
 }
 \value{
-if the p-value of the test is not significant (above p=0.05),
- a list containing two elements is returned: the pattern that was tested
-  an a list of type RM, RCM or RSM (depending on modelType) with the fit
-   model. If the test is significant (p<0.05), NULL is returned.
+if the p-value of the test is not significant, a list containing
+ 3 elements is returned: the item combination that was tested, a list of
+ the class the model was estimated with (depending on modelType and
+ estimation_param$est) with the fit model and a list with a person
+ parameter object (depending on estimation_param$est). If the test is
+ significant, NULL is returned.
 }
 \description{
 runs Martin-Loef Test using the MLoef() function of eRm.

@@ -31,4 +31,3 @@ a list containing a) a list of item combinations that passed the
 \description{
 Martin-Loef test for psychotools
 }
-\keyword{internal}

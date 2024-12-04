@@ -35,10 +35,11 @@ Possible values: RM, PCM, RSM}
 }
 \value{
 if there are no items with disordered thresholds in the model,
- a list containing two elements is returned: the pattern that was tested an
-  a list of type RM, RCM or RSM (depending on modelType) with the fit
-   model. If there is at least one item with disordered thresholds,
-    NULL is returned.
+ a list containing 3 elements is returned: the item combination that was
+ tested, a list of the class the model was estimated with (depending on
+ modelType and estimation_param$est) with the fit modeland a list with a
+ person parameter object (depending on estimation_param$est). If there is
+ at least one item with disordered thresholds, NULL is returned.
 }
 \description{
 checks for disordered thresholds in rasch models

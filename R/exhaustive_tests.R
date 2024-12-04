@@ -124,6 +124,30 @@ exhaustive_tests <- function(dset,
               "\n"))
   }
 
+  # pass optional arguments to itemfit_control() and estimation_control()
+  extraArgs <- list(...)
+  if (length(extraArgs)) {
+    allowed_args <- names(c(formals(itemfit_control),
+                            formals(estimation_control)))
+    indx <- match(names(extraArgs), allowed_args, nomatch = 0L)
+    if (any(indx == 0L))
+      cat(paste(gettextf("Argument %s was ignored. It is neither an argument
+        of itemfit_control() nor of estimation_control() and could not be
+                           matched", names(extraArgs)[indx == 0L],
+                         domain = NA)), "\n")
+  }
+  itemfit_extraArgs <- extraArgs[intersect(
+    names(extraArgs), names(formals(itemfit_control)))]
+  estimation_extraArgs <- extraArgs[intersect(
+    names(extraArgs), names(formals(estimation_control)))]
+
+  if (missing(itemfit_param)){
+    itemfit_param <- do.call(itemfit_control, itemfit_extraArgs)
+  }
+  if (missing(estimation_param)){
+    estimation_param <- do.call(estimation_control, estimation_extraArgs)
+  }
+
   # some checks for not allowed test
   if (na.rm==FALSE & "test_mloef" %in% tests){
     na.rm <- TRUE
@@ -138,6 +162,13 @@ exhaustive_tests <- function(dset,
             tests.", "\n"))
   }
 
+  if(estimation_param$est=="pairwise" & "test_mloef" %in% tests){
+    tests <- tests[-which("test_mloef" %in% tests)]
+    cat(paste("test_mloef is part of the test. This test is currently not
+            supported for 'pairwise' estimation and was removed from 'tests'.",
+              "\n"))
+  }
+
 
   if (length(tests)>0){ # stop execution, if no test is left
     # loop over item combinations with scale length j
@@ -145,30 +176,6 @@ exhaustive_tests <- function(dset,
     passed_combos <- list()
     passed_p.par <- list()
     process <- data.frame()
-
-    # pass optional arguments to itemfit_control() and estimation_control()
-    extraArgs <- list(...)
-    if (length(extraArgs)) {
-      allowed_args <- names(c(formals(itemfit_control),
-                              formals(estimation_control)))
-      indx <- match(names(extraArgs), allowed_args, nomatch = 0L)
-      if (any(indx == 0L))
-        cat(paste(gettextf("Argument %s was ignored. It is neither an argument
-        of itemfit_control() nor of estimation_control() and could not be
-                           matched", names(extraArgs)[indx == 0L],
-                           domain = NA)), "\n")
-    }
-    itemfit_extraArgs <- extraArgs[intersect(
-      names(extraArgs), names(formals(itemfit_control)))]
-    estimation_extraArgs <- extraArgs[intersect(
-      names(extraArgs), names(formals(estimation_control)))]
-
-    if (missing(itemfit_param)){
-      itemfit_param <- do.call(itemfit_control, itemfit_extraArgs)
-    }
-    if (missing(estimation_param)){
-      estimation_param <- do.call(estimation_control, estimation_extraArgs)
-    }
 
 
     #    if(!estimation_param$est=="eRm" & modelType=="RSM"){
@@ -178,35 +185,13 @@ exhaustive_tests <- function(dset,
     #                "\n"))
     #    }
 
-    if(estimation_param$est=="pairwise" & "test_mloef" %in% tests){
-      tests <- tests[-which("test_mloef" %in% tests)]
-      cat(paste("test_mloef is part of the test. This test is currently not
-            supported for 'pairwise' estimation and was removed from 'tests'.",
-                "\n"))
-    }
 
     if (!is.null(combos)){
       scale_length <-1:1
       if (inherits(combos,"passed_exRa")){
-        if(estimation_param$est =="eRm"){
-          if(estimation_param$se==T &
-             is.null(combos@passed_models[[1]]$hessian)){
-            current_models <- NULL
-            combos <- combos@passed_combos
-            current_p.par <- NULL
-            cat(paste("parameter 'se' of the estimation parameters is TRUE, but
-           the pre-fit models provided by 'combos' did not contain hessians. All
-            models will be re-estimated."), "\n")
-          }else{
-            current_models <- combos@passed_models
-            current_p.par <- combos@passed_p.par
-            combos <- combos@passed_combos
-          }
-        } else{
           current_models <- combos@passed_models
           current_p.par <- combos@passed_p.par
           combos <- combos@passed_combos
-        }
       }else{
         current_models <- NULL
         current_p.par <- NULL

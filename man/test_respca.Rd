@@ -36,9 +36,11 @@ factor in the principal components analysis of the standardised residuals.}
 }
 \value{
 if the maximum eigenvalue of the contrasts of the pca
- is < max_contrast a   #'  list containing two elements is returned:
- the item combination that was tested and a list of type RM, RCM or RSM
- (depending on modelType) with the fit model. Else, NULL is returned.
+ is < max_contrast, a list containing 3 elements is returned: the item
+ combination that was tested, a list of the class the model was estimated
+ with (depending on modelType and estimation_param$est) with the fit model
+ and a list with a person parameter object (depending on
+ estimation_param$est). Else, NULL is returned.
 }
 \description{
 runs a principal component analysis (PCA) on the residuals of the

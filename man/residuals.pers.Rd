@@ -18,4 +18,5 @@
 \description{
 S3 residuals method to extract the (Rasch) residuals for object of class\code{"pers"}
 }
+\keyword{internal}
 \keyword{methods}
