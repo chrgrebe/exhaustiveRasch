@@ -50,3 +50,17 @@ testthat::test_that("test_LR: p-value 0.088, alpha: 0.05;
                           estimation_param=
                             estimation_control(est="eRm"))),
                         expected=3)})
+
+
+# list of 3 is returned (item combinations, fit rasch model and ppar)
+data(cognition)
+testthat::test_that("test_LR",{
+                      testthat::expect_equal(length(
+                        exhaustiveRasch::test_LR(items=c(1,2,3,5,7),
+                                        dset=cognition,
+                                        na.rm=TRUE, modelType="RSM",
+                                        alpha=0.1,
+                                        splitcr=cognition[,23],
+                                        estimation_param=
+                                        estimation_control(est="pairwise"))),
+                        expected=3)})

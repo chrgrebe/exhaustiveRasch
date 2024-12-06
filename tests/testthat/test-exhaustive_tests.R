@@ -80,5 +80,5 @@ testthat::test_that("exhaustive_tests",{
                                       scale_length=4, modelType= "RM",
                                       bonf=TRUE, ICs=TRUE,
                                       na.rm=TRUE, tests=c(
-                                        "test_waldtest"),est="pairwise"),
+                                        "no_test"),est="pairwise"),
     class="passed_exRa")})

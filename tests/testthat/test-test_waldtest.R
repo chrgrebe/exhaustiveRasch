@@ -60,3 +60,19 @@ testthat::test_that("test_waldtest: lowest p-value=0.519; pre-fit model
                                    estimation_param=
                                      estimation_control(est="psychotools"))),
                          expected=3)})
+
+
+
+
+# list of 3 is returned (item combinations, fit rasch model and ppar)
+data(cognition)
+testthat::test_that("test_waldtest: ",{
+  testthat::expect_equal(length(
+    exhaustiveRasch::test_waldtest(items=c(1:5,7), dset=cognition, na.rm=T,
+                                   modelType="PCM", bonf=FALSE, alpha=0.05,
+                                   icat=F, splitcr="random",
+                                   estimation_param=
+                                     estimation_control(est="pairwise",
+                                                        splitseed=332))),
+    expected=3)})
+

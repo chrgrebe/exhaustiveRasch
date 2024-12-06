@@ -10,7 +10,7 @@ exhaustive_tests(
   combos = NULL,
   scale_length = 4:length(dset),
   na.rm = TRUE,
-  tests = c("test_itemfit"),
+  tests = c("no_test"),
   splitcr_mloef = NULL,
   splitcr_LR = NULL,
   splitcr_wald = NULL,

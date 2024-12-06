@@ -63,14 +63,15 @@ testthat::test_that("test_itemfit: std in- and outfits",{
 
 # only MSQ infits with pre-fit model in the 'itemss' parameter:
 # list of 3 is returned (item combinations, fit rasch model and ppar)
-data(ADL)
-firstrun <- exhaustiveRasch::test_itemfit(
-  items=c(6,7,12,14), dset=ADL, na.rm=TRUE, modelType="RM",
-  exhaustiveRasch::itemfit_control(outfits = FALSE,  use.pval = FALSE),
-  estimation_param= estimation_control(est="psychotools"))
+# pairwise
+
+firstrun <- test_itemfit(
+  items=c(1,2,3,4), dset=ADL, na.rm=TRUE, modelType="RM",
+  itemfit_control(outfits = FALSE,  use.pval = FALSE, lowerMSQ = 0,5, upperMSQ = 1.5),
+  estimation_param= estimation_control(est="pairwise"))
 testthat::test_that("test_itemfit: pre-fit model",{
-  testthat::expect_equal(length(exhaustiveRasch::test_itemfit(
+  testthat::expect_equal(length(test_itemfit(
     items=firstrun, dset=ADL, na.rm=TRUE, modelType="RM",
-    exhaustiveRasch::itemfit_control(outfits = FALSE,  use.pval = FALSE),
-    estimation_param= estimation_control(est="psychotools"))),
+    itemfit_control(outfits = FALSE,  use.pval = FALSE, lowerMSQ = 0,5, upperMSQ = 1.5),
+    estimation_param= estimation_control(est="pairwise"))),
                          expected=3)})

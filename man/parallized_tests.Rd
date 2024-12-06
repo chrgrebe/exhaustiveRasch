@@ -42,7 +42,7 @@ from \link{apply_combo_rules} or the passed_combos slot of an object
  of \link{passed_exRa-class} from a previous call to this function.
   Or 2) an object of \link{passed_exRa-class}. In this case, the
    previously fit models froms its passed_Models slot will also be used
-    and will be passed to the test functions. Thhis will speed up the
+    and will be passed to the test functions. This will speed up the
      analysis. If the parameter is NULL, all possible combinations of
       the items (columns) in dset will be tested}
 

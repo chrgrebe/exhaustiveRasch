@@ -51,4 +51,11 @@ testthat::test_that("test_respca, no model, psychotools",{
     estimation_param= estimation_control(est="psychotools"))),
     expected=3)})
 
-
+# same case, but pairwise: list of 3 is returned (item combinations,
+# fit rasch model and ppar)
+data(ADL)
+testthat::test_that("test_respca, no model, psychotools",{
+  testthat::expect_equal(length(exhaustiveRasch::test_respca(
+    items=c(1,2,3,8), dset=ADL, na.rm=TRUE, modelType="RM",
+    estimation_param= estimation_control(est="pairwise"))),
+    expected=3)})

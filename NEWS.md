@@ -12,7 +12,7 @@ The parameters resp.cat and use.thurst for pairwise estimation have moved from p
 
 ### Bug fixes
 fixed error messages with RSM-models estimated with eRm (issue in context of calculating hessians). Affected item combinations are considered as not passing the test.
-When estimating with psychotools, no models passed test_personsItems. This bug was fixed.
+When estimating with psychotools, no models passed test_personsItems. This bug was fixed. The bug, that waldtests with PCM models resulted in 0 passed models was also fixed.
 
 ### Contributors
 as code from the packages pairwise and eRm was used (cited in the respective functions), the authors and contributors of these packages were added as contributors in the DESCRIPTION file.

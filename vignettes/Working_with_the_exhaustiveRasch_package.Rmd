@@ -1,13 +1,14 @@
 ---
 title: "Working with the exhaustiveRasch package"
+subtitle: for package version 0.3.2
 author: "Christian Grebe and Mirko Schürmann"
 date: "`r Sys.Date()`"
-output:
-  rmarkdown::word_document: default
-  word_document: default
-subtitle: for package version 0.3.2
-vignette: "%\\VignetteIndexEntry{Working_with_the_exhaustiveRasch_package} %\\VignetteEngine{knitr::rmarkdown}
-  %\\VignetteEncoding{UTF-8}"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Working with the exhaustiveRasch package}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
 ---
 
 ```{r, include = FALSE}
@@ -255,11 +256,11 @@ This test performs a principal components analysis on the standardized Rasch res
 
 #### test_mloef
 
-This test performs Martin-Löf tests using the *MLoef()* function of *eRm* for parameters estimated using *eRm* or the *mloef.psy()* function of exhaustiveRasch for psychotools parameters. If using *pairwise* for parameter calculation, *test*\_*mloef()* is not available and will be removed if under the tests defined in the *tests* argument. The default split criterion is a split by median. If you want to use another split criterion, you can set this using the *splitcr_mloef* argument. Use *\"mean\"* for a split by mean. You also can set a custom split criterion using a numerical vector with two distinct value to define two groups of items (e.g. the even and the odd items). This length of the vector has to match the length of the scale. Therefore, this approach is only feasible, if all candidate models have the same number of items (*scale_length* argument). If you use *psychotools* or *pairwise* for parameter estimation, the *splitcr_mloef* argument can also be set to *\"random\"* for a random split. Candidate models pass this test if the null hypothesis is not rejected. The level of significance can be set globally for all tests by using the *alpha* argument.
+This test performs Martin-Löf tests using the *MLoef()* function of *eRm* for parameters estimated using *eRm* or the *mloef.psy()* function of exhaustiveRasch for psychotools parameters. If using *pairwise* for parameter calculation, *test*\_*mloef()* is not available and will be removed if under the tests defined in the *tests* argument. The default split criterion is a split by median. If you want to use another split criterion, you can set this using the *splitcr_mloef* argument. Use *"mean"* for a split by mean. You also can set a custom split criterion using a numerical vector with two distinct value to define two groups of items (e.g. the even and the odd items). This length of the vector has to match the length of the scale. Therefore, this approach is only feasible, if all candidate models have the same number of items (*scale_length* argument). If you use *psychotools* or *pairwise* for parameter estimation, the *splitcr_mloef* argument can also be set to *"random"* for a random split. Candidate models pass this test if the null hypothesis is not rejected. The level of significance can be set globally for all tests by using the *alpha* argument.
 
 #### test_LR
 
-This test performs Anderson's likelihood ratio tests using the *LRtest()* function from eRm, the *andersentest.pers()* function from pairwise, or, for psychotools parameters, the *LRtest.psy()* function from exhaustiveRasch. Just like for the *test_mloef()* function, a median split is the default split criterion and a custom split criterion can be used by providing a numerical vector with the argument *splitcr_LR* to define the groups. This vector has to match the number of persons in the data frame. Unlike in the *test_mloef()* function, you can define more than two groups as custom split criterion, e.g. you can use *\"all.R\"* as a value for *splitcr_LR* to define groups based on the empirical rawscores. You also can use *\"mean\"* as a value for *splitcr_LR* to split by mean. If you use *pairwise* or *psychotools* for parameter estimation, you also can use *\"random\"* for a random split. Candidate models pass this test if the null hypothesis is not rejected. The level of significance can be set globally for all tests by using the *alpha* argument and a Bonferroni correction can be used by setting the *bonf* argument TRUE.
+This test performs Anderson's likelihood ratio tests using the *LRtest()* function from eRm, the *andersentest.pers()* function from pairwise, or, for psychotools parameters, the *LRtest.psy()* function from exhaustiveRasch. Just like for the *test_mloef()* function, a median split is the default split criterion and a custom split criterion can be used by providing a numerical vector with the argument *splitcr_LR* to define the groups. This vector has to match the number of persons in the data frame. Unlike in the *test_mloef()* function, you can define more than two groups as custom split criterion, e.g. you can use *"all.R"* as a value for *splitcr_LR* to define groups based on the empirical rawscores. You also can use *"mean"* as a value for *splitcr_LR* to split by mean. If you use *pairwise* or *psychotools* for parameter estimation, you also can use *"random"* for a random split. Candidate models pass this test if the null hypothesis is not rejected. The level of significance can be set globally for all tests by using the *alpha* argument and a Bonferroni correction can be used by setting the *bonf* argument TRUE.
 
 Note that the default split criterion, the median split, is not useful for ordinal models (PCM and RSM), because items are eliminated if they do not have the same number of categories in each subgroup. In *exhaustiveRasch*, item combinations are considered as not passing the test in this case. The authors of the *eRm* package suggest to use either a random split or a custom (external) split criterion in these cases. We recommend using *test_LR* for PCM and RSM models with an external split criterion (to be passed in the argument *splitcr_LR*), as a random split is not very helpful for the analysis.
 
@@ -269,7 +270,7 @@ This test checks if the item threshold locations (beta parameters) of each item 
 
 #### test_waldtest
 
-This test performs aldlike tests using the *Waldtest()* function of *eRm, the pairwise.S() function of pairwise or, for psychotools parameters, the waldtest.psy() function of exhaustiveRasch*. The default split criterion is split by median. You can define other split criteria by using the *splitcr_wald* argument, use *\"mean\"* to split the individuals by the mean of their raw scores. You can also define a custom split criterion by providing a numeric vector that assigns every person to one of two groups. This vector has to match the number of persons in the data.frame. Candidate models pass this test if the null hypothesis is not rejected. The level of significance can be set globally for all tests by using the *alpha* argument and a Bonferroni correction can be used by setting the *bonf* argument TRUE.
+This test performs aldlike tests using the *Waldtest()* function of *eRm, the pairwise.S() function of pairwise or, for psychotools parameters, the waldtest.psy() function of exhaustiveRasch*. The default split criterion is split by median. You can define other split criteria by using the *splitcr_wald* argument, use *"mean"* to split the individuals by the mean of their raw scores. You can also define a custom split criterion by providing a numeric vector that assigns every person to one of two groups. This vector has to match the number of persons in the data.frame. Candidate models pass this test if the null hypothesis is not rejected. The level of significance can be set globally for all tests by using the *alpha* argument and a Bonferroni correction can be used by setting the *bonf* argument TRUE.
 
 Note that the default split criterion, the median split, is not useful for ordinal models (PCM and RSM), because items are eliminated if they do not have the same number of categories in each subgroup. In *exhaustiveRasch*, item combinations are considered as not passing the test in this case. The authors of the eRm package suggest to use either a random split or a custom (external) split criterion in these cases. We recommend using the Waldtest for PCM and RSM with an external split criterion (to be passed in the argument *splitcr_wald*), as a random split is not very helpful for the analysis.
 
@@ -411,9 +412,9 @@ Without applying any rules, there are 22.243 combination of 15 items with scales
 ```{r Run tests (ADL example)}
 passed_ADL <- exhaustive_tests(dset=ADL, combos=final_combos, modelType= "RM",
                                upperMSQ=1.5, lowerMSQ=0.5, use.pval=F, bonf=T,
-                               na.rm=T, tests=c("test_itemfit",
-                                                "test_mloef",
-                                                "test_LR"))
+                               na.rm=T, tests= c("test_mloef", "test_LR", "test_itemfit"),
+                               estimation_param = estimation_control(
+                                 est="psychotools"))
 ```
 
 After this step of the analysis, only 9 item combinations remain that meet the criteria applied (28 fulfilled the criteria applied for the item fit; of these, 13 remained after the Martin-Löf test and of those again 9 after the likelihood ratio test). From the item importance section of the summary we learn, that two items (eating and intimate hygiene) are part of all the remaining item combinations, while three items (walking, standing and toilet use) each are only represented in one of the item combinations.
@@ -422,11 +423,13 @@ We would now like to examine the remaining 9 item combinations with regard to di
 
 ```{r Run additional test (ADL example)}
 passed_ADL2 <- exhaustive_tests(
-  dset=ADL, combos=passed_ADL, DIFvars=ADL[16:17], tests=c("test_DIFtree"))
-
+  dset=ADL, combos=passed_ADL, DIFvars=ADL[16:17], tests=c("test_DIFtree"),
+                               estimation_param = estimation_control(
+                                 est="psychotools"))
 ```
 
 All 9 item combinations pass this step of our analysis. But among these item combinations are combinations that represent a subset of another item combination. In the sense of the principle of economy, we look for the shortest scale in each case. To do this, we can use the function *remove_subsets()* to remove the supersets.
+
 
 ```{r Remove subsets (ADL example)}
 passed_rem <- remove_subsets(passed_ADL2, keep_longest=F)
@@ -436,14 +439,7 @@ This procedure removes two item combinations, leaving 7.
 
 Now, which model from these seven options would you like to choose as your final model? All seven models meet the criteria we specified for the analysis. So it is a question of weighing up our preferences as to which of these models we choose:
 
-1.  we can make the decision based on an information criterion. Since we did not set the ICs argument to TRUE when calling the *exhaustive_tests* function, our *passed_exRA* object passed_ADL does not contain them (otherwise they would be available in the \@IC slot). We can add the information criteria later by using the *add_ICs()* function.
-
-    ```{r information criteria (ADL example)}
-    passed_rem <- add_ICs(passed_rem)
-    print(passed_rem@IC)
-    ```
-
-    The choice for the final model could now fall on the one with the lowest value for your preferred information criterion.
+1.  we can make the decision based on an information criterion. Since we did not set the ICs argument to TRUE when calling the *exhaustive_tests* function, our *passed_exRA* object passed_ADL does not contain them (otherwise they would be available in the \@IC slot). We can add the information criteria later by using the *add_ICs()* function. The choice for the final model could now fall on the one with the lowest value for your preferred information criterion.
 
 2.  we can make the decision on a theoretical-content basis and choose any item combination that we consider to be the most suitable on this basis. The length of the scale may also play a role here: If the scale is to be part of a larger survey, then we may be interested in as few items as possible. If we want to be able to differentiate the person's ability better, we will probably choose a model with more items.
 

@@ -4,7 +4,12 @@
 \alias{estimation_control}
 \title{options for item parameter estimation}
 \usage{
-estimation_control(est = "psychotools", resp.cat = NULL, use.thurst = T)
+estimation_control(
+  est = "psychotools",
+  resp.cat = NULL,
+  use.thurst = T,
+  splitseed = NULL
+)
 }
 \arguments{
 \item{est}{a character value defining the estimation function to use.
@@ -18,6 +23,10 @@ only used for pairwise estimations (m parameter in pairwise::pair).}
 \item{use.thurst}{a boolean value defining whether thurstonian threshold
 parameters (TRUE, default) or Rasch-Andrich thresholds (step parameters)
 will be computed.}
+
+\item{splitseed}{a numeric value, the seed for random splits in test_waldtest,
+lest_LR (both only relevant for pairwise or psychotools estimations) and
+test_mloef (only psyhotools estimations)}
 }
 \value{
 a list containing the options

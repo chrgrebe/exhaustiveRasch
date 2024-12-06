@@ -1,6 +1,7 @@
 estimation_control <- function(est="psychotools",
                                resp.cat=NULL,
-                               use.thurst=T){
+                               use.thurst=T,
+                               splitseed=NULL){
   #' options for item parameter estimation
   #' @param est a character value defining the estimation function to use.
   #'  Possible values: 'psychotools', 'eRm'.
@@ -11,6 +12,9 @@ estimation_control <- function(est="psychotools",
   #' @param use.thurst a boolean value defining whether thurstonian threshold
   #' parameters (TRUE, default) or Rasch-Andrich thresholds (step parameters)
   #' will be computed.
+  #' @param splitseed a numeric value, the seed for random splits in test_waldtest,
+  #' lest_LR (both only relevant for pairwise or psychotools estimations) and
+  #' test_mloef (only psyhotools estimations)
   #' @return a list containing the options
   #' @export
 

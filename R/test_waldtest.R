@@ -71,20 +71,21 @@ test_waldtest <- function(items=NULL,
   if (!is.null(model)){
     if (estimation_param$est=="pairwise"){
       try(suppressWarnings({wald <- pairwise::pairwise.S(
-        daten=ds_test, split=splitcr)}),
+        daten=ds_test, split=splitcr, splitseed=
+          estimation_param$splitseed)}),
         silent=TRUE)
       if (exists("wald")){
         if (icat){ # use item category parameters
           if (bonf==TRUE){local_alpha <- alpha/length(
-            wald$S[[1]]$threshold$p)}
-          else{local_alpha <- alpha}
+            wald$S[[1]]$threshold$p)
+          } else{local_alpha <- alpha}
           if (min(wald$S[[1]]$threshold$p) >= local_alpha){
             return(list(items, model, p.par))
           }
         } else{ # use item parameters
           if (bonf==TRUE){local_alpha <- alpha/length(
-            wald$S[[1]]$sigma$p)}
-          else{local_alpha <- alpha}
+            wald$S[[1]]$sigma$p)
+          } else{local_alpha <- alpha}
           if (min(wald$S[[1]]$sigma$p) >= local_alpha){
             return(list(items, model, p.par))
           }
@@ -97,7 +98,7 @@ test_waldtest <- function(items=NULL,
       minNaN <- 1
       if (exists("wald")){
         if (bonf==TRUE){local_alpha <- alpha/length(wald$coef.table[,2])
-        }else{local_alpha <- alpha}
+        } else{local_alpha <- alpha}
 
         if (min(wald$coef.table[minNaN:length(
           wald$coef.table[,2]),2])!="NaN"){
@@ -110,11 +111,13 @@ test_waldtest <- function(items=NULL,
       }
     } else if (estimation_param$est=="psychotools"){
       try(suppressWarnings({wald <- waldtest.psy(model, modelType, splitcr,
-                                                 icat=icat)}),
+                                              icat=icat,
+                                              splitseed=
+                                                estimation_param$splitseed)}),
           silent=TRUE)
       if (exists("wald")){
-        if (bonf==TRUE){local_alpha <- alpha/length(wald)}
-        else{local_alpha <- alpha}
+        if (bonf==TRUE){local_alpha <- alpha/length(wald)
+        }else{local_alpha <- alpha}
 
         if (min(wald) >= local_alpha){
           return(list(items, model, p.par))

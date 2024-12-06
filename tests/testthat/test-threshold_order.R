@@ -25,18 +25,18 @@ testthat::test_that("threshold_order 1; na.rm=FALSE",{
 
 # list of 3 is returned (item combinations, fit rasch model and ppar)
 data("InterprofessionalCollaboration")
-firstrun <- exhaustiveRasch::threshold_order(items=1:5,
+firstrun <- exhaustiveRasch::threshold_order(items=c(1,2,3,5,7),
                                             dset=InterprofessionalCollaboration,
                                             na.rm=T, modelType="PCM",
                                             estimation_param=
-                                              estimation_control(est="psychotools"))
+                                              estimation_control(est="pairwise"))
 testthat::test_that("threshold_order: pre-fit model in the 'items' parameter",{
   testthat::expect_equal(length(
     exhaustiveRasch::threshold_order(items=firstrun,
                                      dset=InterprofessionalCollaboration,
                                      na.rm=T, modelType="PCM",
                                      estimation_param=
-                                       estimation_control(est="psychotools"))),
+                                       estimation_control(est="pairwise"))),
     expected=3)})
 
 
