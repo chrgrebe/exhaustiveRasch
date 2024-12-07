@@ -45,7 +45,6 @@ add_ICs <- function(obj, ignoreCores=1){
   }
 
   parallel::setDefaultCluster(cl)
-  parallel::clusterEvalQ(cl, library(eRm))
 
 
   information_criteria <- parallel::parLapply(cl,

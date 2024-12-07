@@ -439,7 +439,13 @@ This procedure removes two item combinations, leaving 7.
 
 Now, which model from these seven options would you like to choose as your final model? All seven models meet the criteria we specified for the analysis. So it is a question of weighing up our preferences as to which of these models we choose:
 
-1.  we can make the decision based on an information criterion. Since we did not set the ICs argument to TRUE when calling the *exhaustive_tests* function, our *passed_exRA* object passed_ADL does not contain them (otherwise they would be available in the \@IC slot). We can add the information criteria later by using the *add_ICs()* function. The choice for the final model could now fall on the one with the lowest value for your preferred information criterion.
+
+    ```{r information criteria (ADL example)}
+    passed_rem <- add_ICs(passed_rem)
+    print(passed_rem@IC)
+    ```
+
+    The choice for the final model could now fall on the one with the lowest value for your preferred information criterion.
 
 2.  we can make the decision on a theoretical-content basis and choose any item combination that we consider to be the most suitable on this basis. The length of the scale may also play a role here: If the scale is to be part of a larger survey, then we may be interested in as few items as possible. If we want to be able to differentiate the person's ability better, we will probably choose a model with more items.
 
