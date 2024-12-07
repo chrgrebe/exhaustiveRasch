@@ -104,6 +104,7 @@ residuals.pers<-function(object, res="sr", na_treat=0, ...){
   #' @param na_treat value to be assigned to residual cells which have missing data in the original response matrix. Default is set to na_treat=0 to set the residuals to 0, which implys that they are imputed as 'fitting data', i.e., zero residuals. This can attenuate contrasts (see. http://www.rasch.org/rmt/rmt142m.htm). An option is to set it to na_treat=NA.
   #' @param ... not used jet.
   #' @keywords internal
+  #' @export
 
   obj <- expscore(pers_obj=object, na_treat=na_treat) # calls internal function for residuals
   Eni <- obj$Eni # expected scores

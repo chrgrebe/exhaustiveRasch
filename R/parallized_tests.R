@@ -115,7 +115,8 @@ parallized_tests <- function(dset,
     #                                  "mloef.psy", "waldtest.psy"))
     parallel::clusterExport(cl, c(testfunction, "fit_rasch",
                                   "ppar.psy", "expscore", "pvx.matrix", "pvx",
-                                  "mloef.psy", "waldtest.psy", "LRtest.psy"))
+                                  "mloef.psy", "waldtest.psy", "LRtest.psy",
+                                  "expscore.psy", "pvx.super"))
 
     parallel::clusterEvalQ(cl, library(eRm))
     parallel::clusterEvalQ(cl, library(psych))
