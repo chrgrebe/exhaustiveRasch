@@ -18,5 +18,6 @@ estimation_control <- function(est="psychotools",
   #' @return a list containing the options
   #' @export
 
-  return(list("est"= est, "resp.cat"= resp.cat, "use.thurst"= use.thurst))
+  return(list("est"= est, "resp.cat"= resp.cat, "use.thurst"= use.thurst,
+              "splitseed"= splitseed))
 }

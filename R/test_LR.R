@@ -67,7 +67,7 @@ test_LR <- function(items=NULL,
     try(p.par <- pairwise::pers(model), silent=TRUE)
     if (exists("p.par")){
       try(suppressWarnings({lr <- pairwise::andersentest.pers(
-        p.par, split=splitcr)$p}),
+        p.par, split=splitcr, splitseed=estimation_param$splitseed)$p}),
         silent=TRUE)
     }
     if (exists("lr")==TRUE){
@@ -77,7 +77,8 @@ test_LR <- function(items=NULL,
     }
   } else if (estimation_param$est=="psychotools"){
     try(suppressWarnings({lr <- LRtest.psy(
-      model=model, modelType=modelType, splitcr=splitcr)}),
+      model=model, modelType=modelType, splitcr=splitcr ,splitseed=
+        estimation_param$splitseed)}),
       silent=TRUE)
     if (exists("lr")==TRUE){
       if (lr >=alpha ){

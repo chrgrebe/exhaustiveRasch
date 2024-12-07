@@ -62,7 +62,8 @@ test_mloef <- function(items=NULL,
   if (!is.null(model)){
     if (estimation_param$est=="psychotools"){
       try(suppressWarnings({
-        ml <- mloef.psy(model, modelType, splitcr)
+        ml <- mloef.psy(model, modelType, splitcr, splitseed=
+                          estimation_param$splitseed)
       }), silent=TRUE)
     } else if (estimation_param$est=="eRm"){
       try(suppressWarnings({ml <- eRm::MLoef(model, splitcr=splitcr)
