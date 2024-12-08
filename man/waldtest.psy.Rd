@@ -20,13 +20,13 @@ matching the value of modelType. If model is provided, this model is used.
 \item{modelType}{a character value defining the rasch model to fit.
 Possible values: RM, PCM, RSM}
 
-\item{splitcr}{as defined by eRm::Waldtest: Split criterion for subject
-raw score splitting. median uses the median as split criterion, mean
- performs a mean-split. Optionally splitcr can also be a dichotomous
-  vector which assigns each person to a certain subgroup
-   (e.g., following an external criterion). This vector can be numeric,
-    character or a factor.
-A random split, as in pairwise, is also a possible option.}
+\item{splitcr}{Split criterion for subject raw score splitting. "median"
+uses the median as split criterion, "mean" performs a mean-split,
+"random" performs a random split (in this case, the seed can be set
+with the "splitseed" argument. Optionally splitcr can also be a
+dichotomous vector which assigns each person to a certain subgroup
+(typically an external criterion). This vector can be numeric, character
+or a factor.}
 
 \item{splitseed}{seed for random split}
 
@@ -35,10 +35,17 @@ A random split, as in pairwise, is also a possible option.}
 function threshpar)}
 }
 \value{
-a list containing a) a list of item combinations that passed the
- actual test; and b) a list containing the fit models
-  of type RM, PCM or RSM.
+a vector containing the p-values of the Scheiblechner's
+ "wald-like" S-statistic for the items (if icat=F) or for the item
+ categories (irf icat=T).
 }
 \description{
 Fischer and Scheiblechner's "wald-like" S-statistic for psychotools
+}
+\examples{
+\dontrun{
+ model <- psychotools::raschmodel(ADL[c(6,7,12,14,15)])
+   waldtest.psy(model=model, modelType="RM", splitcr="random", splitseed=332,
+   icat=F)
+ }
 }

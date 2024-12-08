@@ -52,34 +52,41 @@ combinations to test}
 \item{na.rm}{a boolean value. If TRUE, in the respective item combination
 all cases with any NA are removed (na.omit). If FALSE, only cases
  with full NA responses are removed. NOTE: \link{test_mloef} currently
- does not allow for missing values (because erm::MLoef doesn't). If
-    \link{test_mloef} is under the tests to perform, na.rm will
-     automatically be set TRUE for ALL tests.}
+ does not allow for missing values. If \link{test_mloef} is under the
+ tests to perform, na.rm will automatically be set TRUE for ALL tests.}
 
 \item{tests}{a vector of characters defining the tests to perform.
 Possible values: all_rawscores, test_itemfit, test_LR, test_mloef,
  test_waldtest, threshold_order, test_DIFtree, test_personsItems,
-  test_respca. Tests will be performed in the given order.}
+  test_respca, test_PSI. Tests will be performed in the given order.
+  test_mloef is not available for pairwise estimation, threshold_order is
+  not available (and not meaningful) for dichotomous models.}
 
-\item{splitcr_mloef}{as defined by eRm::MLoef: Split criterion to define
-the item groups. "median" and "mean" split items in two groups based on
- their items' raw scores. splitcr can also be a vector of length k
+\item{splitcr_mloef}{Split criterion to define
+the item groups for test_mloef. "median" and "mean" split items in two
+groups based on their items' raw scores median or mean. "random" (only
+for psychotools estimation) performs a random split (in this case, the
+seed can be set with the "splitseed" argument of
+\link{itemfit_control}. splitcr_mloef can also be a vector of length k
   (where k denotes the number of items) that takes two or more distinct
    values to define groups used for the Martin-Löf Test.}
 
-\item{splitcr_LR}{as defined by eRm::LRtest. Split criterion for subject
-raw score splitting. "all.r" corresponds to a full raw score split,
- "median" uses the median as split criterion, "mean" performs a
-  mean split. Optionally splitcr can also be a vector which assigns each
-   person to a certain subgroup (e.g., following an external criterion).
-    This vector can be numeric, character or a factor.}
+\item{splitcr_LR}{Split criterion for subject raw score splitting for
+test_LR. "median" uses the median as split criterion, "mean" performs a
+  mean split, "random" (only for psychotools or pairwise estimation)
+  performs a random split (in this case, the seed can be set with the
+  "splitseed" argument of \link{itemfit_control}. splitcr_LR can also be a
+  vector which assigns each person to a certain subgroup (typically an
+  external criterion). This vector can be numeric, character or a factor.}
 
-\item{splitcr_wald}{as defined by eRm::Waldtest: Split criterion for
-subject raw score splitting. median uses the median as split criterion,
- mean performs a mean-split. Optionally splitcr can also be a dichotomous
-  vector which assigns each person to a certain subgroup (e.g., following
-   an external criterion). This vector can be numeric, character or
-    a factor.}
+\item{splitcr_wald}{Split criterion for subject raw score splitting for
+test_waldtest. "median" uses the median as split criterion, "mean"
+performs a mean-split, "random" (only for psychotools or pairwise
+estimation) performs a random split (in this case, the seed can be set
+with the "splitseed" argument of \link{itemfit_control}. Optionally
+splitcr_wald can also be a dichotomous vector which assigns each person
+to a certain subgroup (e.g., following an external criterion). This
+vector can be numeric, character or a factor.}
 
 \item{icat_wald}{a boolean value indicating if the waldtest will be
 conducted on item level (TRUE, default value) or on item category level.
@@ -146,6 +153,7 @@ an object of \link{passed_exRa-class}.
 \dontrun{
   passed <- exhaustive_tests(ADL[c(1,4,6,7,10,14,15)],
     modelType = "RM", scale_length = 4:5, upperMSQ=1.5, lowerMSQ=0.5,
-    tests=c("test_itemfit", "test_mloef", "test_respca"))
+    tests=c("test_mloef", "test_itemfit", "test_respca"),
+    estimation_param=estimation_control())
  }
 }

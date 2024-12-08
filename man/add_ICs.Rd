@@ -17,3 +17,12 @@ add_ICs(obj, ignoreCores = 1)
 adds information criteria to the @IC slot of an object of
  class \link{passed_exRa-class}
 }
+\examples{
+\dontrun{
+  passed <- exhaustive_tests(ADL[c(1,4,6,7,10,14,15)],
+    modelType = "RM", scale_length = 4:5, upperMSQ=1.5, lowerMSQ=0.5,
+    tests=c("test_mloef", "test_itemfit", "test_respca"),
+    estimation_param=estimation_control())
+  passed <- add_ICs(passed)
+ }
+}

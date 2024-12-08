@@ -15,21 +15,25 @@ matching the value of modelType. If model is provided, this model is used.
 \item{modelType}{a character value defining the rasch model to fit.
 Possible values: RM, PCM, RSM}
 
-\item{splitcr}{as defined by eRm::MLoef: Split criterion to define the
-item groups. "median" and "mean" split items in two groups based on their
- items' raw scores. splitcr can also be a vector of length k (where k
- denotes the number of items) that takes two or more distinct values to
-  define groups used for the Martin-Löf Test.
-A random split, as in pairwise, is also a possible option.}
+\item{splitcr}{Split criterion for subject raw score splitting for
+test_LR. "median" uses the median as split criterion, "mean" performs a
+  mean split, "random" performs a random split (in this case, the seed
+  can be set with the "splitseed" argument. splitcr can also be a
+  vector which assigns each person to a certain subgroup (typically an
+  external criterion). This vector can be numeric, character or a factor.}
 
 \item{splitseed}{seed for random split}
 }
 \value{
-a list containing a) a list of item combinations that passed the
- actual test; and b) a list containing the fit models
-  of type RM, PCM or RSM.
+the p-value of the likelihood-ratio test.
 }
 \description{
 itemfit statistics for psychotools
 Anderson's likelihood ratio test for psychotools
+}
+\examples{
+\dontrun{
+ model <- psychotools::raschmodel(ADL[c(6,7,12,14,15)])
+ LRtest.psy(model=model, modelType="RM", splitcr="random", splitseed=332)
+ }
 }

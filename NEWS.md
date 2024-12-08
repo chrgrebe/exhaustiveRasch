@@ -3,6 +3,13 @@ output:
   html_document: default
   pdf_document: default
 ---
+# exhaustiveRasch 0.3.3
+This release fixes several bugs and adds some more documentation.
+
+### Bug fixes
+fixed bug that ppar.psy could not be used outside of the package with standard
+objects created by psychotools (because of the missing "thresholds" list entry)
+
 # exhaustiveRasch 0.3.2
 This release fixes several bugs and changes minor parts of the handling.
 

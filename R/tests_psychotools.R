@@ -13,17 +13,20 @@ LRtest.psy <- function(model, modelType, splitcr="median", splitseed=NULL){
   #'   If NULL, a model is fit using dset and items.
   #' @param modelType a character value defining the rasch model to fit.
   #'  Possible values: RM, PCM, RSM
-  #' @param splitcr as defined by eRm::MLoef: Split criterion to define the
-  #'  item groups. "median" and "mean" split items in two groups based on their
-  #'   items' raw scores. splitcr can also be a vector of length k (where k
-  #'   denotes the number of items) that takes two or more distinct values to
-  #'    define groups used for the Martin-Löf Test.
-  #'  A random split, as in pairwise, is also a possible option.
+  #' @param splitcr Split criterion for subject raw score splitting for
+  #'  test_LR. "median" uses the median as split criterion, "mean" performs a
+  #'    mean split, "random" performs a random split (in this case, the seed
+  #'    can be set with the "splitseed" argument. splitcr can also be a
+  #'    vector which assigns each person to a certain subgroup (typically an
+  #'    external criterion). This vector can be numeric, character or a factor.
   #' @param splitseed seed for random split
-  #' @return a list containing a) a list of item combinations that passed the
-  #'  actual test; and b) a list containing the fit models
-  #'   of type RM, PCM or RSM.
+  #' @return the p-value of the likelihood-ratio test.
   #' @export
+  #' @examples \dontrun{
+  #'  model <- psychotools::raschmodel(ADL[c(6,7,12,14,15)])
+  #'  LRtest.psy(model=model, modelType="RM", splitcr="random", splitseed=332)
+  #'  }
+
 
   X <- model$data
 
@@ -88,21 +91,29 @@ waldtest.psy <- function(model, modelType, splitcr="median", splitseed=NULL, ica
   #'   If NULL, a model is fit using dset and items.
   #' @param modelType a character value defining the rasch model to fit.
   #'  Possible values: RM, PCM, RSM
-  #' @param splitcr as defined by eRm::Waldtest: Split criterion for subject
-  #'  raw score splitting. median uses the median as split criterion, mean
-  #'   performs a mean-split. Optionally splitcr can also be a dichotomous
-  #'    vector which assigns each person to a certain subgroup
-  #'     (e.g., following an external criterion). This vector can be numeric,
-  #'      character or a factor.
-  #'  A random split, as in pairwise, is also a possible option.
+  #' @param splitcr Split criterion for subject raw score splitting. "median"
+  #'  uses the median as split criterion, "mean" performs a mean-split,
+  #'  "random" performs a random split (in this case, the seed can be set
+  #'  with the "splitseed" argument. Optionally splitcr can also be a
+  #'  dichotomous vector which assigns each person to a certain subgroup
+  #'  (typically an external criterion). This vector can be numeric, character
+  #'  or a factor.
   #' @param splitseed seed for random split
   #' @param icat a boolean value defining wheter to use item parameters
   #' (psychotools function itempar, if TRUE) or item category parameters (psychotools
   #' function threshpar)
-  #' @return a list containing a) a list of item combinations that passed the
-  #'  actual test; and b) a list containing the fit models
-  #'   of type RM, PCM or RSM.
+  #' @return a vector containing the p-values of the Scheiblechner's
+  #'  "wald-like" S-statistic for the items (if icat=F) or for the item
+  #'  categories (irf icat=T).
   #' @export
+  #' @examples \dontrun{
+  #'  model <- psychotools::raschmodel(ADL[c(6,7,12,14,15)])
+  #'    waldtest.psy(model=model, modelType="RM", splitcr="random", splitseed=332,
+  #'    icat=F)
+  #'  }
+
+  model <- psychotools::raschmodel(ADL[c(6,7,12,14,15)])
+  LRtest.psy(model=model, modelType="RM", splitcr="random", splitseed=332)
 
   X <- model$data
   #### split criteria
@@ -192,17 +203,21 @@ mloef.psy <- function(model, modelType, splitcr="median", splitseed=NULL){
   #'   If NULL, a model is fit using dset and items.
   #' @param modelType a character value defining the rasch model to fit.
   #'  Possible values: RM, PCM, RSM
-  #' @param splitcr as defined by eRm::MLoef: Split criterion to define the
-  #' item groups. "median" and "mean" split items in two groups based on their
-  #' items' raw scores. splitcr can also be a vector of length k (where k
-  #' denotes the number of items) that takes two or more distinct values to
-  #' define groups used for the Martin-Löf Test.
-  #' A random split, as in pairwise, is also a possible option.
+  #' @param splitcr Split criterion to define the item groups. "median" and
+  #'  "mean" split items in two groups based on their items' raw scores median
+  #'  or mean. "random" performs a random split (in this case, the seed can be
+  #'  set with the "splitseed" argument. splitcr can also be a vector of length
+  #'  k (where k denotes the number of items) that takes two or more distinct
+  #'  values to define groups used for the Martin-Löf Test.
   #' @param splitseed seed for random split
-  #' @return a list containing a) a list of item combinations that passed the
-  #'  actual test; and b) a list containing the fit models
-  #'   of type RM, PCM or RSM.
+  #' @return a list containing the test statistic, the degrees of freedom and
+  #'  the p-value of the Martin-Löf test.
   #' @export
+  #' @examples \dontrun{
+  #'  model <- psychotools::raschmodel(ADL[c(6,7,12,14,15)])
+  #'  mloef.psy(model=model, modelType="RM", splitcr="random", splitseed=332)
+  #'  }
+
 
   X <- model$data
   #### split criteria
@@ -433,8 +448,15 @@ ppar.psy <- function(model=NULL){
   #'   If NULL, a model is fit using dset and items.
   #' @return an object containing person parameters, residuals and PSI
   #' @export
+  #' @examples \dontrun{
+  #'  model <- psychotools::raschmodel(ADL[c(6,7,12,14,15)])
+  #'  ppar.psy(model)
+  #'  }
 
   X <- model$data
+  if (!"thresholds" %in% names(model)){
+    model$thresholds  <- psychotools::threshpar(model, type="mode")
+  }
   thres <- t(simplify2array(model$thresholds))
   if (dim(thres)[1]==1){ #dichotomous case
     thres <- as.matrix((simplify2array(model$thresholds)))

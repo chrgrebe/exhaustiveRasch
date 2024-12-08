@@ -28,6 +28,7 @@ apply_combo_rules <- function(full,
   #'                                   full=1:length(ADL),
   #'                                    forced_items = forced,
   #'                                    rules= rules_object)
+
   chk <- Sys.getenv("_R_CHECK_LIMIT_CORES_", "")
   if (nzchar(chk) && chk == "TRUE") {
     cores=2L

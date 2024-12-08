@@ -17,3 +17,9 @@ an object containing person parameters, residuals and PSI
 \description{
 itemfit statistics for psychotools
 }
+\examples{
+\dontrun{
+ model <- psychotools::raschmodel(ADL[c(6,7,12,14,15)])
+ ppar.psy(model)
+ }
+}
