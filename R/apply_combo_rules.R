@@ -37,7 +37,7 @@ apply_combo_rules <- function(full,
     cores <- parallel::detectCores()- ignoreCores
     # use all cores in devtools::test()
   }
-
+  on.exit(parallel::stopCluster(cl))
   combo_list <- unlist(lapply(combo_length,
                               function(x) as.list(
                                 data.frame(t(arrangements::combinations(
@@ -57,7 +57,6 @@ apply_combo_rules <- function(full,
   param1 <- list(cl=cl, X=forced_list, rules=rules,
                  fun= check_combo_rules)
   final_list <- do.call(parallel::parLapply, param1)
-  parallel::stopCluster(cl)
   final_list[sapply(final_list, is.null)] <- NULL
   #final_list <- final_list[which(!sapply(final_list, is.null))]
 

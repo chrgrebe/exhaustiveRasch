@@ -9,7 +9,8 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
----
+
+------------------------------------------------------------------------
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
@@ -362,9 +363,9 @@ In addition to *eRm*, exhaustiveRasch also supports parameter estimations with t
 
 The *eRm* and *psychotools* packages both use conditional maximum likelihood estimation (CML) for parameter estimation, while *pairwise* does not estimate the parameters, but calculates them explicitly using the pairwise procedure. For this reason, the results of the model tests differ between *pairwise* and the other two packages.
 
-Since the log-likelihood in *pairwise* is not the same as that from CML estimations due to the simultaneous calculation of the item and person parameters, a Martin-Löf test is not meaningful in pairwise and is therefore not supported. If *test-mloef* is among the tests, it is skipped in the case of pairwise and a corresponding message is issued. Additionally, tests for rating scale models (RSM) are not supported by the *pairwise* package.
+Since the log-likelihood in *pairwise* is not the same as that from CML estimations due to the simultaneous calculation of the item and person parameters, a Martin-Löf test is not meaningful in pairwise and is therefore not supported. If *test_mloef* is among the tests, it is skipped in the case of pairwise and a corresponding message is issued. Additionally, tests for rating scale models (RSM) are not supported by the *pairwise* package.
 
-In principle, one would expect that the model tests in *eRm* and *psychotools* would produce identical results, since both packages use the same estimation method (CML). However, this is not always the case for various reasons. *eRm* carries out extensive data checks, in particular checking for an ill conditioned data matrix in dichotomous models. If such a matrix is present, the item (or several items) in question are not taken into account in the estimation of the model. *exhaustiveRasch* excludes these cases from further analysis because the model was not adjusted for the actually intended item combination. Therefore, even with the *no_test* test in dichotomous models (*modelType*="RM"), item combinations can be excluded when estimating with *eRm*. The same applies to the likelihood ratio test (*test_LR*), regardless of the *modelType*. *pairwise* and our tests for *psychotools* do not perform these data checks, which consequently leads to (intentional) differences in the results. *test_waldtest* also produces different results for *eRm* and *psychotools*. If i*cat=FALSE* is set, this applies anyway, since *psychotools* (and also *pairwise*) then uses the item parameters, while *eRm* always uses the item category parameters. The estimated item category parameters are also not identical in eRm and psychotools. For tests that also include the person parameters (or in the case of test_mloef the log-likelihood), this is not relevant, but for *test_waldtest* it is. In addition, in rare cases, due to different rounding, there may be minimal differences in the other model tests between *eRm* and *psychotools*, which is relevant if the selected criterion is either just met or not met (e.g. p-value in *test_mloef*).
+In principle, one would expect that the model tests in *eRm* and *psychotools* would produce identical results, since both packages use the same estimation method (CML). However, this is not always the case for various reasons. *eRm* carries out extensive data checks, in particular checking for an ill conditioned data matrix in dichotomous models. If such a matrix is present, the item (or several items) in question are not taken into account in the estimation of the model. *exhaustiveRasch* excludes these cases from further analysis because the model was not adjusted for the actually intended item combination. Therefore, even with the *no_test* test in dichotomous models (*modelType*="RM"), item combinations can be excluded when estimating with *eRm*. The same applies to the likelihood ratio test (*test_LR*), regardless of the *modelType*. *pairwise* and our tests for *psychotools* do not perform these data checks, which consequently leads to (intentional) differences in the results. *test_waldtest* also can produce different results for *eRm* and *psychotools*, If i*cat=FALSE* (default) is set, because *psychotools* (and also *pairwise*) then uses the item parameters, while *eRm* always uses the item category parameters. In addition, in rare cases, due to different rounding, there may be minimal differences in the other model tests between *eRm* and *psychotools*, which is relevant if the selected criterion is either just met or not met (e.g. p-value in *test_mloef*). When using *modelType*="RSM", different results between *eRm* and *psychotools* will typically occur, because *eRm* fails to fit these models under some conditions (this is related to the estimation of the hessian matrix). This affects no_tests as well as all tests that estimate submodels after splits by persons or by items (*test_LR*, *test_mloef*, *test_waldtest*). *pairwise* does not support RSM models at all.
 
 Unlike *eRm,* *psychotools* and *pairwise* support a random split as split criteria for *test_waldtest,* *test_lr* and *test_mloef* (*psychotools* only), even if this is usually not very meaningful.
 
@@ -429,7 +430,6 @@ passed_ADL2 <- exhaustive_tests(
 ```
 
 All 9 item combinations pass this step of our analysis. But among these item combinations are combinations that represent a subset of another item combination. In the sense of the principle of economy, we look for the shortest scale in each case. To do this, we can use the function *remove_subsets()* to remove the supersets.
-
 
 ```{r Remove subsets (ADL example)}
 passed_rem <- remove_subsets(passed_ADL2, keep_longest=F)

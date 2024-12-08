@@ -108,6 +108,7 @@ parallized_tests <- function(dset,
       # use all cores in devtools::test()
       cl <- parallel::makePSOCKcluster(parallel::detectCores()- ignoreCores)
     }
+    on.exit(parallel::stopCluster(cl))
     parallel::setDefaultCluster(cl)
     #    parallel::clusterExport(cl, c(testfunction, "fit_rasch", "Mloef",
     #                                  "datcheck", "dataprep", "LRtest",
@@ -172,7 +173,6 @@ parallized_tests <- function(dset,
                 testfunction, sep=""))
     pbapply::pboptions()
     a <- do.call(pbapply::pblapply, param1)
-    parallel::stopCluster(cl)
     a[sapply(a, is.null)] <- NULL
     return(a)
   }

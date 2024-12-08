@@ -50,7 +50,7 @@ add_ICs <- function(obj, ignoreCores=1){
     # use all cores in devtools::test()
     cl <- parallel::makePSOCKcluster(parallel::detectCores()- ignoreCores)
   }
-
+  on.exit(parallel::stopCluster(cl))
   parallel::setDefaultCluster(cl)
 
   information_criteria <- parallel::parLapply(cl,
