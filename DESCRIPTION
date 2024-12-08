@@ -1,6 +1,6 @@
 Package: exhaustiveRasch
 Type: Package
-Title: Item selection and exhaustive search for Rasch models
+Title: Item Selection and Exhaustive Search for Rasch Models
 Version: 0.3.3
 Date: 2024-12-08
 Maintainer: Christian Grebe <grebe@hepcos.com>

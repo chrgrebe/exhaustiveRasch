@@ -42,9 +42,9 @@ add_ICs <- function(obj, ignoreCores=1){
     stop("add_ICs() requires an object of class passed_exRa")
   }
 
-  chk <- Sys.getenv("_R_CHECK_LIMIT_CORES_", "")
-  if (nzchar(chk) && chk == "TRUE") {
-    # use 2 cores in CRAN/Travis/AppVeyor
+  if (isTRUE(as.logical(Sys.getenv("_R_CHECK_LIMIT_CORES_")))) {
+    # on cran
+    ncores <- 2L    # use 2 cores in CRAN/Travis/AppVeyor
     cl <- parallel::makePSOCKcluster(2L)
   } else {
     # use all cores in devtools::test()

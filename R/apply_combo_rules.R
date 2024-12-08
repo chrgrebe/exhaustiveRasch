@@ -29,8 +29,8 @@ apply_combo_rules <- function(full,
   #'                                    forced_items = forced,
   #'                                    rules= rules_object)
 
-  chk <- Sys.getenv("_R_CHECK_LIMIT_CORES_", "")
-  if (nzchar(chk) && chk == "TRUE") {
+  if (isTRUE(as.logical(Sys.getenv("_R_CHECK_LIMIT_CORES_")))) {
+    # on cran
     cores=2L
     # use 2 cores in CRAN/Travis/AppVeyor
   } else {

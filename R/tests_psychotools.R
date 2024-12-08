@@ -112,9 +112,6 @@ waldtest.psy <- function(model, modelType, splitcr="median", splitseed=NULL, ica
   #'    icat=F)
   #'  }
 
-  model <- psychotools::raschmodel(ADL[c(6,7,12,14,15)])
-  LRtest.psy(model=model, modelType="RM", splitcr="random", splitseed=332)
-
   X <- model$data
   #### split criteria
   if (!length(splitcr)>1){

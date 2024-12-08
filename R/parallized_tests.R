@@ -99,8 +99,9 @@ parallized_tests <- function(dset,
     warning(paste("No item combinations left to perform ", testfunction,
                   ". Aborted.", sep=""))
   } else{
-    chk <- Sys.getenv("_R_CHECK_LIMIT_CORES_", "")
-    if (nzchar(chk) && chk == "TRUE") {
+    if (isTRUE(as.logical(Sys.getenv("_R_CHECK_LIMIT_CORES_")))){
+      # on cran
+      ncores <- 2L
       # use 2 cores in CRAN/Travis/AppVeyor
       cl <- parallel::makePSOCKcluster(2L)
     } else {
