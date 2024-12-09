@@ -1,9 +1,8 @@
 Package: exhaustiveRasch
 Type: Package
 Title: Item Selection and Exhaustive Search for Rasch Models
-Version: 0.3.3
-Date: 2024-12-08
-Maintainer: Christian Grebe <grebe@hepcos.com>
+Version: 0.3.4
+Date: 2024-12-09
 Description: Automation of the item selection processes for rasch scales by means of exhaustive search for suitable Rasch models (dichotomous, partial credit, rating-scale) in a list of item-combinations. The item-combinations to test can be either all possible combinations or item-combinations can be defined by several rules (forced inclusion of specific items, exclusion of combinations, minimum/maximum items of a subset of items). Tests for model-and item-fit include ordering of the thresholds, itemfit-indices, likelihood ratio test, Martin Löf test, waldtest, person-item distribution, person separation index, Rasch PCA, empirical representation of all raw scores or raschtrees for detecting differential item functioning. The tests, their ordering and their parameters can be defined by the user. For parameter estimation and model tests, functions of the packages eRm, psychotools or pairwise can be used.
 License: GPL-3
 Encoding: UTF-8
@@ -17,14 +16,15 @@ RoxygenNote: 7.3.2
 URL: https://github.com/chrgrebe/exhaustiveRasch
 BugReports: https://github.com/chrgrebe/exhaustiveRasch/issues
 Authors@R: c(
-    person("Christian", "Grebe", , "grebe@hepcos.com", role = c("cre", "aut"),
+    person("Christian", "Grebe", email="grebe@hepcos.com",
+           role = c("cre", "aut"),
            comment = c(ORCID = "0000-0002-1944-7422")),
-    person("Mirko", "Schürmann", , "mirko.schuermann@upb.de", role = "aut",
+    person("Mirko", "Schürmann", email="mirko.schuermann@upb.de", role = "aut",
            comment = c(ORCID = "0000-0003-2646-085X")),
-    person(given="Joerg-Henrik", family="Heine", email="jhheine@googlemail.com", role="ctb"),
-    person(given="Patrick", family="Mair", email="mair@fas.harvard.edu", role="ctb"),
-    person(given="Thomas", family="Rusch", email="thomas.rusch@wu.ac.at", role="ctb"),
+    person(given="Joerg-Henrik", family="Heine", role="ctb"),
+    person(given="Patrick", family="Mair", role="ctb"),
+    person(given="Thomas", family="Rusch", role="ctb"),
     person(given="Reinhold", family="Hatzinger", role="ctb"),
     person(given=c("Marco", "J."), family="Maier", role="ctb"),
-    person(given="Rudolf", family="Debelak", email="rudolf.debelak@psychologie.uzh.ch", role="ctb")
+    person(given="Rudolf", family="Debelak", role="ctb")
   )

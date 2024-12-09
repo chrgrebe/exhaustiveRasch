@@ -7,15 +7,15 @@
 \method{logLik}{pers}(object, sat = FALSE, p = FALSE, ...)
 }
 \arguments{
-\item{object}{object of class\code{"pers"}}
+\item{object}{object of class pairwise::pers}
 
-\item{sat}{a "logical" with default set to \code{sat=FALSE} to return the Log-Likelihood of the data for the unrestricted modell based on parameters estimated with function \code{\link{pers}}. If set to \code{sat=TRUE} the Log-Likelihood of the saturated model is returned instead.}
+\item{sat}{a "logical" with default set to \code{sat=FALSE} to return the Log-Likelihood of the data for the unrestricted modell based on parameters estimated with function pairwise::pers. If set to \code{sat=TRUE} the Log-Likelihood of the saturated model is returned instead.}
 
 \item{p}{a "logical" with default set to \code{p=FALSE} to return the category propabilities for the empirical data.}
 
 \item{...}{not used jet.}
 }
 \description{
-S3 logLik method to extract the log-likelihood for object of class\code{"pers"}
+S3 logLik method to extract the log-likelihood for object of class pairwise::pers
 }
 \keyword{methods}

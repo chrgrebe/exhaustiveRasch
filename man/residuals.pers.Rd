@@ -7,7 +7,7 @@
 \method{residuals}{pers}(object, res = "sr", na_treat = 0, ...)
 }
 \arguments{
-\item{object}{object of class\code{"pers"}}
+\item{object}{object of class pairwise::pers}
 
 \item{res}{a character string defining which type of (rasch–) residual to return. This must be (exactly) one of the strings "exp" for expected scores "sr" for score residuals (default), "stdr" for standardised residuals, "srsq" for score residuals squared, or "stdrsq" for standardised residuals squared. The default is set to res="sr".}
 
@@ -16,7 +16,7 @@
 \item{...}{not used jet.}
 }
 \description{
-S3 residuals method to extract the (Rasch) residuals for object of class\code{"pers"}
+S3 residuals method to extract the (Rasch) residuals for object of class pairwise::pers
 }
 \keyword{internal}
 \keyword{methods}

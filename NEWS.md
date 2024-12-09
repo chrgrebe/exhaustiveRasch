@@ -3,6 +3,9 @@ output:
   html_document: default
   pdf_document: default
 ---
+# exhaustiveRasch 0.3.4
+This release fixes some minor errors in the documentation.
+
 # exhaustiveRasch 0.3.3
 This release fixes several bugs and adds some more documentation.
 

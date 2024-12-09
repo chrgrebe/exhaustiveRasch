@@ -98,8 +98,8 @@ residuals.pers<-function(object, res="sr", na_treat=0, ...){
   #' @exportS3Method residuals pers
   #' @keywords methods
   #' @method residuals pers
-  #' @description S3 residuals method to extract the (Rasch) residuals for object of class\code{"pers"}
-  #' @param object object of class\code{"pers"}
+  #' @description S3 residuals method to extract the (Rasch) residuals for object of class pairwise::pers
+  #' @param object object of class pairwise::pers
   #' @param res a character string defining which type of (rasch–) residual to return. This must be (exactly) one of the strings "exp" for expected scores "sr" for score residuals (default), "stdr" for standardised residuals, "srsq" for score residuals squared, or "stdrsq" for standardised residuals squared. The default is set to res="sr".
   #' @param na_treat value to be assigned to residual cells which have missing data in the original response matrix. Default is set to na_treat=0 to set the residuals to 0, which implys that they are imputed as 'fitting data', i.e., zero residuals. This can attenuate contrasts (see. http://www.rasch.org/rmt/rmt142m.htm). An option is to set it to na_treat=NA.
   #' @param ... not used jet.
@@ -195,9 +195,9 @@ logLik.pers<-function(object, sat=FALSE, p=FALSE, ...){
   #' @exportS3Method logLik pers
   #' @keywords methods
   #' @method logLik pers
-  #' @description S3 logLik method to extract the log-likelihood for object of class\code{"pers"}
-  #' @param object object of class\code{"pers"}
-  #' @param sat a "logical" with default set to \code{sat=FALSE} to return the Log-Likelihood of the data for the unrestricted modell based on parameters estimated with function \code{\link{pers}}. If set to \code{sat=TRUE} the Log-Likelihood of the saturated model is returned instead.
+  #' @description S3 logLik method to extract the log-likelihood for object of class pairwise::pers
+  #' @param object object of class pairwise::pers
+  #' @param sat a "logical" with default set to \code{sat=FALSE} to return the Log-Likelihood of the data for the unrestricted modell based on parameters estimated with function pairwise::pers. If set to \code{sat=TRUE} the Log-Likelihood of the saturated model is returned instead.
   #' @param p a "logical" with default set to \code{p=FALSE} to return the category propabilities for the empirical data.
   #' @param ... not used jet.
   #' @export
