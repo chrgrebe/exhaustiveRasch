@@ -2,6 +2,11 @@ methods::setGeneric("summary")
 
 #' summary function for class passed_exRa
 #' @param object an object of \link{passed_exRa-class}
+#' @return no object is returned, the summary is printed to the console. This
+#' comprises: tested scale lengths, total number of tested item combinations,
+#' applied tests, number of passed item combinations that passed each test, item
+#' importance and runtimes.
+
 #' @export
 methods::setMethod("summary", "passed_exRa", function(object){
 

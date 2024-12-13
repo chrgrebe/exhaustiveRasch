@@ -7,9 +7,9 @@
 ppar.psy(model = NULL)
 }
 \arguments{
-\item{model}{a list of type RM, PCM or RSM (a previously fit model)
-matching the value of modelType. If model is provided, this model is used.
- If NULL, a model is fit using dset and items.}
+\item{model}{an object of 'psychotools' class 'raschmodel', 'pcmodel' or
+'rsmodel'  (a model previously fit using the 'psychotools' package)
+ matching the value of modelType.}
 }
 \value{
 an object containing person parameters, residuals and PSI
@@ -18,8 +18,6 @@ an object containing person parameters, residuals and PSI
 itemfit statistics for psychotools
 }
 \examples{
-\dontrun{
  model <- psychotools::raschmodel(ADL[c(6,7,12,14,15)])
  ppar.psy(model)
- }
 }

@@ -18,17 +18,17 @@ from the call to exhaustive_tests}
 \item{\code{passed_combos}}{a list of vectors containing item combinations
 using the indices of the items}
 
-\item{\code{passed_models}}{a list of objects of the classes RM, PCM or RSM
-of the eRm package (fit rasch models)}
+\item{\code{passed_models}}{a list of objects of the class the respective package
+used for estimation uses for its models}
 
 \item{\code{passed_p.par}}{a list of objects containing the person parameters.
 Depending on the package used for estimation, also residuals and/or
 the PSI value can be part of this list}
 
-\item{\code{IC}}{a data.frame conatining information criteria for each of the
+\item{\code{IC}}{a data.frame containing information criteria for each of the
 models in passed_models}
 
-\item{\code{data}}{a data.frame containing the data used for the analyes.}
+\item{\code{data}}{a data.frame containing the data used for the analyses.}
 
 \item{\code{timings}}{a data.frame containing the the timings of the analyses.}
 }}

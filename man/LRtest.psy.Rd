@@ -2,18 +2,18 @@
 % Please edit documentation in R/tests_psychotools.R
 \name{LRtest.psy}
 \alias{LRtest.psy}
-\title{itemfit statistics for psychotools
-Anderson's likelihood ratio test for psychotools}
+\title{itemfit statistics for 'psychotools'
+Anderson's likelihood ratio test for 'psychotools'}
 \usage{
 LRtest.psy(model, modelType, splitcr = "median", splitseed = NULL)
 }
 \arguments{
-\item{model}{a list of type RM, PCM or RSM (a previously fit model)
-matching the value of modelType. If model is provided, this model is used.
- If NULL, a model is fit using dset and items.}
+\item{model}{an object of 'psychotools' class 'raschmodel', 'pcmodel' or
+'rsmodel'  (a model previously fit using the 'psychotools' package)
+ matching the value of modelType.}
 
-\item{modelType}{a character value defining the rasch model to fit.
-Possible values: RM, PCM, RSM}
+\item{modelType}{a character value defining the type of Rasch model.
+Possible values: "RM", "PCM", "RSM"}
 
 \item{splitcr}{Split criterion for subject raw score splitting for
 test_LR. "median" uses the median as split criterion, "mean" performs a
@@ -28,12 +28,10 @@ test_LR. "median" uses the median as split criterion, "mean" performs a
 the p-value of the likelihood-ratio test.
 }
 \description{
-itemfit statistics for psychotools
-Anderson's likelihood ratio test for psychotools
+itemfit statistics for 'psychotools'
+Anderson's likelihood ratio test for 'psychotools'
 }
 \examples{
-\dontrun{
  model <- psychotools::raschmodel(ADL[c(6,7,12,14,15)])
  LRtest.psy(model=model, modelType="RM", splitcr="random", splitseed=332)
- }
 }

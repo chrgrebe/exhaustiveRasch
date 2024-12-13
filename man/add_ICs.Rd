@@ -13,16 +13,24 @@ add_ICs(obj, ignoreCores = 1)
 \item{ignoreCores}{a numeric value for the number of virtual CPU cores
 (threads)to hold out in computing the information criteria.}
 }
+\value{
+an object of \link{passed_exRa-class}.
+}
 \description{
 adds information criteria to the @IC slot of an object of
  class \link{passed_exRa-class}
 }
 \examples{
-\dontrun{
-  passed <- exhaustive_tests(ADL[c(1,4,6,7,10,14,15)],
-    modelType = "RM", scale_length = 4:5, upperMSQ=1.5, lowerMSQ=0.5,
-    tests=c("test_mloef", "test_itemfit", "test_respca"),
-    estimation_param=estimation_control())
+\donttest{
+  library(exhaustiveRasch)
+  data(ADL)
+  passed <- exhaustive_tests(dset= ADL[c(1:4,7,12,14)],
+    modelType= "RM", scale_length= 5, alpha=0.05,
+    tests=c("test_LR", "test_itemfit", "test_respca"),
+    splitcr_LR = ADL[,17], itemfit_param =
+      itemfit_control(use.pval=FALSE, upperMSQ=1.5, lowerMSQ=0.5),
+    estimation_param= estimation_control(
+      est="psychotools"), verbose=FALSE)
   passed <- add_ICs(passed)
- }
+}
 }

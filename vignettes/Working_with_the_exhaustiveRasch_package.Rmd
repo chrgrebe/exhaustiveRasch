@@ -1,6 +1,6 @@
 ---
 title: "Working with the exhaustiveRasch package"
-subtitle: for package version 0.3.2
+subtitle: for package version 0.3.6
 author: "Christian Grebe and Mirko Schürmann"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette

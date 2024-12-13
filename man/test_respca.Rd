@@ -25,8 +25,17 @@ in dset that are used to fit the model}
 \item{na.rm}{a boolean value. If TRUE, all cases with any NA are removed
 (na.omit). If FALSE, only cases with full NA responses are removed}
 
+\item{model}{on object of a fit Rasch model, estimated with the packages
+'eRm' (classes 'RM', 'PCM' or 'RSM'), 'psychotools' (classes raschmodel,
+'pcmodel' or 'rsmodel') or 'pairwise' (class 'pers'), matching the value of
+ modelType. If 'model' is provided, this model is used. If NULL, a model is
+ fit using 'dset' and 'items'.}
+
+\item{p.par}{a person parameter object matching the class of 'model'. If
+NULL, the person parameters will be estimated.}
+
 \item{modelType}{a character value defining the rasch model to fit.
-Possible values: RM, PCM, RSM}
+Possible values: "RM", "PCM", "RSM".}
 
 \item{max_contrast}{a numeric value defining the maximum loading of a
 factor in the principal components analysis of the standardised residuals.}

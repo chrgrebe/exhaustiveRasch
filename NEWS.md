@@ -3,6 +3,18 @@ output:
   html_document: default
   pdf_document: default
 ---
+# exhaustiveRasch 0.3.6
+This release adds verbose argument to exhaustive_tests() and fixes some documentation and code issues.
+
+### Bug fixes
+fixed some documentation and code issues not related to bugs or functionality
+
+### New features
+**new argument in main function exhaustive_tests(): verbose**. set verbose=TRUE to suppress output to the console during the analysis. Note, there will also be no progress bar, if verbose=TRUE. The default value for verbose is verbose=FALSE.
+
+# exhaustiveRasch 0.3.5
+This release fixes some minor errors in the documentation.
+
 # exhaustiveRasch 0.3.4
 This release fixes some minor errors in the documentation.
 

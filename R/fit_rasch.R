@@ -1,4 +1,8 @@
 fit_rasch <- function(X, modelType, estimation_param){
+  # This is an internal function that is not intended to be called by users.
+  # It is nevertheless exported so that it can be run in the parallelization
+  # workers. However, the function is not documented in the manual.
+
   #' parameter estimation for for rasch models.
   #' @param X a numeric vector containing the index numbers of the items
   #'  in dset that are used to fit the model
@@ -18,7 +22,7 @@ fit_rasch <- function(X, modelType, estimation_param){
   # parallelization. However, it is not included in the package documentation
   # (roxygen2 keyword 'internal').
 
-  #estimation_param$se=F
+  #estimation_param$se=FALSE
   #  if(!estimation_param$est=="eRm" & modelType=="RM"){
   #    estimation_param$est="eRm"
   #    warning("Estimation using functions from package 'psychotools' is
@@ -30,16 +34,16 @@ fit_rasch <- function(X, modelType, estimation_param){
   mod <- NULL
   if (estimation_param$est=="eRm"){
     try(suppressWarnings({
-      mod <- get(modelType,envir = loadNamespace("eRm"))(X, se=T,
-                            sum0=T)
+      mod <- get(modelType,envir = loadNamespace("eRm"))(X, se=TRUE,
+                            sum0=TRUE)
     }), silent=TRUE)
   } else if (estimation_param$est=="psychotools"){
     if (modelType=="RM"){
-      mod <- psychotools::raschmodel(X, hessian=T)
+      mod <- psychotools::raschmodel(X, hessian=TRUE)
     } else if (modelType=="PCM"){
-      mod <- psychotools::pcmodel(X, hessian=T, nullcats="ignore")
+      mod <- psychotools::pcmodel(X, hessian=TRUE, nullcats="ignore")
     } else if (modelType=="RSM"){
-      mod <- psychotools::rsmodel(X, hessian=T)
+      mod <- psychotools::rsmodel(X, hessian=TRUE)
     }
     mod$thresholds  <- psychotools::threshpar(mod, type="mode")
     names(mod[[length(mod)]]) <- "thresholds"

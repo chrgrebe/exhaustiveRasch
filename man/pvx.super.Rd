@@ -13,6 +13,9 @@ pvx.super(theta_v, thres = NULL, dat = NULL)
 
 \item{dat}{internal}
 }
+\value{
+internal
+}
 \description{
 internal
 }

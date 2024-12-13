@@ -15,6 +15,9 @@
 
 \item{...}{not used jet.}
 }
+\value{
+a matrix containing the residuals
+}
 \description{
 S3 residuals method to extract the (Rasch) residuals for object of class pairwise::pers
 }

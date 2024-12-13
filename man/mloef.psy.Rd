@@ -7,12 +7,12 @@
 mloef.psy(model, modelType, splitcr = "median", splitseed = NULL)
 }
 \arguments{
-\item{model}{a list of type RM, PCM or RSM (a previously fit model)
-matching the value of modelType. If model is provided, this model is used.
- If NULL, a model is fit using dset and items.}
+\item{model}{an object of 'psychotools' class 'raschmodel', 'pcmodel' or
+'rsmodel'  (a model previously fit using the 'psychotools' package)
+ matching the value of modelType.}
 
-\item{modelType}{a character value defining the rasch model to fit.
-Possible values: RM, PCM, RSM}
+\item{modelType}{a character value defining the type of Rasch model.
+Possible values: "RM", "PCM", "RSM"}
 
 \item{splitcr}{Split criterion to define the item groups. "median" and
 "mean" split items in two groups based on their items' raw scores median
@@ -31,8 +31,6 @@ a list containing the test statistic, the degrees of freedom and
 Martin-Loef test for psychotools
 }
 \examples{
-\dontrun{
  model <- psychotools::raschmodel(ADL[c(6,7,12,14,15)])
  mloef.psy(model=model, modelType="RM", splitcr="random", splitseed=332)
- }
 }

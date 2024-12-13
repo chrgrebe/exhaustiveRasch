@@ -28,6 +28,7 @@ parallized_tests(
   ignoreCores,
   estimation_param,
   tests_count,
+  verbose = TRUE,
   ...
 )
 }
@@ -101,6 +102,9 @@ in parallelizing the test run.}
 
 \item{estimation_param}{options for parameter estimation using
 \link{estimation_control}}
+
+\item{verbose}{a boolean value. If set to FALSE, all output during the
+analysis will be suppressed.}
 
 \item{...}{options for \link{itemfit_control} can be passed directly
 to this function.}

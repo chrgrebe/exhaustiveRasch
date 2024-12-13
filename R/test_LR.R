@@ -7,17 +7,25 @@ test_LR <- function(items=NULL,
                     splitcr="median",
                     alpha=0.1,
                     estimation_param=NULL){
+  # This is an internal function that is not intended to be called by users.
+  # It is nevertheless exported so that it can be run in the parallelization
+  # workers. However, the function is not documented in the manual.
+
   #' runs Anderson's likelihood ration test using the LRtest() function of eRm.
   #' @param items a numeric vector containing the index numbers of the items
   #'  in dset that are used to fit the model
   #' @param dset a data.frame containing the data
   #' @param na.rm a boolean value. If TRUE, all cases with any NA are removed
   #'  (na.omit). If FALSE, only cases with full NA responses are removed
-  #' @param model a list of type RM, PCM or RSM (a previously fit model)
-  #'  matching the value of modelType. If model is provided, this model is used.
-  #'   If NULL, a model is fit using dset and items.
+  #' @param model on object of a fit Rasch model, estimated with the packages
+  #' 'eRm' (classes 'RM', 'PCM' or 'RSM'), 'psychotools' (classes raschmodel,
+  #' 'pcmodel' or 'rsmodel') or 'pairwise' (class 'pers'), matching the value of
+  #'  modelType. If 'model' is provided, this model is used. If NULL, a model is
+  #'  fit using 'dset' and 'items'.
+  #' @param p.par a person parameter object matching the class of 'model'. If
+  #'  NULL, the person parameters will be estimated.
   #' @param modelType a character value defining the rasch model to fit.
-  #'  Possible values: RM, PCM, RSM
+  #'  Possible values: "RM", "PCM", "RSM".
   #' @param splitcr as defined by eRm::LRtest. Split criterion for subject
   #'  raw score splitting. "all.r" corresponds to a full raw score split,
   #'  "median" uses the median as split criterion, "mean" performs a

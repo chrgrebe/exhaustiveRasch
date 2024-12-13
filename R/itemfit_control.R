@@ -9,7 +9,7 @@ itemfit_control <- function(zstd=FALSE,
                             use.rel=FALSE){
   #' options for test_itemfit()
   #' @param zstd a boolean value whether to check the standardised fit indices
-  #' @param msq aboolean value whether to check the mean-squared fit indices
+  #' @param msq a boolean value whether to check the mean-squared fit indices
   #' @param use.pval a boolean value whether to exclude combinations with at
   #'  least one item with significant p-value
   #' @param outfits a boolean value whether to check outfit indices
@@ -24,8 +24,8 @@ itemfit_control <- function(zstd=FALSE,
   #'  (standardised fit indices)
   #' @param use.rel a boolean value wheter to use the unweighted
   #' (default, FALSE) or weighted item fit indices for MSQ and z-standardised
-  #'  fit-indices. Only available for pairwise and psychotools estiomation,
-  #'  will be ignored, for eRm estimation.
+  #'  fit-indices. Only available for 'pairwise' and 'psychotools' estiomation,
+  #'  will be ignored, for 'eRm' estimation.
   #' @return a list containing the options
   #' @export
 

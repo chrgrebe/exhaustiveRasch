@@ -2,17 +2,16 @@
 ########################################################
 
 LRtest.psy <- function(model, modelType, splitcr="median", splitseed=NULL){
-  # function adapted from the package pairwise by Joerg-Henrik Heine and from
-  # function LRtest.Rm of the package eRm by
-  # Patrick Mair, Thomas Rusch, Reinhold Hatzinger, Marco J. Maier &
-  # Rudolf Debelak
-  #' itemfit statistics for psychotools
-  #' Anderson's likelihood ratio test for psychotools
-  #' @param model a list of type RM, PCM or RSM (a previously fit model)
-  #'  matching the value of modelType. If model is provided, this model is used.
-  #'   If NULL, a model is fit using dset and items.
-  #' @param modelType a character value defining the rasch model to fit.
-  #'  Possible values: RM, PCM, RSM
+  # function adapted from the package 'pairwise' by Joerg-Henrik Heine and from
+  # function 'LRtest.Rm' of the package 'eRm' by Patrick Mair, Thomas Rusch,
+  # Reinhold Hatzinger, Marco J. Maier & Rudolf Debelak
+  #' itemfit statistics for 'psychotools'
+  #' Anderson's likelihood ratio test for 'psychotools'
+  #' @param model an object of 'psychotools' class 'raschmodel', 'pcmodel' or
+  #' 'rsmodel'  (a model previously fit using the 'psychotools' package)
+  #'  matching the value of modelType.
+  #' @param modelType a character value defining the type of Rasch model.
+  #'  Possible values: "RM", "PCM", "RSM"
   #' @param splitcr Split criterion for subject raw score splitting for
   #'  test_LR. "median" uses the median as split criterion, "mean" performs a
   #'    mean split, "random" performs a random split (in this case, the seed
@@ -22,10 +21,9 @@ LRtest.psy <- function(model, modelType, splitcr="median", splitseed=NULL){
   #' @param splitseed seed for random split
   #' @return the p-value of the likelihood-ratio test.
   #' @export
-  #' @examples \dontrun{
+  #' @examples
   #'  model <- psychotools::raschmodel(ADL[c(6,7,12,14,15)])
   #'  LRtest.psy(model=model, modelType="RM", splitcr="random", splitseed=332)
-  #'  }
 
 
   X <- model$data
@@ -68,11 +66,14 @@ LRtest.psy <- function(model, modelType, splitcr="median", splitseed=NULL){
   }
   names(datalist) <- paste(subsamp,"sample")
   if (modelType=="RM"){
-    submodels <- lapply(datalist, psychotools::raschmodel, hessian=T, nullcats="ignore")
+    submodels <- lapply(datalist, psychotools::raschmodel, hessian=FALSE,
+                        nullcats="ignore")
   } else if(modelType=="RSM"){
-    submodels <- lapply(datalist, psychotools::rsmodel, hessian=T, nullcats="ignore")
+    submodels <- lapply(datalist, psychotools::rsmodel, hessian=FALSE,
+                        nullcats="ignore")
   } else{
-    submodels <- lapply(datalist, psychotools::pcmodel, hessian=T, nullcats="ignore")
+    submodels <- lapply(datalist, psychotools::pcmodel, hessian=FALSE,
+                        nullcats="ignore")
   }
 
   ch2 <-2*(sum(sapply(submodels, function(x) x$loglik))-model$loglik)
@@ -86,12 +87,12 @@ LRtest.psy <- function(model, modelType, splitcr="median", splitseed=NULL){
 waldtest.psy <- function(model, modelType, splitcr="median", splitseed=NULL, icat=FALSE){
   #  function adapted from the package pairwise by Joerg-Henrik Heine
   #' Fischer and Scheiblechner's "wald-like" S-statistic for psychotools
-  #' @param model a list of type RM, PCM or RSM (a previously fit model)
-  #'  matching the value of modelType. If model is provided, this model is used.
-  #'   If NULL, a model is fit using dset and items.
-  #' @param modelType a character value defining the rasch model to fit.
-  #'  Possible values: RM, PCM, RSM
-  #' @param splitcr Split criterion for subject raw score splitting. "median"
+  #' @param model an object of 'psychotools' class 'raschmodel', 'pcmodel' or
+  #' 'rsmodel'  (a model previously fit using the 'psychotools' package)
+  #'  matching the value of modelType.
+  #' @param modelType a character value defining the type of Rasch model.
+  #'  Possible values: "RM", "PCM", "RSM"
+  #' @param splitcr split criterion for subject raw score splitting. "median"
   #'  uses the median as split criterion, "mean" performs a mean-split,
   #'  "random" performs a random split (in this case, the seed can be set
   #'  with the "splitseed" argument. Optionally splitcr can also be a
@@ -99,18 +100,17 @@ waldtest.psy <- function(model, modelType, splitcr="median", splitseed=NULL, ica
   #'  (typically an external criterion). This vector can be numeric, character
   #'  or a factor.
   #' @param splitseed seed for random split
-  #' @param icat a boolean value defining wheter to use item parameters
-  #' (psychotools function itempar, if TRUE) or item category parameters (psychotools
-  #' function threshpar)
+  #' @param icat a boolean value defining wether to use item parameters
+  #' ('psychotools' function 'itempar', if TRUE) or item category parameters
+  #' ('psychotools' function 'threshpar')
   #' @return a vector containing the p-values of the Scheiblechner's
-  #'  "wald-like" S-statistic for the items (if icat=F) or for the item
-  #'  categories (irf icat=T).
+  #'  "wald-like" S-statistic for the items (if icat=FALSE) or for the item
+  #'  categories (if icat=TRUE).
   #' @export
-  #' @examples \dontrun{
+  #' @examples
   #'  model <- psychotools::raschmodel(ADL[c(6,7,12,14,15)])
   #'    waldtest.psy(model=model, modelType="RM", splitcr="random", splitseed=332,
-  #'    icat=F)
-  #'  }
+  #'    icat=FALSE)
 
   X <- model$data
   #### split criteria
@@ -151,11 +151,14 @@ waldtest.psy <- function(model, modelType, splitcr="median", splitseed=NULL, ica
   }
   names(datalist) <- paste(subsamp,"sample")
   if (modelType=="RM"){
-    submodels <- lapply(datalist, psychotools::raschmodel, hessian=T, nullcats="ignore")
+    submodels <- lapply(datalist, psychotools::raschmodel, hessian=TRUE,
+                        nullcats="ignore")
   } else if(modelType=="RSM"){
-    submodels <- lapply(datalist, psychotools::rsmodel, hessian=T, nullcats="ignore")
+    submodels <- lapply(datalist, psychotools::rsmodel, hessian=TRUE,
+                        nullcats="ignore")
   } else{
-    submodels <- lapply(datalist, psychotools::pcmodel, hessian=T, nullcats="ignore")
+    submodels <- lapply(datalist, psychotools::pcmodel, hessian=TRUE,
+                        nullcats="ignore")
   }
 
   cat_fullmod <- unlist(lapply(model$categories, length))
@@ -166,11 +169,11 @@ waldtest.psy <- function(model, modelType, splitcr="median", splitseed=NULL, ica
   }
 
   if (!icat){
-    ipar1 <- psychotools::itempar(submodels[[1]], vcov=T)
-    ipar2 <- psychotools::itempar(submodels[[2]], vcov=T)
+    ipar1 <- psychotools::itempar(submodels[[1]], vcov=TRUE)
+    ipar2 <- psychotools::itempar(submodels[[2]], vcov=TRUE)
   } else{
-    ipar1 <- psychotools::threshpar(submodels[[1]], vcov=T, type="mode")
-    ipar2 <- psychotools::threshpar(submodels[[2]], vcov=T, type="mode")
+    ipar1 <- psychotools::threshpar(submodels[[1]], vcov=TRUE, type="mode")
+    ipar2 <- psychotools::threshpar(submodels[[2]], vcov=TRUE, type="mode")
   }
   se1 <- as.numeric(sqrt(diag(stats::vcov(ipar1))))
   se2 <- as.numeric(sqrt(diag(stats::vcov(ipar2))))
@@ -195,11 +198,11 @@ mloef.psy <- function(model, modelType, splitcr="median", splitseed=NULL){
   # Rudolf Debelak
   #  function adapted from the package pairwise by Joerg-Henrik Heine
   #' Martin-Loef test for psychotools
-  #' @param model a list of type RM, PCM or RSM (a previously fit model)
-  #'  matching the value of modelType. If model is provided, this model is used.
-  #'   If NULL, a model is fit using dset and items.
-  #' @param modelType a character value defining the rasch model to fit.
-  #'  Possible values: RM, PCM, RSM
+  #' @param model an object of 'psychotools' class 'raschmodel', 'pcmodel' or
+  #' 'rsmodel'  (a model previously fit using the 'psychotools' package)
+  #'  matching the value of modelType.
+  #' @param modelType a character value defining the type of Rasch model.
+  #'  Possible values: "RM", "PCM", "RSM"
   #' @param splitcr Split criterion to define the item groups. "median" and
   #'  "mean" split items in two groups based on their items' raw scores median
   #'  or mean. "random" performs a random split (in this case, the seed can be
@@ -210,10 +213,9 @@ mloef.psy <- function(model, modelType, splitcr="median", splitseed=NULL){
   #' @return a list containing the test statistic, the degrees of freedom and
   #'  the p-value of the Martin-Löf test.
   #' @export
-  #' @examples \dontrun{
+  #' @examples
   #'  model <- psychotools::raschmodel(ADL[c(6,7,12,14,15)])
   #'  mloef.psy(model=model, modelType="RM", splitcr="random", splitseed=332)
-  #'  }
 
 
   X <- model$data
@@ -247,18 +249,18 @@ mloef.psy <- function(model, modelType, splitcr="median", splitseed=NULL){
   names(datalist) <- paste(subsamp,"sample")
 
   if (modelType=="RM"){
-    submodels <- lapply(datalist, psychotools::raschmodel, hessian=F, nullcats="ignore")
+    submodels <- lapply(datalist, psychotools::raschmodel, hessian=FALSE, nullcats="ignore")
   } else if(modelType=="RSM"){
-    submodels <- lapply(datalist, psychotools::rsmodel, hessian=F, nullcats="ignore")
+    submodels <- lapply(datalist, psychotools::rsmodel, hessian=FALSE, nullcats="ignore")
   } else{
-    submodels <- lapply(datalist, psychotools::pcmodel, hessian=F, nullcats="ignore")
+    submodels <- lapply(datalist, psychotools::pcmodel, hessian=FALSE, nullcats="ignore")
   }
 
   logLik_subsamples  <- c(submodels[[1]]$loglik, submodels[[2]]$loglik)
 
   ### calculating the numerator and denominator (from eRm)
   sub.tabs <- as.data.frame(sapply(submodels, function(M){
-    rowSums(M$data, na.rm=T)
+    rowSums(M$data, na.rm=TRUE)
   }))
   sub.tabs <- table(sub.tabs)
 
@@ -268,7 +270,7 @@ mloef.psy <- function(model, modelType, splitcr="median", splitseed=NULL){
 
   sub.max <- lapply(i.grps, function(g){ sum(apply(X[,g], 2, max)) })
 
-  full.tab  <- table(rowSums(X, na.rm=T))
+  full.tab  <- table(rowSums(X, na.rm=TRUE))
   full.term <- sum(stats::na.omit(as.numeric( full.tab * (log(full.tab) - log(nrow(X))) )))
 
   ML.LR <- 2 * (
@@ -292,6 +294,10 @@ pvx<-function(theta,thres,xm=NULL){
   # func. by joerg-henrik heine jhheine(at)googlemail.com
   # nichts geändert aber zum merken theta: einzelne zahl; thres: thurstonian threshold eines items
   # korrigierte formel aus markus buch seite 330 siehe auch s. 522 2006
+
+    # This is an internal function that is not intended to be called by users.
+  # It is nevertheless exported so that it can be run in the parallelization
+  # workers. However, the function is not documented in the manual.
 
   #' this is an internal function for expscore()
   #' @param thres internal
@@ -321,6 +327,10 @@ pvx.matrix<-function(theta_v,thres,xm_v=NULL){
   # xm_v: vector welche kategorie prob jeweils ausgegeben werden soll
   # korrigierte formel aus markus buch seite 330
 
+  # This is an internal function that is not intended to be called by users.
+  # It is nevertheless exported so that it can be run in the parallelization
+  # workers. However, the function is not documented in the manual.
+
   #' pvx matrix
   #' @param theta_v internal
   #' @param thres internal
@@ -345,6 +355,10 @@ pvx.matrix<-function(theta_v,thres,xm_v=NULL){
 
 expscore.psy <- function(X, thres, ppar, na_treat=NA){
   # function adapted from the package pairwise by Joerg-Henrik Heine
+
+  # This is an internal function that is not intended to be called by users.
+  # It is nevertheless exported so that it can be run in the parallelization
+  # workers. However, the function is not documented in the manual.
 
   #' returns a matrix with dims like resp matrix with expected scores and more ...
   #' func. by joerg-henrik heine jhheine(at)googlemail.com
@@ -440,15 +454,15 @@ ppar.psy <- function(model=NULL){
   # Rudolf Debelak
   #  function adapted from the package pairwise by Joerg-Henrik Heine
   #' itemfit statistics for psychotools
-  #' @param model a list of type RM, PCM or RSM (a previously fit model)
-  #'  matching the value of modelType. If model is provided, this model is used.
-  #'   If NULL, a model is fit using dset and items.
+  #' @param model an object of 'psychotools' class 'raschmodel', 'pcmodel' or
+  #' 'rsmodel'  (a model previously fit using the 'psychotools' package)
+  #'  matching the value of modelType.
   #' @return an object containing person parameters, residuals and PSI
   #' @export
-  #' @examples \dontrun{
+  #' @examples
   #'  model <- psychotools::raschmodel(ADL[c(6,7,12,14,15)])
   #'  ppar.psy(model)
-  #'  }
+
 
   X <- model$data
   if (!"thresholds" %in% names(model)){
@@ -458,9 +472,10 @@ ppar.psy <- function(model=NULL){
   if (dim(thres)[1]==1){ #dichotomous case
     thres <- as.matrix((simplify2array(model$thresholds)))
   }
-  try(suppressWarnings({ppar <- psychotools::personpar(model, personwise = T, vcov=F)}), silent=TRUE)
+  try(suppressWarnings({ppar <- psychotools::personpar(
+    model, personwise = TRUE, vcov=FALSE)}), silent=TRUE)
   if (exists("ppar")==TRUE){
-    ppar_unique <- psychotools::personpar(model, vcov=T)
+    ppar_unique <- psychotools::personpar(model, vcov=TRUE)
     se_unique <- as.numeric(sqrt(diag(stats::vcov(ppar_unique))))
     unique_tab <- cbind(ppar_unique, se_unique)
 

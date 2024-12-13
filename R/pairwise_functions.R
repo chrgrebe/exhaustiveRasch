@@ -3,6 +3,9 @@
 
 expscore <- function(pers_obj, na_treat=NA){
   # function adapted from the package pairwise by Joerg-Henrik Heine
+  # This is an internal function that is not intended to be called by users.
+  # It is nevertheless exported so that it can be run in the parallelization
+  # workers. However, the function is not documented in the manual.
 
   #' returns a matrix with dims like resp matrix with expected scores and more ...
   #' func. by joerg-henrik heine jhheine(at)googlemail.com
@@ -93,6 +96,9 @@ expscore <- function(pers_obj, na_treat=NA){
 ########################### hier die residual method fuer pers #############################
 residuals.pers<-function(object, res="sr", na_treat=0, ...){
   # function adapted from the package pairwise by Joerg-Henrik Heine
+  # This is an internal function that is not intended to be called by users.
+  # It is nevertheless exported so that it can be run in the parallelization
+  # workers. However, the function is not documented in the manual.
 
   #' @title S3 residuals for Object of class "pers"
   #' @exportS3Method residuals pers
@@ -103,6 +109,7 @@ residuals.pers<-function(object, res="sr", na_treat=0, ...){
   #' @param res a character string defining which type of (rasch–) residual to return. This must be (exactly) one of the strings "exp" for expected scores "sr" for score residuals (default), "stdr" for standardised residuals, "srsq" for score residuals squared, or "stdrsq" for standardised residuals squared. The default is set to res="sr".
   #' @param na_treat value to be assigned to residual cells which have missing data in the original response matrix. Default is set to na_treat=0 to set the residuals to 0, which implys that they are imputed as 'fitting data', i.e., zero residuals. This can attenuate contrasts (see. http://www.rasch.org/rmt/rmt142m.htm). An option is to set it to na_treat=NA.
   #' @param ... not used jet.
+  #' @return a matrix containing the residuals
   #' @keywords internal
   #' @export
 
@@ -127,6 +134,9 @@ residuals.pers<-function(object, res="sr", na_treat=0, ...){
 
 pvx.super <- function(theta_v, thres=NULL, dat=NULL){
   # function adapted from the package pairwise by Joerg-Henrik Heine
+  # This is an internal function that is not intended to be called by users.
+  # It is nevertheless exported so that it can be run in the parallelization
+  # workers. However, the function is not documented in the manual.
 
   # func. by joerg-henrik heine jhheine(at)googlemail.com
   # theta_v: ein vector oder zahl; oder ein pers_obj
@@ -139,6 +149,7 @@ pvx.super <- function(theta_v, thres=NULL, dat=NULL){
   #' @param theta_v internal
   #' @param thres internal
   #' @param dat internal
+  #' @return internal
   #' @keywords internal
   #' @export
 
@@ -160,27 +171,13 @@ pvx.super <- function(theta_v, thres=NULL, dat=NULL){
     theta_v <- (theta_v$pers$WLE)
   }
 
-  # hier könnte man noch weiter bauen 21.11.2015
-  #   if((class(theta_v)=="numeric") & (length(thres)!=0) ){
-  #     ## wenn
-  #     theta_v <- theta_v
-  #     thres <- thres
-  #     if(class(dat)!="logical"){resp <- dat}
-  #   }
 
   thresL <- lapply(1:nrow(thres), function(i) {stats::na.omit(thres[i,])})
   names(thresL) <- rownames(thres)
-  # do.call(cbind , lapply(thresL,function(x){t(pvx.matrix(theta_v,x ))}) )
-
-
-  #   if(length(resp)==0){
-  #     suppressWarnings(erg <- data.frame(lapply(thresL,function(x){t(pvx.matrix(theta_v,x ))}), row.names=names(theta_v),check.rows=F) )
-  #   } currently not supported
 
   if(length(resp)!=0){
     respL <- lapply(1:ncol(resp), function(i) {(resp[,i])})
     names(respL) <- colnames(resp)
-    #erg <- mapply(function(x,y){t(pvx.matrix(theta_v,x ,y+1))}, x=thresL, y=respL)
     erg <- mapply(function(x,y){t(pvx.matrix(theta_v = theta_v,thres = x ,xm_v = (y) ))}, x=thresL, y=respL) ## corrected 25-04-2019: this was wrong: xm_v = (y+1)
   }
 
@@ -190,6 +187,9 @@ pvx.super <- function(theta_v, thres=NULL, dat=NULL){
 ########################### hier die logLik method fuer pers #############################
 logLik.pers<-function(object, sat=FALSE, p=FALSE, ...){
   # function adapted from the package pairwise by Joerg-Henrik Heine
+  # This is an internal function that is not intended to be called by users.
+  # It is nevertheless exported so that it can be run in the parallelization
+  # workers. However, the function is not documented in the manual.
 
   #' @title S3 logLik for Object of class "pers"
   #' @exportS3Method logLik pers
@@ -200,10 +200,10 @@ logLik.pers<-function(object, sat=FALSE, p=FALSE, ...){
   #' @param sat a "logical" with default set to \code{sat=FALSE} to return the Log-Likelihood of the data for the unrestricted modell based on parameters estimated with function pairwise::pers. If set to \code{sat=TRUE} the Log-Likelihood of the saturated model is returned instead.
   #' @param p a "logical" with default set to \code{p=FALSE} to return the category propabilities for the empirical data.
   #' @param ... not used jet.
+  #' @return an object of class 'logik', containing the likelihood an degrees
+  #'  of freedom
   #' @export
 
-  # compute m_v - number of categories per item as vector - used in both cases
-  #m_v <-sapply(1:nrow(object$pair$threshold), function(i) {length(na.omit(object$pair$threshold[i,]))+1})
   m_v <- object$pair$m # new 03-12-2015 m is in any case part of "pair"
 
   if(sat==FALSE){
@@ -211,24 +211,8 @@ logLik.pers<-function(object, sat=FALSE, p=FALSE, ...){
     #str.pattern(object$pair$resp)
     P <- pvx.super(theta_v=object) # probabilities for hole dataset
 
-    #     pat_ind <- rownames(object$pair$resp)%in%(rownames(unique(object$pair$resp))) # index for unique pattern
-    #     pat_fre <- (table(str.pattern(object$pair$resp))) # frequencies for pattern
-    #     pat_lik <- (rowSums(log(P[pat_ind,]),na.rm=T)) # likelihood for (unique) pattern
-    #     Log_Likelihood <- sum( pat_lik * pat_fre) # likelihood data (conditional?)
-    #     # old things prior 21.1.2015
-    #     #P <- matrix(rep(.1,5000),ncol = 5,nrow = 1000) #test
-    #     sum(log(P),na.rm=T)
     Log_Likelihood <- sum(log(P),na.rm=T) # evtl. : P[complete.cases(P),]
-    #     pat_fre[1] <- 0
-    #     pat_fre[30] <- 0
-    #
-    #     sum( pat_lik * pat_fre)
 
-    # neu auslesen der WLE geschätzten likelihood
-    # Log_Likelihood <- sum(unique(object$pers$WLL)) #sum(as.numeric(names(table(object$pers$WLL))))
-
-
-    # object$pair$threshold
     df <- sum(m_v-1)+sum(m_v-1)-1 # changed 27-3-2015 (acc. WINMIRA) (sum(m_v-1)-1)*2 # number of free model parameters (df) (number of scorgroups - 1 ): sum(m_v-1)  +  (numper of free itemparameter): sum(m_v-1)-1
     #     df_k <- sum(m_v-1)-1
     #     df_k_1 <- sum(m_v-1)-1

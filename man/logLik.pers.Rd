@@ -15,6 +15,10 @@
 
 \item{...}{not used jet.}
 }
+\value{
+an object of class 'logik', containing the likelihood an degrees
+ of freedom
+}
 \description{
 S3 logLik method to extract the log-likelihood for object of class pairwise::pers
 }

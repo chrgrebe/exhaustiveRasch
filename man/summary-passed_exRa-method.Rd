@@ -9,6 +9,12 @@
 \arguments{
 \item{object}{an object of \link{passed_exRa-class}}
 }
+\value{
+no object is returned, the summary is printed to the console. This
+comprises: tested scale lengths, total number of tested item combinations,
+applied tests, number of passed item combinations that passed each test, item
+importance and runtimes.
+}
 \description{
 summary function for class passed_exRa
 }

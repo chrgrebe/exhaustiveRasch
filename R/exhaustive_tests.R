@@ -19,7 +19,7 @@ exhaustive_tests <- function(dset,
                              ICs=FALSE,
                              keep=FALSE,
                              ignoreCores=1,
-                             silent=FALSE,
+                             verbose=TRUE,
                              ...,
                              itemfit_param=NULL,
                              estimation_param=NULL
@@ -51,7 +51,7 @@ exhaustive_tests <- function(dset,
   #'    not available (and not meaningful) for dichotomous models.
   #' @param splitcr_LR Split criterion for subject raw score splitting for
   #'  test_LR. "median" uses the median as split criterion, "mean" performs a
-  #'    mean split, "random" (only for psychotools or pairwise estimation)
+  #'    mean split, "random" (only for 'psychotools' or 'pairwise' estimation)
   #'    performs a random split (in this case, the seed can be set with the
   #'    "splitseed" argument of \link{itemfit_control}. splitcr_LR can also be a
   #'    vector which assigns each person to a certain subgroup (typically an
@@ -59,14 +59,14 @@ exhaustive_tests <- function(dset,
   #' @param splitcr_mloef Split criterion to define
   #'  the item groups for test_mloef. "median" and "mean" split items in two
   #'  groups based on their items' raw scores median or mean. "random" (only
-  #'  for psychotools estimation) performs a random split (in this case, the
+  #'  for 'psychotools' estimation) performs a random split (in this case, the
   #'  seed can be set with the "splitseed" argument of
   #'  \link{itemfit_control}. splitcr_mloef can also be a vector of length k
   #'    (where k denotes the number of items) that takes two or more distinct
   #'     values to define groups used for the Martin-Löf Test.
   #' @param splitcr_wald Split criterion for subject raw score splitting for
   #'  test_waldtest. "median" uses the median as split criterion, "mean"
-  #'  performs a mean-split, "random" (only for psychotools or pairwise
+  #'  performs a mean-split, "random" (only for 'psychotools' or 'pairwise'
   #'  estimation) performs a random split (in this case, the seed can be set
   #'  with the "splitseed" argument of \link{itemfit_control}. Optionally
   #'  splitcr_wald can also be a dichotomous vector which assigns each person
@@ -74,8 +74,8 @@ exhaustive_tests <- function(dset,
   #'  vector can be numeric, character or a factor.
   #' @param icat_wald a boolean value indicating if the waldtest will be
   #' conducted on item level (TRUE, default value) or on item category level.
-  #' This parameter only effects estimations using psychotools or pairwise and
-  #' will be ignored for eRm estimations.
+  #' This parameter only effects estimations using 'psychotools' or 'pairwise'
+  #' and will be ignored for eRm estimations.
   #' @param alpha a numeric value for the alpha level. Will be ignored
   #' for \link{test_itemfit} if use.pval in \link{itemfit_control} is FALSE
   #' @param bonf a boolean value whether to use a Bonferroni correction.
@@ -88,7 +88,7 @@ exhaustive_tests <- function(dset,
   #'    be checked (used in test_personsItems only)
   #' @param extremes a boolean value indicating if a check for the
   #'  item/threshold locations left of the 2nd lowest and right of the
-  #'   2nd highest person parameter (used in test_personsItems only).
+  #'  2nd highest person parameter (used in test_personsItems only).
   #' @param max_contrast a numeric value defining the maximum loading of a
   #'  factor in the principal components analysis of the standardised residuals.
   #'  Only relevant, if test_respca is one of the tests.
@@ -100,11 +100,11 @@ exhaustive_tests <- function(dset,
   #' @param keep a boolean value difining whether des person parameters will be
   #'  part of the \link{passed_exRa-class} results object (TRUE) or not (FALSE).
   #'  Keeping the person parameters will result in shorter runtimes, if several
-  #'  tests that   #'  need these parameters are used. On the other hand there
-  #'  will be a largeramount of memeory usage.
+  #'  tests that need these parameters are used. On the other hand there will
+  #'  be a largeramount of memeory usage.
   #' @param ignoreCores a numeric value for the number of cpu cores to hold out
   #'  in parallelizing the test run.
-  #' @param silent a boolean value. If set to TRUE, all output during the
+  #' @param verbose a boolean value. If set to FALSE, all output during the
   #'  analysis will be suppressed.
   #' @param ... arguments for \link{itemfit_control}
   #'  and \link{estimation_control}can be passed directly to this function.
@@ -114,12 +114,17 @@ exhaustive_tests <- function(dset,
   #' \link{estimation_control}
   #' @return an object of \link{passed_exRa-class}.
   #' @export
-  #' @examples \dontrun{
-  #'   passed <- exhaustive_tests(ADL[c(1,4,6,7,10,14,15)],
-  #'     modelType = "RM", scale_length = 4:5, upperMSQ=1.5, lowerMSQ=0.5,
-  #'     tests=c("test_mloef", "test_itemfit", "test_respca"),
-  #'     estimation_param=estimation_control())
-  #'  }
+  #' @examples \donttest{
+  #'   library(exhaustiveRasch)
+  #'   data(ADL)
+  #'   passed <- exhaustive_tests(dset= ADL[c(1:4,7,12,14)],
+  #'     modelType= "RM", scale_length= 5, alpha=0.05,
+  #'     tests=c("test_LR", "test_itemfit", "test_respca"),
+  #'     splitcr_LR = ADL[,17], itemfit_param =
+  #'       itemfit_control(use.pval=FALSE, upperMSQ=1.5, lowerMSQ=0.5),
+  #'     estimation_param= estimation_control(
+  #'       est="psychotools"), verbose=FALSE)
+  #' }
 
   # get lowest and highest category
   maxcat<-apply(dset,2,function(x){max(x,na.rm=TRUE)})
@@ -210,15 +215,15 @@ exhaustive_tests <- function(dset,
     for (j in scale_length){
       information_criteria <- list()
       if (!is.null(combos)){
-        if (silent==FALSE){
+        if (verbose){
           cat("Scale-Length ")
-          cat(unlist(unique(lapply(seq_len(length(combos)),
-                                   function(x) length(combos[[x]])))))
+          cat(sort(unlist(unique(lapply(seq_len(length(combos)),
+                                   function(x) length(combos[[x]]))))))
           cat("; pre-defined set of item combinations
               ('combos' parameter was used)", "\n")
         }
       } else{
-        if (silent==FALSE){cat("Scale-Length: ", j, "\n", sep="")}
+        if (verbose){cat("Scale-Length: ", j, "\n", sep="")}
       }
 
       # list of all item combinations
@@ -230,7 +235,7 @@ exhaustive_tests <- function(dset,
       }
 
       combos_process <- length(c)
-      if (silent==FALSE){cat("initial combos: ", combos_process, "\n", sep="")}
+      if (verbose){cat("initial combos: ", combos_process, "\n", sep="")}
       current_combos <- c
 
 
@@ -265,7 +270,7 @@ exhaustive_tests <- function(dset,
                                            PSI=PSI,
                                            ignoreCores=ignoreCores,
                                            estimation_param=estimation_param,
-                                           tests_count)
+                                           tests_count, verbose)
         if (length(current_return)>0 & !is.character(current_return)){
           if (tests[l] %in% c("all_rawscores", "test_pca", "rel_coefs")){
             current_combos <- current_return
@@ -291,7 +296,7 @@ exhaustive_tests <- function(dset,
         log.lst <- tictoc::tic.log(format = FALSE)
         tim <- round(unlist(lapply(log.lst, function(x) x$toc - x$tic)),2)
         timings <- rbind(timings, c(j, tests[l], tim))
-        if (silent==FALSE){
+        if (verbose){
           cat("Item combinations that passed ", tests[l], ": ",
               length(current_combos), "\n", sep="")
           cat("--- Runtime: ", tim, " seconds", "\n", sep="")
@@ -305,7 +310,7 @@ exhaustive_tests <- function(dset,
       tictoc::tic.clearlog()
       tictoc::tic(l)
 
-      if (silent==FALSE){cat("Fit: ", length(current_combos), "\n", sep="")}
+      if (verbose){cat("Fit: ", length(current_combos), "\n", sep="")}
       if (length(current_combos)>0){
         passed_combos <- append(passed_combos, current_combos)
         passed_models <- append(passed_models, current_models)

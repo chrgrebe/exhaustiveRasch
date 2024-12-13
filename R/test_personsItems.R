@@ -7,6 +7,10 @@ test_personsItems <- function(items=NULL,
                               gap_prop=0,
                               extremes=TRUE,
                               estimation_param=NULL){
+  # This is an internal function that is not intended to be called by users.
+  # It is nevertheless exported so that it can be run in the parallelization
+  # workers. However, the function is not documented in the manual.
+
   #' checks the relationship between the person parameter distribution and
   #'  the item (or: threshold) locations for defined criteria
   #' @param items a numeric vector containing the index numbers of the items
@@ -14,11 +18,15 @@ test_personsItems <- function(items=NULL,
   #' @param dset a data.frame containing the data
   #' @param na.rm a boolean value. If TRUE, all cases with any NA are removed
   #'  (na.omit). If FALSE, only cases with full NA responses are removed
-  #' @param model a list of type RM, PCM or RSM (a previously fit model)
-  #'  matching the value of modelType. If model is provided, this model is
-  #'   used. If NULL, a model is fit using dset and items.
+  #' @param model on object of a fit Rasch model, estimated with the packages
+  #' 'eRm' (classes 'RM', 'PCM' or 'RSM'), 'psychotools' (classes raschmodel,
+  #' 'pcmodel' or 'rsmodel') or 'pairwise' (class 'pers'), matching the value of
+  #'  modelType. If 'model' is provided, this model is used. If NULL, a model is
+  #'  fit using 'dset' and 'items'.
+  #' @param p.par a person parameter object matching the class of 'model'. If
+  #'  NULL, the person parameters will be estimated.
   #' @param modelType a character value defining the rasch model to fit.
-  #'  Possible values: RM, PCM, RSM
+  #'  Possible values: "RM", "PCM", "RSM".
   #' @param gap_prop a numeric value between 0 and 1 that sets the criterion
   #'  for the minimum proportion of neighboring person parameters with an
   #'   item/threshold location in between. If set to 0, this criterion will

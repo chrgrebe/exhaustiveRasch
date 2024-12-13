@@ -13,14 +13,14 @@ waldtest.psy(
 )
 }
 \arguments{
-\item{model}{a list of type RM, PCM or RSM (a previously fit model)
-matching the value of modelType. If model is provided, this model is used.
- If NULL, a model is fit using dset and items.}
+\item{model}{an object of 'psychotools' class 'raschmodel', 'pcmodel' or
+'rsmodel'  (a model previously fit using the 'psychotools' package)
+ matching the value of modelType.}
 
-\item{modelType}{a character value defining the rasch model to fit.
-Possible values: RM, PCM, RSM}
+\item{modelType}{a character value defining the type of Rasch model.
+Possible values: "RM", "PCM", "RSM"}
 
-\item{splitcr}{Split criterion for subject raw score splitting. "median"
+\item{splitcr}{split criterion for subject raw score splitting. "median"
 uses the median as split criterion, "mean" performs a mean-split,
 "random" performs a random split (in this case, the seed can be set
 with the "splitseed" argument. Optionally splitcr can also be a
@@ -30,22 +30,20 @@ or a factor.}
 
 \item{splitseed}{seed for random split}
 
-\item{icat}{a boolean value defining wheter to use item parameters
-(psychotools function itempar, if TRUE) or item category parameters (psychotools
-function threshpar)}
+\item{icat}{a boolean value defining wether to use item parameters
+('psychotools' function 'itempar', if TRUE) or item category parameters
+('psychotools' function 'threshpar')}
 }
 \value{
 a vector containing the p-values of the Scheiblechner's
- "wald-like" S-statistic for the items (if icat=F) or for the item
- categories (irf icat=T).
+ "wald-like" S-statistic for the items (if icat=FALSE) or for the item
+ categories (if icat=TRUE).
 }
 \description{
 Fischer and Scheiblechner's "wald-like" S-statistic for psychotools
 }
 \examples{
-\dontrun{
  model <- psychotools::raschmodel(ADL[c(6,7,12,14,15)])
    waldtest.psy(model=model, modelType="RM", splitcr="random", splitseed=332,
-   icat=F)
- }
+   icat=FALSE)
 }

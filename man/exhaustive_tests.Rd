@@ -25,7 +25,7 @@ exhaustive_tests(
   ICs = FALSE,
   keep = FALSE,
   ignoreCores = 1,
-  silent = FALSE,
+  verbose = TRUE,
   ...,
   itemfit_param = NULL,
   estimation_param = NULL
@@ -65,7 +65,7 @@ Possible values: all_rawscores, test_itemfit, test_LR, test_mloef,
 \item{splitcr_mloef}{Split criterion to define
 the item groups for test_mloef. "median" and "mean" split items in two
 groups based on their items' raw scores median or mean. "random" (only
-for psychotools estimation) performs a random split (in this case, the
+for 'psychotools' estimation) performs a random split (in this case, the
 seed can be set with the "splitseed" argument of
 \link{itemfit_control}. splitcr_mloef can also be a vector of length k
   (where k denotes the number of items) that takes two or more distinct
@@ -73,7 +73,7 @@ seed can be set with the "splitseed" argument of
 
 \item{splitcr_LR}{Split criterion for subject raw score splitting for
 test_LR. "median" uses the median as split criterion, "mean" performs a
-  mean split, "random" (only for psychotools or pairwise estimation)
+  mean split, "random" (only for 'psychotools' or 'pairwise' estimation)
   performs a random split (in this case, the seed can be set with the
   "splitseed" argument of \link{itemfit_control}. splitcr_LR can also be a
   vector which assigns each person to a certain subgroup (typically an
@@ -81,7 +81,7 @@ test_LR. "median" uses the median as split criterion, "mean" performs a
 
 \item{splitcr_wald}{Split criterion for subject raw score splitting for
 test_waldtest. "median" uses the median as split criterion, "mean"
-performs a mean-split, "random" (only for psychotools or pairwise
+performs a mean-split, "random" (only for 'psychotools' or 'pairwise'
 estimation) performs a random split (in this case, the seed can be set
 with the "splitseed" argument of \link{itemfit_control}. Optionally
 splitcr_wald can also be a dichotomous vector which assigns each person
@@ -90,8 +90,8 @@ vector can be numeric, character or a factor.}
 
 \item{icat_wald}{a boolean value indicating if the waldtest will be
 conducted on item level (TRUE, default value) or on item category level.
-This parameter only effects estimations using psychotools or pairwise and
-will be ignored for eRm estimations.}
+This parameter only effects estimations using 'psychotools' or 'pairwise'
+and will be ignored for eRm estimations.}
 
 \item{alpha}{a numeric value for the alpha level. Will be ignored
 for \link{test_itemfit} if use.pval in \link{itemfit_control} is FALSE}
@@ -109,7 +109,7 @@ for the minimum proportion of neighboring person parameters with an
 
 \item{extremes}{a boolean value indicating if a check for the
 item/threshold locations left of the 2nd lowest and right of the
- 2nd highest person parameter (used in test_personsItems only).}
+2nd highest person parameter (used in test_personsItems only).}
 
 \item{max_contrast}{a numeric value defining the maximum loading of a
 factor in the principal components analysis of the standardised residuals.
@@ -125,13 +125,13 @@ for the remaining models. You can add these later to the object of class
 \item{keep}{a boolean value difining whether des person parameters will be
 part of the \link{passed_exRa-class} results object (TRUE) or not (FALSE).
 Keeping the person parameters will result in shorter runtimes, if several
-tests that   #'  need these parameters are used. On the other hand there
-will be a largeramount of memeory usage.}
+tests that need these parameters are used. On the other hand there will
+be a largeramount of memeory usage.}
 
 \item{ignoreCores}{a numeric value for the number of cpu cores to hold out
 in parallelizing the test run.}
 
-\item{silent}{a boolean value. If set to TRUE, all output during the
+\item{verbose}{a boolean value. If set to FALSE, all output during the
 analysis will be suppressed.}
 
 \item{...}{arguments for \link{itemfit_control}
@@ -150,10 +150,15 @@ an object of \link{passed_exRa-class}.
 (main function) Runs exhaustive tests
 }
 \examples{
-\dontrun{
-  passed <- exhaustive_tests(ADL[c(1,4,6,7,10,14,15)],
-    modelType = "RM", scale_length = 4:5, upperMSQ=1.5, lowerMSQ=0.5,
-    tests=c("test_mloef", "test_itemfit", "test_respca"),
-    estimation_param=estimation_control())
- }
+\donttest{
+  library(exhaustiveRasch)
+  data(ADL)
+  passed <- exhaustive_tests(dset= ADL[c(1:4,7,12,14)],
+    modelType= "RM", scale_length= 5, alpha=0.05,
+    tests=c("test_LR", "test_itemfit", "test_respca"),
+    splitcr_LR = ADL[,17], itemfit_param =
+      itemfit_control(use.pval=FALSE, upperMSQ=1.5, lowerMSQ=0.5),
+    estimation_param= estimation_control(
+      est="psychotools"), verbose=FALSE)
+}
 }

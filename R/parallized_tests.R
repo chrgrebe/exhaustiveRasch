@@ -18,7 +18,12 @@ parallized_tests <- function(dset,
                              ignoreCores,
                              estimation_param,
                              tests_count,
+                             verbose=TRUE,
                              ...){
+  # This is an internal function that is not intended to be called by users.
+  # It is nevertheless exported so that it can be run in the parallelization
+  # workers. However, the function is not documented in the manual.
+
   #' conducts and controls the parallelisation of the tests, Intentionally,
   #'  there are no defauklt values for the parameters, as this internal
   #'   function is called by \link{exhaustive_tests} that also defines the
@@ -79,6 +84,8 @@ parallized_tests <- function(dset,
   #'  to this function.
   #' @param estimation_param options for parameter estimation using
   #' \link{estimation_control}
+  #' @param verbose a boolean value. If set to FALSE, all output during the
+  #'  analysis will be suppressed.
   #' @return a list containing 3 elements is returned: a list of the item
   #'  combinations, a list of the models (depending on modelType and
   #'  estimation_param$est) with the fit models and a list with the person
@@ -169,9 +176,16 @@ parallized_tests <- function(dset,
     if (testfunction=="test_PSI"){
       param1$PSI <-PSI
     }
-    print(paste("computing process ", tests_count[1],"/", tests_count[2],": ",
+    if (verbose){
+      print(paste("computing process ", tests_count[1],"/", tests_count[2],": ",
                 testfunction, sep=""))
-    pbapply::pboptions()
+    }
+
+    if (verbose){
+      pbapply::pboptions(type="txt")
+    } else{
+      pbapply::pboptions(type="none")
+    }
     a <- do.call(pbapply::pblapply, param1)
     a[sapply(a, is.null)] <- NULL
     return(a)

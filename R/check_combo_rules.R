@@ -1,5 +1,9 @@
 check_combo_rules <- function(full,
                               rules=NULL){
+  # This is an internal function that is not intended to be called by users.
+  # It is nevertheless exported so that it can be run in the parallelization
+  # workers. However, the function is not documented in the manual.
+
   #' selects item combinations based on defined rules
   #' @param full a numeric vector containing the the source for the
   #'  combinations, typically the indices of the items in the referring dataset

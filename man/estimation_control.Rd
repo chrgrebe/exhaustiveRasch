@@ -7,26 +7,26 @@
 estimation_control(
   est = "psychotools",
   resp.cat = NULL,
-  use.thurst = T,
+  use.thurst = TRUE,
   splitseed = NULL
 )
 }
 \arguments{
 \item{est}{a character value defining the estimation function to use.
-Possible values: 'psychotools', 'eRm'.}
+Possible values: 'psychotools', 'eRm', 'pairwise'.}
 
 \item{resp.cat}{number of response (answer) categories for all items.
 If not given, they will be calculated from the data, assuming that
 every response category is at least once present in the data. Currently
-only used for pairwise estimations (m parameter in pairwise::pair).}
+only used for pairwise estimations (m parameter in 'pairwise::pair').}
 
 \item{use.thurst}{a boolean value defining whether thurstonian threshold
 parameters (TRUE, default) or Rasch-Andrich thresholds (step parameters)
 will be computed.}
 
 \item{splitseed}{a numeric value, the seed for random splits in test_waldtest,
-lest_LR (both only relevant for pairwise or psychotools estimations) and
-test_mloef (only psyhotools estimations)}
+lest_LR (both only relevant for 'pairwise' or 'psychotools' estimations)
+and test_mloef (only 'psychotools' estimations)}
 }
 \value{
 a list containing the options

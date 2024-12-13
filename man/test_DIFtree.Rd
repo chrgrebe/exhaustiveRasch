@@ -29,12 +29,17 @@ to test for differential item functioning}
 \item{na.rm}{a boolean value. If TRUE, all cases with any NA are removed
 (na.omit). If FALSE, only cases with full NA responses are removed}
 
-\item{model}{a list of type RM, PCM or RSM (a previously fit model)
-matching the value of modelType. If model is provided, this model is used.
- If NULL, a model is fit using dset and items.}
+\item{model}{on object of a fit Rasch model, estimated with the packages
+'eRm' (classes 'RM', 'PCM' or 'RSM'), 'psychotools' (classes raschmodel,
+'pcmodel' or 'rsmodel') or 'pairwise' (class 'pers'), matching the value of
+ modelType. If 'model' is provided, this model is used. If NULL, a model is
+ fit using 'dset' and 'items'.}
+
+\item{p.par}{a person parameter object matching the class of 'model'. If
+NULL, the person parameters will be estimated.}
 
 \item{modelType}{a character value defining the rasch model to fit.
-Possible values: RM, PCM, RSM}
+Possible values: "RM", "PCM", "RSM".}
 
 \item{alpha}{a numeric value for the alpha level. Will be ignored if
 use.pval is FALSE}

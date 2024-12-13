@@ -19,7 +19,7 @@ itemfit_control(
 \arguments{
 \item{zstd}{a boolean value whether to check the standardised fit indices}
 
-\item{msq}{aboolean value whether to check the mean-squared fit indices}
+\item{msq}{a boolean value whether to check the mean-squared fit indices}
 
 \item{outfits}{a boolean value whether to check outfit indices
 (if FALSE, only infits are checked)}
@@ -41,8 +41,8 @@ least one item with significant p-value}
 
 \item{use.rel}{a boolean value wheter to use the unweighted
 (default, FALSE) or weighted item fit indices for MSQ and z-standardised
- fit-indices. Only available for pairwise and psychotools estiomation,
- will be ignored, for eRm estimation.}
+ fit-indices. Only available for 'pairwise' and 'psychotools' estiomation,
+ will be ignored, for 'eRm' estimation.}
 }
 \value{
 a list containing the options

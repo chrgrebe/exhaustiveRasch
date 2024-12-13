@@ -18,10 +18,10 @@ remove_subsets <- function(obj,
   #' @export
   #' @examples \dontrun{
   #'   passed_ADL <- exhaustive_tests(dset=ADL, combos=final_combos,
-  #'   modelType= "RM", upperMSQ=1.5, lowerMSQ=0.5, use.pval=F, bonf=T,
-  #'     na.rm=T, tests= c("test_mloef", "test_LR", "test_itemfit"),
+  #'   modelType= "RM", upperMSQ=1.5, lowerMSQ=0.5, use.pval=FALSE, bonf=TRUE,
+  #'     na.rm=TRUE, tests= c("test_mloef", "test_LR", "test_itemfit"),
   #'     estimation_param = estimation_control())
-  #'   passed_shortest <- remove_subsets(passed_ADL, keep_longest=F)
+  #'   passed_shortest <- remove_subsets(passed_ADL, keep_longest=FALSE)
   #'  }
 
   if (inherits(obj,"passed_exRa")){

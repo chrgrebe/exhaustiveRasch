@@ -5,17 +5,25 @@ threshold_order <- function(items=NULL,
                             p.par=NULL,
                             modelType=NULL,
                             estimation_param=NULL){
+  # This is an internal function that is not intended to be called by users.
+  # It is nevertheless exported so that it can be run in the parallelization
+  # workers. However, the function is not documented in the manual.
+
   #' checks for disordered thresholds in rasch models
   #' @param items a numeric vector containing the index numbers of the items in
   #'  dset that are used to fit the model
   #' @param dset a data.frame containing the data
   #' @param na.rm a boolean value. If TRUE, all cases with any NA are removed
   #'  (na.omit). If FALSE, only cases with full NA responses are removed
-  #' @param model a list of type RM, PCM or RSM (a previously fit model)
-  #'  matching the value of modelType. If model is provided, this model is used.
-  #'   If NULL, a model is fit using dset and items.
+  #' @param model on object of a fit Rasch model, estimated with the packages
+  #' 'eRm' (classes 'RM', 'PCM' or 'RSM'), 'psychotools' (classes raschmodel,
+  #' 'pcmodel' or 'rsmodel') or 'pairwise' (class 'pers'), matching the value of
+  #'  modelType. If 'model' is provided, this model is used. If NULL, a model is
+  #'  fit using 'dset' and 'items'.
+  #' @param p.par a person parameter object matching the class of 'model'. If
+  #'  NULL, the person parameters will be estimated.
   #' @param modelType a character value defining the rasch model to fit.
-  #'  Possible values: RM, PCM, RSM
+  #'  Possible values: "RM", "PCM", "RSM".
   #' @param estimation_param options for parameter estimation using
   #' \link{estimation_control}
   #' @return if there are no items with disordered thresholds in the model,
@@ -52,17 +60,17 @@ threshold_order <- function(items=NULL,
     sorted <- TRUE
 
     if (estimation_param$est=="pairwise"){
-      if(estimation_param$use.thurst==T){
+      if(estimation_param$use.thurst==TRUE){
         thrstable <- model$threshold
       } else{
         thrstable <- as.matrix(pairwise::deltapar(model))[,-1]
       }
     } else if (estimation_param$est=="eRm"){
       thrstable <- eRm::thresholds(model)$threshtable[[1]][,-1]
-      if(any(apply(thrstable, 1, is.unsorted, na.rm=T))){sorted <- FALSE}
+      if(any(apply(thrstable, 1, is.unsorted, na.rm=TRUE))){sorted <- FALSE}
     } else{ #psychotools
       thrstable <- model$thresholds
-      if(any(lapply(thrstable, is.unsorted, na.rm=T))){sorted <- FALSE}
+      if(any(lapply(thrstable, is.unsorted, na.rm=TRUE))){sorted <- FALSE}
     }
     if (sorted==TRUE){return(list(items, model, p.par))}
   }

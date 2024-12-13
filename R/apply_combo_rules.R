@@ -42,7 +42,7 @@ apply_combo_rules <- function(full,
                               function(x) as.list(
                                 data.frame(t(arrangements::combinations(
                                   length(full), x))))),
-                       recursive=F)
+                       recursive=FALSE)
   # forced items
   if (!is.null(forced_items)){
     forced_list <- combo_list[lapply(1:length(combo_list),
