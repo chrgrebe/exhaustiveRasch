@@ -29,11 +29,12 @@ depending of the class of obj, either a list of numeric vectors
 removes subsets or supersets of item combinations
 }
 \examples{
-\dontrun{
-  passed_ADL <- exhaustive_tests(dset=ADL, combos=final_combos,
-  modelType= "RM", upperMSQ=1.5, lowerMSQ=0.5, use.pval=FALSE, bonf=TRUE,
-    na.rm=TRUE, tests= c("test_mloef", "test_LR", "test_itemfit"),
-    estimation_param = estimation_control())
+\donttest{
+  library(exhaustiveRasch)
+  data(ADL)
+  passed_ADL <- exhaustive_tests(dset=ADL[1:15], scale_length=4:5,
+    modelType= "RM", na.rm=TRUE, tests= c("test_LR"),
+    splitcr_LR = ADL[,17], estimation_param = estimation_control())
   passed_shortest <- remove_subsets(passed_ADL, keep_longest=FALSE)
  }
 }

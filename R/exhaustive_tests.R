@@ -132,9 +132,7 @@ exhaustive_tests <- function(dset,
   # if necessary, shift all categories to start with 0
   if (min(mincat)>0){
     dset <- as.data.frame(apply(dset,2,function(x){x-min(mincat)}))
-    cat(paste("item-categories did not start with 0. Categories were shifted to
-              set the first category 0. Consider inspecting your data matrix",
-              "\n"))
+    message(paste("item-categories did not start with 0. Categories were shifted to set the first category 0. Consider inspecting your data matrix","\n"))
   }
 
   # pass optional arguments to itemfit_control() and estimation_control()
@@ -144,9 +142,8 @@ exhaustive_tests <- function(dset,
                             formals(estimation_control)))
     indx <- match(names(extraArgs), allowed_args, nomatch = 0L)
     if (any(indx == 0L))
-      cat(paste(gettextf("Argument %s was ignored. It is neither an argument
-        of itemfit_control() nor of estimation_control() and could not be
-                           matched", names(extraArgs)[indx == 0L],
+      message(paste(gettextf("Argument %s was ignored. It is neither an argument of itemfit_control() nor of estimation_control() and could not be matched",
+                         names(extraArgs)[indx == 0L],
                          domain = NA)), "\n")
   }
   itemfit_extraArgs <- extraArgs[intersect(
@@ -164,22 +161,17 @@ exhaustive_tests <- function(dset,
   # some checks for not allowed test
   if (na.rm==FALSE & "test_mloef" %in% tests){
     na.rm <- TRUE
-    cat(paste("test_mloef is part of the test. This test does not currently
-    allow for missing values, so na.rm was set TRUE for all tests.", "\n"))
+    message(paste("test_mloef is part of the test. This test does not currently allow for missing values, so na.rm was set TRUE for all tests.", "\n"))
   }
 
   if ("threshold_order" %in% tests & modelType=="RM"){
-    tests <- tests[-which("threshold_order" %in% tests)]
-    cat(paste("threshold_order is part of the test. This test is not meaningful
-            for the dichotomous rasch model and was removed from the list of
-            tests.", "\n"))
+    tests <- setdiff(tests, "threshold_order")
+    message(paste("threshold_order is part of the test. This test is not meaningful for the dichotomous rasch model and was removed from the list of tests.", "\n"))
   }
 
   if(estimation_param$est=="pairwise" & "test_mloef" %in% tests){
-    tests <- tests[-which("test_mloef" %in% tests)]
-    cat(paste("test_mloef is part of the test. This test is currently not
-            supported for 'pairwise' estimation and was removed from 'tests'.",
-              "\n"))
+    tests <- setdiff(tests, "test_mloef")
+    message(paste("test_mloef is part of the test. This test is currently not supported for 'pairwise' estimation and was removed from 'tests'.", "\n"))
   }
 
 
@@ -191,25 +183,17 @@ exhaustive_tests <- function(dset,
     process <- data.frame()
 
 
-    #    if(!estimation_param$est=="eRm" & modelType=="RSM"){
-    #      estimation_param$est <- "eRm"
-    #      cat(paste("estimation of RSM models using est='psychotools' is not yet
-    #              supported. Argument 'est' was set to 'eRm'",
-    #                "\n"))
-    #    }
-
-
-    if (!is.null(combos)){
-      scale_length <-1:1
-      if (inherits(combos,"passed_exRa")){
-          current_models <- combos@passed_models
-          current_p.par <- combos@passed_p.par
-          combos <- combos@passed_combos
-      }else{
-        current_models <- NULL
-        current_p.par <- NULL
-      }
+  if (!is.null(combos)){
+    scale_length <-1:1
+    if (inherits(combos,"passed_exRa")){
+      current_models <- combos@passed_models
+      current_p.par <- combos@passed_p.par
+      combos <- combos@passed_combos
+    }else{
+      current_models <- NULL
+      current_p.par <- NULL
     }
+  }
 
     timings <- data.frame(matrix(vector(), 0, 3))
     for (j in scale_length){

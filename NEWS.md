@@ -3,6 +3,13 @@ output:
   html_document: default
   pdf_document: default
 ---
+# exhaustiveRasch 0.3.7
+This release fixes a bug with automatic removal of certain tests
+
+### Bug fixes
+When tests are automatically removed (e.g. 'threshold_order' for dichotomous models or 'test_mloef' when using pairwise estimation), the wrong test was removed from the vector of tests. This was fixed.
+Outputs to the console concerning notices like these (or e.g. automatic shifting item categories to 0) are now implemented as messagages, so these outputs to the console can be suppressed by wrapping the call to 'exhaustive_tests()' in 'suppressMessages()'.
+
 # exhaustiveRasch 0.3.6
 This release adds verbose argument to exhaustive_tests() and fixes some documentation and code issues.
 
